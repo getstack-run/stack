@@ -1,0 +1,47 @@
+{
+  "pack_version": 1,
+  "claim": "hFgx2QEDowEnBFdvcF9jb25mb3JtYW5jZTpjbGFpbTp2MRBwc3RhY2svY2xhaW0rY29zZdkBA6BZBBu5AAlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVybm9wX2NvbmZvcm1hbmNlZ3N1YmplY3R4H3N0YWNrOi8vb3BlcmF0b3Ivb3BfY29uZm9ybWFuY2VpaXNzdWVkX2F0-0J4vP5WgAAAamNsYWltX3R5cGVtZXZpZGVuY2VfcGFja21jbGFpbV92ZXJzaW9uAWdwYXlsb2FkuQAPZHR5cGVtZXZpZGVuY2VfcGFja2dwYWNrX2lkb3Bja19jb25mb3JtYW5jZWxjb250ZW50X2hhc2h4R3NoYTI1NjphNWI3Y2IyOGE0YWQ3NDhhNTI2NDE4MjAyYTM0NjhlOWFjMTliNDkzYzRmNjM0N2NjNGNjMWUwNDVlMWZhNDQ1ZXNjb3BluQACZGtpbmRnbWlzc2lvbmNyZWZubXNfY29uZm9ybWFuY2VrdGltZV9ib3VuZHO5AAJldDBfbXP7Qni8_laAAABldDFfbXP7Qni8_la-gABrY2xhaW1fY291bnQAeBlpbmNsdWRlZF9yZXZpZXdfY2xhaW1faWRzgGttZXJrbGVfcm9vdHhHc2hhMjU2OmUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTVyYXVkaXRfY2hhaW5fYW5jaG9yuQADaWhlYWRfaGFzaHhAYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYW5oZWFkX3NpZ25hdHVyZXhWSFZLOUo3c2tRcEx4UTZILUhSQW8tN3NKQVV1WnlmOVpFdFRya0hJek9lbzdwTUM1dm5Nc0p1MDZFRjdjcm5xSmRHckZSckZ2ZXpuWWQtTGFzQUtrQXdqaGVhZF9hdF9tc_tCeLz-Vr6AAHgZcmV2b2NhdGlvbl9zbmFwc2hvdF9hdF9tc_tCeLz-Vp9AAG9zY2hlbWFfdmVyc2lvbnO5AAJoZW52ZWxvcGW5AAJndmVyc2lvbgFsY29udGVudF9oYXNoeEdzaGEyNTY6NzNiZGYwOTBhNmYyMzhkOTBiMGM2MmM5ZDQwOGQzZDVkMTFjMDU3MDUxODRhNjY5OGE0NmJmODhiZmJmODZhZm1ieV9jbGFpbV90eXBluQAAeBljYW5vbmljYWxfc2NoZW1hX2Jhc2VfdXJseDBodHRwczovL2dldHN0YWNrLnJ1bi9zY2hlbWFzL3Bhc3Nwb3J0LWNsYWltcy92MS9qc3VwZXJzZWRlc_ZxY3Jvc3NfdGVuYW50X3JlZnOAdmV4dGVybmFsX2NoYWluX2FuY2hvcnOAZ3JlY2VpcHT2bWNvX3NpZ25hdHVyZXOAWED7zGDb8Qz5cBSFMc6BOvKx0BPS56ccm6KrMOSsmtIhxnNpPNHkNJLTglxrU2WeQtkfWbAT9_k993Vf2QpAYNII",
+  "co_signatures": [
+    {
+      "signer_kid": "op_conformance:claim:v1",
+      "signer_role": "operator_attestation",
+      "cose_sign1": "hFgx2QEDowEnBFdvcF9jb25mb3JtYW5jZTpjbGFpbTp2MRBwc3RhY2svY2xhaW0rY29zZdkBA6BZBBu5AAlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVybm9wX2NvbmZvcm1hbmNlZ3N1YmplY3R4H3N0YWNrOi8vb3BlcmF0b3Ivb3BfY29uZm9ybWFuY2VpaXNzdWVkX2F0-0J4vP5WgAAAamNsYWltX3R5cGVtZXZpZGVuY2VfcGFja21jbGFpbV92ZXJzaW9uAWdwYXlsb2FkuQAPZHR5cGVtZXZpZGVuY2VfcGFja2dwYWNrX2lkb3Bja19jb25mb3JtYW5jZWxjb250ZW50X2hhc2h4R3NoYTI1NjphNWI3Y2IyOGE0YWQ3NDhhNTI2NDE4MjAyYTM0NjhlOWFjMTliNDkzYzRmNjM0N2NjNGNjMWUwNDVlMWZhNDQ1ZXNjb3BluQACZGtpbmRnbWlzc2lvbmNyZWZubXNfY29uZm9ybWFuY2VrdGltZV9ib3VuZHO5AAJldDBfbXP7Qni8_laAAABldDFfbXP7Qni8_la-gABrY2xhaW1fY291bnQAeBlpbmNsdWRlZF9yZXZpZXdfY2xhaW1faWRzgGttZXJrbGVfcm9vdHhHc2hhMjU2OmUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTVyYXVkaXRfY2hhaW5fYW5jaG9yuQADaWhlYWRfaGFzaHhAYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYW5oZWFkX3NpZ25hdHVyZXhWSFZLOUo3c2tRcEx4UTZILUhSQW8tN3NKQVV1WnlmOVpFdFRya0hJek9lbzdwTUM1dm5Nc0p1MDZFRjdjcm5xSmRHckZSckZ2ZXpuWWQtTGFzQUtrQXdqaGVhZF9hdF9tc_tCeLz-Vr6AAHgZcmV2b2NhdGlvbl9zbmFwc2hvdF9hdF9tc_tCeLz-Vp9AAG9zY2hlbWFfdmVyc2lvbnO5AAJoZW52ZWxvcGW5AAJndmVyc2lvbgFsY29udGVudF9oYXNoeEdzaGEyNTY6NzNiZGYwOTBhNmYyMzhkOTBiMGM2MmM5ZDQwOGQzZDVkMTFjMDU3MDUxODRhNjY5OGE0NmJmODhiZmJmODZhZm1ieV9jbGFpbV90eXBluQAAeBljYW5vbmljYWxfc2NoZW1hX2Jhc2VfdXJseDBodHRwczovL2dldHN0YWNrLnJ1bi9zY2hlbWFzL3Bhc3Nwb3J0LWNsYWltcy92MS9qc3VwZXJzZWRlc_ZxY3Jvc3NfdGVuYW50X3JlZnOAdmV4dGVybmFsX2NoYWluX2FuY2hvcnOAZ3JlY2VpcHT2bWNvX3NpZ25hdHVyZXOAWED7zGDb8Qz5cBSFMc6BOvKx0BPS56ccm6KrMOSsmtIhxnNpPNHkNJLTglxrU2WeQtkfWbAT9_k993Vf2QpAYNII"
+    }
+  ],
+  "claims": [],
+  "audit_chain_proofs": [],
+  "verification_material": {
+    "operator_jwks_url": "https://api.getstack.run/v1/operators/op_conformance/jwks.json",
+    "operator_jwks_inline": {
+      "keys": [
+        {
+          "crv": "Ed25519",
+          "x": "vHy8tWNjdfodgkNNRmck2SN39TuYBpXdSdJtDOEiBaU",
+          "kty": "OKP",
+          "kid": "op_conformance:claim:v1"
+        }
+      ]
+    },
+    "stack_system_jwks_url": "https://api.getstack.run/v1/.well-known/jwks.json",
+    "stack_system_jwks_inline": {
+      "keys": [
+        {
+          "crv": "Ed25519",
+          "x": "VRVPQgZepaG-oFRjgmviaE65LfksEAAnqrquV8pVQgc",
+          "kty": "OKP",
+          "kid": "stack-system:v1"
+        }
+      ]
+    }
+  },
+  "schemas_inline": {
+    "envelope": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "content_hash": "sha256:73bdf090a6f238d90b0c62c9d408d3d5d11c05705184a6698a46bf88bfbf86af",
+      "json_schema": {
+        "type": "object",
+        "$id": "envelope"
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:VerifiedStatementClaims",
+  "title": "VerifiedStatementClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:verified"
+    },
+    "sub": {
+      "type": "string",
+      "maxLength": 400
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "vs": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "mark": {
+          "type": "string",
+          "const": "STACK-verified"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "live",
+            "expired",
+            "revoked"
+          ]
+        },
+        "install": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "countersignature": {
+          "type": "string"
+        },
+        "valid_until": {
+          "type": "string"
+        },
+        "passport_digest": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      },
+      "required": [
+        "v",
+        "mark",
+        "status",
+        "install",
+        "countersignature",
+        "valid_until",
+        "passport_digest"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "sub",
+    "iat",
+    "exp",
+    "vs"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,1251 @@
+{
+  "version": 1,
+  "note": "Test vectors for the identity specifications. Built by scripts/build-identity-vectors.mjs; the keys are for these vectors only.",
+  "agent_jwt": {
+    "spec": "spec/agent-auth/SPEC.md sections 3 and 4",
+    "now": 1790000000,
+    "agent_id": "agt_vectors",
+    "public_jwk": {
+      "crv": "Ed25519",
+      "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+      "kty": "OKP"
+    },
+    "token_parts_are": "The three parts of the compact token (header, payload, signature); join them with a full stop. The last part is empty for alg none.",
+    "cases_are_presented_in_order": "A verifier that keeps its record of used tokens sees the cases one after the other; the last one repeats the first.",
+    "cases": [
+      {
+        "name": "a valid token",
+        "valid": true,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAwMDEifQ",
+          "cGG7QEDziKsa2VKd8pCgy7v2RQPi3c9GVG8lPnSFAYaeBOUfigUfloBs5J3ExNpCtUmFyygEDBQnHgtnldCCBA"
+        ]
+      },
+      {
+        "name": "a valid token without nbf",
+        "valid": true,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTAwIn0",
+          "7jZphVPhvjMuwDhpHPuvXFjXzW1nvqL_Of8-2YliB5wxcnz499mQmbYAix8usSxkKuQxMy1q-vYi3vrSiTCdBQ"
+        ]
+      },
+      {
+        "name": "a token that lives 120 seconds",
+        "valid": true,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDEyMCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDEifQ",
+          "bLYyHu-utbgC0XrHh89qkbbsyuaTh10JPdnytrPmZOQi-zmRKEoIvcft9lCFwvtyS0-KTid8sdl3jElwoCVSCQ"
+        ]
+      },
+      {
+        "name": "a token that expired 10 seconds ago (inside the tolerance of 30)",
+        "valid": true,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzg5OTk5OTMwLCJuYmYiOjE3ODk5OTk5MzAsImV4cCI6MTc4OTk5OTk5MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDIifQ",
+          "Z14QGLeDk9m10FfdEFhD_W7x6KliBVN34GG-rbU2NScOeTAlR_yuez0yeeHBCB11Uu2mSELAhQRxo7suCgfOBg"
+        ]
+      },
+      {
+        "name": "a token that is valid in 10 seconds (inside the tolerance)",
+        "valid": true,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDEwLCJuYmYiOjE3OTAwMDAwMTAsImV4cCI6MTc5MDAwMDA3MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDMifQ",
+          "pRZYVX1ZDPUGfiETnNEZOhSDtuYiSZPfvnlnFyzRcY19Uu129esOdgt3kGMuQiCKRqR_vjPN1py1NmoITorgBA"
+        ]
+      },
+      {
+        "name": "a token that expired 100 seconds ago",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzg5OTk5ODAwLCJuYmYiOjE3ODk5OTk4MDAsImV4cCI6MTc4OTk5OTkwMCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDQifQ",
+          "1a5b3WUuJAgUPNNAfIx6ZA8uHfWJ-cv3g7HX6igyaq52mPoGmfqGeWT5yVNnuGO5Y969m9zzFBFi7hi_HcLLCw"
+        ]
+      },
+      {
+        "name": "a token with nbf 120 seconds ahead",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAxMjAsImV4cCI6MTc5MDAwMDE4MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDUifQ",
+          "fHA2KRzTD07y88qiW0QdYtD9qBh0YJmWrfK_28QfIA4igSXAxYNoqiTZ6KUjXqcO4Er4AJmbrxEuEV1Y3lEwCw"
+        ]
+      },
+      {
+        "name": "a token that lives 121 seconds",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDEyMSwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMDYifQ",
+          "-Ma0pDE3TIAjA_nVQ3CRNl88IX2DtI5zENFMsllPh6U0JVDMaa8eoIEJ7vKaMZGDBCS9fJOvKcA2ZaCPEuUDCw"
+        ]
+      },
+      {
+        "name": "a token with no iat",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwibmJmIjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTA3In0",
+          "J5dXpnXE1KJJm8hDeyq3Wej3gfANe2b50wOQ4oYKjzRJIox0Yp_l1xSyiyd4zLn88HGLEPw76itC--9yf5giBg"
+        ]
+      },
+      {
+        "name": "a token with no exp",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTA4In0",
+          "biugJVju4p4_iIj6y91oFn7j8msNmr57ayZeebC8JRKTNIPBE-jSZX4HmtSAu1fUlsoxxF3IoXBnATz8syWqDg"
+        ]
+      },
+      {
+        "name": "a token with no jti",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MH0",
+          "b5WOnc87aT6Du90NPoC15BJBVnFM2XmBPLaGRa0Rwrz9S3NVa6FCeuCKqLiSThJ4cG6vHsx1vbr8xDtT0d6iBA"
+        ]
+      },
+      {
+        "name": "a token issued 120 seconds in the future",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMTIwLCJleHAiOjE3OTAwMDAxODAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTA5In0",
+          "3WDfbn6QZPNCoVC1P5CcK_aBg3cN2N5K56n2cm17vIsCiHiBurSSX3C-PXRPHw5bM0-NA9-gGPOy8BQj1Z42Bw"
+        ]
+      },
+      {
+        "name": "a token for another audience",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMTAifQ",
+          "o-pcVdGT5dprz6XwEJOPI0HxfX3lzMWAmAqKNwbh1RVfT92oISzlapLEj9etVQvTWwXnjJF12QxMoL5_bQuIAw"
+        ]
+      },
+      {
+        "name": "a token with no audience",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImlhdCI6MTc5MDAwMDAwMCwibmJmIjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTExIn0",
+          "aCBvVyz5mOR1SJvpwgxwLFj9eYHnQbvgsP7obPq6RwhuMzajVqLhujqAxlpEVqRxEk-JpvZXeuaXd9edbu8ICg"
+        ]
+      },
+      {
+        "name": "a token from another issuer",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJhdHRhY2tlci5leGFtcGxlIiwic3ViIjoiYWd0X3ZlY3RvcnMiLCJhdWQiOiJzdGFjazphZ2VudCIsImlhdCI6MTc5MDAwMDAwMCwibmJmIjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTEyIn0",
+          "xq7Ik4YvZZieRlwP-o_Dfv48mQaVmqU0Sd4VbFNKm9wfMnze-p5DG3KjE9J1sCoRrgBTqaDBUr7gCy2zEWUaCQ"
+        ]
+      },
+      {
+        "name": "a token signed by another key",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMTMifQ",
+          "DU5RfSMQElVwGPzwAXSbZTegVywvJFIH4PYc9ba6qLHKroInb_zNMUa1B0c6b08guoFWoiepH3WPnPuenvROAw"
+        ]
+      },
+      {
+        "name": "a token with alg none",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJub25lIn0",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMTQifQ",
+          ""
+        ]
+      },
+      {
+        "name": "an HS256 token keyed with the public key",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJIUzI1NiJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMTUifQ",
+          "rISgwM8IbmbdIQp4mTOoKrihgyKUKQVQe3JzaS51_2o"
+        ]
+      },
+      {
+        "name": "a token whose payload was changed after signing",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAxMTYifQ",
+          "cGG7QEDziKsa2VKd8pCgy7v2RQPi3c9GVG8lPnSFAYaeBOUfigUfloBs5J3ExNpCtUmFyygEDBQnHgtnldCCBA"
+        ]
+      },
+      {
+        "name": "a jti with a space in it",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiaGFzIGEgc3BhY2UifQ",
+          "YLj7n7b1B4U3agY0BCLYkKkZ7U0QaPgFsPXO7fCGdUGQneNuONurIb5WjtSQROvGSJzvr0KLkxLiCAhtYVHGCg"
+        ]
+      },
+      {
+        "name": "a sub with a character that is not allowed",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyEiLCJhdWQiOiJzdGFjazphZ2VudCIsImlhdCI6MTc5MDAwMDAwMCwibmJmIjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6ImFqX3ZlY3Rvcl8wMDAwMDAwMDAwMDAwMTE3In0",
+          "E6SqxK9wmCZ8So5e8lfbwc6SsYJr7_q1sdrvMX8gcxISSS1J2_vkTlZs39jCSD7bNAHlmFgl_rg-xo5gR9z9AA"
+        ]
+      },
+      {
+        "name": "the first token again: a token is used once",
+        "valid": false,
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJpc3MiOiJzdGFjay1zZGsiLCJzdWIiOiJhZ3RfdmVjdG9ycyIsImF1ZCI6InN0YWNrOmFnZW50IiwiaWF0IjoxNzkwMDAwMDAwLCJuYmYiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDA2MCwianRpIjoiYWpfdmVjdG9yXzAwMDAwMDAwMDAwMDAwMDEifQ",
+          "cGG7QEDziKsa2VKd8pCgy7v2RQPi3c9GVG8lPnSFAYaeBOUfigUfloBs5J3ExNpCtUmFyygEDBQnHgtnldCCBA"
+        ]
+      }
+    ]
+  },
+  "agent_claim": {
+    "spec": "spec/agent-keys/SPEC.md sections 5 and 6",
+    "agent_id": "agt_vectors",
+    "key_id": "agent:agt_vectors:v1",
+    "jwks": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+          "kid": "agent:agt_vectors:v1",
+          "alg": "EdDSA",
+          "use": "sig",
+          "not_before": 1,
+          "not_after": null
+        }
+      ]
+    },
+    "envelope": {
+      "envelope_version": 1,
+      "issuer": "op_vectors",
+      "subject": "stack:agent:agt_vectors",
+      "issued_at": 1790000000000,
+      "claim_type": "intent_claim",
+      "claim_version": 1,
+      "payload": {
+        "type": "intent_claim",
+        "note": "vector"
+      },
+      "receipt": null,
+      "co_signatures": []
+    },
+    "cases": [
+      {
+        "name": "a valid message, protected header under tag 259",
+        "valid": true,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk"
+      },
+      {
+        "name": "the same with the protected header untagged (a verifier SHOULD accept it)",
+        "valid": true,
+        "level": "SHOULD",
+        "message": "hFgrowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQIvrShUAC7AqlW_cuz-hY-1xftF6A_f0547ZZoUWgfPOZ4RDx7LsvbcOd8NP4cm1ev5qsFs6Sn2Ts62_5PQ14wY"
+      },
+      {
+        "name": "the same with the key id as a text string (a verifier SHOULD accept it)",
+        "valid": true,
+        "level": "SHOULD",
+        "message": "hFgu2QEDowEnBHRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQPU1cE9T-HoxO5NdM2mtVSGlbc7vOXm9Q_w49Fo_GJAwn0eqn3-CpdCRxvwYov-c61YIeDKK53lH1Wz_qQE1bgk"
+      },
+      {
+        "name": "a payload with a two-byte map length and a timestamp written as a double",
+        "valid": true,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYtLkACXBlbnZlbG9wZV92ZXJzaW9uAWZpc3N1ZXJqb3BfdmVjdG9yc2dzdWJqZWN0d3N0YWNrOmFnZW50OmFndF92ZWN0b3JzaWlzc3VlZF9hdPtCegxFBsAAAGpjbGFpbV90eXBlbGludGVudF9jbGFpbW1jbGFpbV92ZXJzaW9uAWdwYXlsb2FkoWR0eXBlbGludGVudF9jbGFpbWdyZWNlaXB09m1jb19zaWduYXR1cmVzgFhAYVZpmy3nUBkXSRCKknfAGnQ9e26ury5_sapJ0Uv5GMbBcLJsUJqM3Mp8NZpG-F1FkX7PZfiPJg-fYPb8FvsxAw"
+      },
+      {
+        "name": "a changed payload",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4FYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk"
+      },
+      {
+        "name": "a changed signature",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgg"
+      },
+      {
+        "name": "alg ES256 (-7)",
+        "valid": false,
+        "message": "hFgu2QEDowEmBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQIjJOJiWItcZsAzuevq_UTEGREL6bAvNhjLwSUlbpycgtHO5REKJ_VzyupuJm-2wlPH_eDHIf82vgXKaBV96sgo"
+      },
+      {
+        "name": "a key id of another agent, signed by a key the key set lists under it",
+        "valid": false,
+        "message": "hFgs2QEDowEnBFJhZ2VudDphZ3Rfb3RoZXI6djEQcHN0YWNrL2NsYWltK2Nvc2WgWL6pcGVudmVsb3BlX3ZlcnNpb24BZmlzc3VlcmpvcF92ZWN0b3JzZ3N1YmplY3R3c3RhY2s6YWdlbnQ6YWd0X3ZlY3RvcnNpaXNzdWVkX2F0GwAAAaDEUGwAamNsYWltX3R5cGVsaW50ZW50X2NsYWltbWNsYWltX3ZlcnNpb24BZ3BheWxvYWSiZHR5cGVsaW50ZW50X2NsYWltZG5vdGVmdmVjdG9yZ3JlY2VpcHT2bWNvX3NpZ25hdHVyZXOAWEDkoWV0ODQacZW8H3yNbVaBT_iBykhFXqx8EVvZ6ohg4wxpBM5VAFYd1GKjpUgoOTe4Aqu6SVAo2FJm9tasQdIG",
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            },
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "XiEsCYDks5_AlyETSqAhCTdO39JgwNPQPLUByNZUV6k",
+              "kid": "agent:agt_other:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "a key id of an operator claim key",
+        "valid": false,
+        "message": "hFgt2QEDowEnBFNvcF92ZWN0b3JzOmNsYWltOnYxEHBzdGFjay9jbGFpbStjb3NloFi-qXBlbnZlbG9wZV92ZXJzaW9uAWZpc3N1ZXJqb3BfdmVjdG9yc2dzdWJqZWN0d3N0YWNrOmFnZW50OmFndF92ZWN0b3JzaWlzc3VlZF9hdBsAAAGgxFBsAGpjbGFpbV90eXBlbGludGVudF9jbGFpbW1jbGFpbV92ZXJzaW9uAWdwYXlsb2FkomR0eXBlbGludGVudF9jbGFpbWRub3RlZnZlY3RvcmdyZWNlaXB09m1jb19zaWduYXR1cmVzgFhAzgt5kGOWqBTSWLzrEwHRgq68AOdWN1kOBZd9MCqJis6tyIA2k-8qe9v7PpYx4gzbJAhe2CON23aOXxpZqE4yAA",
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            },
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "XiEsCYDks5_AlyETSqAhCTdO39JgwNPQPLUByNZUV6k",
+              "kid": "op_vectors:claim:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "no key id",
+        "valid": false,
+        "message": "hFgY2QEDogEnEHBzdGFjay9jbGFpbStjb3NloFi-qXBlbnZlbG9wZV92ZXJzaW9uAWZpc3N1ZXJqb3BfdmVjdG9yc2dzdWJqZWN0d3N0YWNrOmFnZW50OmFndF92ZWN0b3JzaWlzc3VlZF9hdBsAAAGgxFBsAGpjbGFpbV90eXBlbGludGVudF9jbGFpbW1jbGFpbV92ZXJzaW9uAWdwYXlsb2FkomR0eXBlbGludGVudF9jbGFpbWRub3RlZnZlY3RvcmdyZWNlaXB09m1jb19zaWduYXR1cmVzgFhA3LgmXPwVZslGJ6WOsf22enr8BG-Iamm_doRPOzBmiUhNE2rZYIgqEOBsE8KY9ZzRUqwWfiXtvPljAH01lYn0Bw"
+      },
+      {
+        "name": "a signature by another key under the agent key id",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQLylA2q4ma5aJQluVitMxBNArppu1_aUUDuZC-Munp1XuI5dCvkf0h-cnPj9I7O5Pot_odIkB_LJQ5ipKBt2IAU"
+      },
+      {
+        "name": "an empty key set",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk",
+        "jwks": {
+          "keys": []
+        }
+      },
+      {
+        "name": "a key that carries its private member",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk",
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null,
+              "d": "not-a-real-private-key"
+            }
+          ]
+        }
+      },
+      {
+        "name": "a key whose alg is RS256",
+        "valid": false,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk",
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "RS256",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "the same key listed twice",
+        "valid": true,
+        "message": "hFgu2QEDowEnBFRhZ2VudDphZ3RfdmVjdG9yczp2MRBwc3RhY2svY2xhaW0rY29zZaBYvqlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVyam9wX3ZlY3RvcnNnc3ViamVjdHdzdGFjazphZ2VudDphZ3RfdmVjdG9yc2lpc3N1ZWRfYXQbAAABoMRQbABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZKJkdHlwZWxpbnRlbnRfY2xhaW1kbm90ZWZ2ZWN0b3JncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQMr2iXqD-nd0Wd-56jLXNXzIArokpyahMUNh2BXPH71WfOzGMzPGCuqnTaCes2Sy494lifjQ87iEyGCV0fBjQgk",
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            },
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "SAdaWX5yGhVuLgeZ3lzAxTJNxufq8c3UYlCGjsUyFd0",
+              "kid": "agent:agt_vectors:v1",
+              "alg": "EdDSA",
+              "use": "sig",
+              "not_before": 1,
+              "not_after": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "workload_token": {
+    "spec": "spec/workload-identity/SPEC.md section 4 (steps 1, 2, 4 and 5)",
+    "now": 1790000000,
+    "cases": [
+      {
+        "kind": "spiffe",
+        "name": "a valid JWT-SVID, with the audience in an array",
+        "valid": true,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "-ziuOw5lQvM2Ep2mmgsFonpC9elDObDwDsR1n_PdyaK8sBjgjizBQ7hTt1Zz9a12MyRTxfgLRroRwpmnMrqEBw"
+        ]
+      },
+      {
+        "kind": "wimse",
+        "name": "a valid WIT",
+        "valid": true,
+        "config": {
+          "issuer_uri": "https://issuer.vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJpc3MiOiJodHRwczovL2lzc3Vlci52ZWN0b3JzLmV4YW1wbGUiLCJzdWIiOiJodHRwczovL3dvcmtsb2Fkcy52ZWN0b3JzLmV4YW1wbGUvb3JkZXJzIiwiYXVkIjoic3RhY2stdmVjdG9ycyIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwfQ",
+          "s6EgsrpcaP9-7rwRhRKUKzHUFOW07Go-KrMBsgWf6jt5leObIsXCYFX2ZXFcHSKrt62rWQrAeoziQ_ChRE8KBQ"
+        ]
+      },
+      {
+        "kind": "wimse",
+        "name": "a valid WIT with a cnf key",
+        "valid": true,
+        "config": {
+          "issuer_uri": "https://issuer.vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJpc3MiOiJodHRwczovL2lzc3Vlci52ZWN0b3JzLmV4YW1wbGUiLCJzdWIiOiJodHRwczovL3dvcmtsb2Fkcy52ZWN0b3JzLmV4YW1wbGUvb3JkZXJzIiwiYXVkIjoic3RhY2stdmVjdG9ycyIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwLCJjbmYiOnsiandrIjp7Imt0eSI6Ik9LUCIsImNydiI6IkVkMjU1MTkiLCJ4IjoiSVZMNDBadDVIU1JGTWtMaFh5NnJiTGZQLW50cVh0TUFsNVlPQnBpQjJ4SSJ9fX0",
+          "U_UI5IOeES_RzQud6XefK1wQ8SId3vA3hoDTtufqSTjFZ1DLRCol1sKAmQTtDlcKeg1NpDU9sHSUv7eCgdfaCg"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "any audience, when the configuration pins none",
+        "valid": true,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": null
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbImFueXRoaW5nIl0sImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwfQ",
+          "2zBI_gHl3_5Pc5YkZzAwbDY0lfu-g9SW5RMq_dPcFLwL64_bEX9qBQd8LDQQRJhaG-J6LwDo_4uifxJRSIK4DA"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "an expired token",
+        "valid": false,
+        "reason": "expired",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzg5OTk5MTAwLCJleHAiOjE3ODk5OTk0MDB9",
+          "cil74YimpyfOztIXDwMkB5MphSwJY3BVVDSR-ef4HnGiZJ0L1Jl-R6uMbybAQgy9shDsvTTHwk2TLmd1XXLwBg"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a token with no exp",
+        "valid": false,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwfQ",
+          "VH2ngmVnjzRQj_bbcyT5Wc41NH6G6T7GttfUj0ZYUtCyU2fD-I3VVKoS83tT7x6Oqph_iGVYiXV0oTfNOFWYCg"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a token that is not valid yet",
+        "valid": false,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDAsIm5iZiI6MTc5MDAwMDYwMH0",
+          "y4YGwhjfVtEoBNA79ixTedypLyyLYwVdYTWdsJ_GdEjBA5oRJV9nIENfo5hphph5HbtyVULXSKRGWkqZSthnCA"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "another audience",
+        "valid": false,
+        "reason": "audience_mismatch",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInNvbWVvbmUtZWxzZSJdLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMH0",
+          "-ZWSZG2POukb4u47bdKGgThAXlv8Eq69z6pOgskhCBmXVou8wzkdj9XjbTjqTSwLaFeULE07ieSLGy9cuxbQDQ"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a sub that is not a SPIFFE id",
+        "valid": false,
+        "reason": "invalid_spiffe_id",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJub3QtYS1zcGlmZmUtaWQiLCJhdWQiOlsic3RhY2stdmVjdG9ycyJdLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMH0",
+          "-1OmIO3nRELHjHS9pDOzDMNEowQGUh0MPBu_GTePWN7W6AGf1-6ryctT_b-7ClifUqV60_opgdGZ4z-BQZD2CA"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "an id of another trust domain",
+        "valid": false,
+        "reason": "trust_domain_mismatch",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly9vdGhlci5leGFtcGxlL25zL3giLCJhdWQiOlsic3RhY2stdmVjdG9ycyJdLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMH0",
+          "WdEkjGApH8EjxhQ4sr2BVwCzrndZyeh0u3jzaszJzJ0uI1V3z0LMPrjt9jNcYhRpJMS3EyAsxAEp_agxdUM6Dw"
+        ]
+      },
+      {
+        "kind": "wimse",
+        "name": "a WIT from another issuer",
+        "valid": false,
+        "reason": "issuer_mismatch",
+        "config": {
+          "issuer_uri": "https://issuer.vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJpc3MiOiJodHRwczovL2F0dGFja2VyLmV4YW1wbGUiLCJzdWIiOiJodHRwczovL3dvcmtsb2Fkcy52ZWN0b3JzLmV4YW1wbGUvb3JkZXJzIiwiYXVkIjoic3RhY2stdmVjdG9ycyIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwfQ",
+          "iKeYBSnvckLRO0A1oWYgYoxTKttvU_wUulLY_5tmNdgr74gSL-MnNPvkjrdKzfsErik4DrNjpnABYdEgjMZxAw"
+        ]
+      },
+      {
+        "kind": "wimse",
+        "name": "a WIT with no sub",
+        "valid": false,
+        "reason": "missing_sub",
+        "config": {
+          "issuer_uri": "https://issuer.vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJpc3MiOiJodHRwczovL2lzc3Vlci52ZWN0b3JzLmV4YW1wbGUiLCJhdWQiOiJzdGFjay12ZWN0b3JzIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "DEhFMbOwq4CZ7VtqW7Z06V7wv8S8q_Pq0Xk6nmpODA3lnASBQ3GPuHWmKrzFEy6GfOg7if1DpuXlYHRjyzm7AQ"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a token with no kid",
+        "valid": false,
+        "reason": "missing_kid",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSJ9",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "wq4TkhQRwLBrqgLuwzX-hAACGOAzRnEnyInbDWtkO7S4tqw5i6TGL-TKTC8BXAsBT_XJKnw0n-FS4SaPsdFvBw"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a kid that is not in the key set",
+        "valid": false,
+        "reason": "unknown_kid",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6Im5vcGUifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "S8cgOoZClBq8QplBRf00OUGON7LJE2zxG6pblTqs4G9ww_PIQZ5Ty9NlaubCdzsynOVt6pKAG2LSCMKdL1NwBg"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "a signature by another key under the same kid",
+        "valid": false,
+        "reason": "signature_invalid",
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "XLFe-CGTNIOuwqDNNFQw-xbJ-qN30zhXsaejpBsw84i7AvvU8Y1iWj5cLKNOCAb6sznnjiJGmwh1PRevL6y2DA"
+        ]
+      },
+      {
+        "kind": "wimse",
+        "name": "a payload changed after signing",
+        "valid": false,
+        "config": {
+          "issuer_uri": "https://issuer.vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6IndsLTEifQ",
+          "eyJpc3MiOiJodHRwczovL2lzc3Vlci52ZWN0b3JzLmV4YW1wbGUiLCJzdWIiOiJodHRwczovL3dvcmtsb2Fkcy52ZWN0b3JzLmV4YW1wbGUvb3RoZXIiLCJhdWQiOiJzdGFjay12ZWN0b3JzIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "s6EgsrpcaP9-7rwRhRKUKzHUFOW07Go-KrMBsgWf6jt5leObIsXCYFX2ZXFcHSKrt62rWQrAeoziQ_ChRE8KBQ"
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "alg none",
+        "valid": false,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "crv": "Ed25519",
+              "x": "Ivwpd5Lwtv_Av8_bftsMCqFOAlo2XsDjQuhuOCnLdLY",
+              "kty": "OKP",
+              "kid": "decoy"
+            },
+            {
+              "crv": "Ed25519",
+              "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+              "kty": "OKP",
+              "kid": "wl-1"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJub25lIiwia2lkIjoid2wtMSJ9",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          ""
+        ]
+      },
+      {
+        "kind": "spiffe",
+        "name": "an HS256 token keyed with a published symmetric key",
+        "valid": false,
+        "config": {
+          "trust_domain": "vectors.example",
+          "audience": "stack-vectors"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "oct",
+              "k": "REREREREREREREREREREREREREREREREREREREREREQ",
+              "kid": "wl-1",
+              "alg": "HS256"
+            }
+          ]
+        },
+        "token_parts": [
+          "eyJhbGciOiJIUzI1NiIsImtpZCI6IndsLTEifQ",
+          "eyJzdWIiOiJzcGlmZmU6Ly92ZWN0b3JzLmV4YW1wbGUvbnMvcGF5bWVudHMvc2Evb3JkZXJzIiwiYXVkIjpbInN0YWNrLXZlY3RvcnMiXSwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDB9",
+          "MLgAKma7hZxZwnbq9YYx6uHOmJPBjw1YOMqLjcJeUMI"
+        ]
+      }
+    ]
+  },
+  "client_metadata": {
+    "spec": "spec/oauth-profile/SPEC.md sections 4.1 and 4.3",
+    "cases": [
+      {
+        "name": "a minimal document",
+        "valid": true,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ]
+        }
+      },
+      {
+        "name": "https, loopback and private-use redirects",
+        "valid": true,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/cb",
+            "http://127.0.0.1:8123/cb",
+            "http://[::1]/cb",
+            "cursor://anysphere.cursor-mcp/oauth/callback"
+          ]
+        }
+      },
+      {
+        "name": "a client that prefers private_key_jwt but lists none",
+        "valid": true,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "token_endpoint_auth_method": "private_key_jwt",
+          "token_endpoint_auth_methods_supported": [
+            "private_key_jwt",
+            "none"
+          ]
+        }
+      },
+      {
+        "name": "a client that lists jwt-bearer among its grants (kept grants: authorization_code, refresh_token)",
+        "valid": true,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "grant_types": [
+            "authorization_code",
+            "refresh_token",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer"
+          ]
+        }
+      },
+      {
+        "name": "a client_id that is not the URL",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/other.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ]
+        }
+      },
+      {
+        "name": "a document with a client secret",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "client_secret": "shh"
+        }
+      },
+      {
+        "name": "a client that wants client_secret_post",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "token_endpoint_auth_method": "client_secret_post"
+        }
+      },
+      {
+        "name": "an http redirect on a public host",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "http://client.example/cb"
+          ]
+        }
+      },
+      {
+        "name": "a redirect with a fragment",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/cb#x"
+          ]
+        }
+      },
+      {
+        "name": "a javascript: redirect",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "javascript:alert(1)"
+          ]
+        }
+      },
+      {
+        "name": "no redirect URIs",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": []
+        }
+      },
+      {
+        "name": "twenty-one redirect URIs",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/cb0",
+            "https://client.example/cb1",
+            "https://client.example/cb2",
+            "https://client.example/cb3",
+            "https://client.example/cb4",
+            "https://client.example/cb5",
+            "https://client.example/cb6",
+            "https://client.example/cb7",
+            "https://client.example/cb8",
+            "https://client.example/cb9",
+            "https://client.example/cb10",
+            "https://client.example/cb11",
+            "https://client.example/cb12",
+            "https://client.example/cb13",
+            "https://client.example/cb14",
+            "https://client.example/cb15",
+            "https://client.example/cb16",
+            "https://client.example/cb17",
+            "https://client.example/cb18",
+            "https://client.example/cb19",
+            "https://client.example/cb20"
+          ]
+        }
+      },
+      {
+        "name": "grants without authorization_code",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "grant_types": [
+            "refresh_token"
+          ]
+        }
+      },
+      {
+        "name": "response_types [\"token\"]",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "Vector Client",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ],
+          "response_types": [
+            "token"
+          ]
+        }
+      },
+      {
+        "name": "a blank client name",
+        "valid": false,
+        "client_id": "https://client.example/oauth/client.json",
+        "document": {
+          "client_id": "https://client.example/oauth/client.json",
+          "client_name": "   ",
+          "redirect_uris": [
+            "https://client.example/callback"
+          ]
+        }
+      }
+    ],
+    "client_ids": [
+      {
+        "client_id": "https://client.example/oauth/client.json",
+        "metadata_document_url": true
+      },
+      {
+        "client_id": "https://client.example:8443/a",
+        "metadata_document_url": true
+      },
+      {
+        "client_id": "https://client.example/",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://client.example",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "http://client.example/client.json",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://client.example/a?x=1",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://client.example/a#x",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://user:pw@client.example/a",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://client.example/a/../b",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "https://client.example/./a",
+        "metadata_document_url": false
+      },
+      {
+        "client_id": "oc_0123456789",
+        "metadata_document_url": false
+      }
+    ]
+  }
+}

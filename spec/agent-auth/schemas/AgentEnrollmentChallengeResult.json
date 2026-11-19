@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:AgentEnrollmentChallengeResult",
+  "title": "AgentEnrollmentChallengeResult",
+  "type": "object",
+  "properties": {
+    "challenge_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "challenge": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "expires_in": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "challenge_id",
+    "challenge",
+    "expires_in"
+  ],
+  "additionalProperties": false
+}

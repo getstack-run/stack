@@ -1,0 +1,48 @@
+{
+  "name": "@getstackrun/provider-interface",
+  "version": "1.0.0",
+  "description": "The contract a provider adapter implements to open and close one piece of an agent account.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "SPEC.md",
+    "CHANGELOG.md",
+    "schemas",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "clean": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.rmSync('.turbo',{recursive:true,force:true})\""
+  },
+  "keywords": [
+    "stack",
+    "agents",
+    "provider",
+    "adapter"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://getstack.run",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getstack-run/stack.git",
+    "directory": "spec/provider-interface"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

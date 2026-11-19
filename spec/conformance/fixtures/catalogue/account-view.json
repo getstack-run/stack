@@ -1,0 +1,28 @@
+{
+  "account_id": "acct_example",
+  "catalogue_version": "7b1170ce914815cb4dc3a20a0845bee208038cb3bf29f4f823cace5ccb02b4d6",
+  "connected_services": [
+    {
+      "id": "service:github",
+      "provider": "github",
+      "name": "GitHub",
+      "connection_id": "con_example"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "account:inbox",
+      "state": "ready"
+    }
+  ],
+  "tools": [
+    {
+      "id": "mcp_tool:stack_list_members",
+      "listed": false
+    },
+    {
+      "id": "mcp_tool:stack_send_account_email",
+      "listed": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityReference",
+  "title": "AuthorityReference",
+  "type": "object",
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "pattern": "^abn_[\\w-]+$"
+    },
+    "binding_version": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "binding_claim_id": {
+      "type": "string",
+      "pattern": "^pc_[\\w-]+$"
+    },
+    "binding_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "receiver_id": {
+      "type": "string",
+      "pattern": "^rcv_[\\w-]+$"
+    },
+    "receiver_profile_version_id": {
+      "type": "string",
+      "pattern": "^apv_[\\w-]+$"
+    },
+    "expires_at": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "binding_id",
+    "binding_version",
+    "binding_claim_id",
+    "binding_digest",
+    "receiver_id",
+    "receiver_profile_version_id",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,79 @@
+{
+  "pack_version": 1,
+  "claim": "hFgx2QEDowEnBFdvcF9jb25mb3JtYW5jZTpjbGFpbTp2MRBwc3RhY2svY2xhaW0rY29zZdkBA6BZBIq5AAlwZW52ZWxvcGVfdmVyc2lvbgFmaXNzdWVybm9wX2NvbmZvcm1hbmNlZ3N1YmplY3R4H3N0YWNrOi8vb3BlcmF0b3Ivb3BfY29uZm9ybWFuY2VpaXNzdWVkX2F0-0J4vP5WgAAAamNsYWltX3R5cGVtZXZpZGVuY2VfcGFja21jbGFpbV92ZXJzaW9uAWdwYXlsb2FkuQAPZHR5cGVtZXZpZGVuY2VfcGFja2dwYWNrX2lkb3Bja19jb25mb3JtYW5jZWxjb250ZW50X2hhc2h4R3NoYTI1NjoyZjY2ZWViNDkwMjNmODMxMjI1ZDNlZGYzYzBiZDJkYTU4ODU2NTc4NmEwNGRjMWMwYzIxNzI0Njk4MWZkNzNhZXNjb3BluQACZGtpbmRnbWlzc2lvbmNyZWZubXNfY29uZm9ybWFuY2VrdGltZV9ib3VuZHO5AAJldDBfbXP7Qni8_laAAABldDFfbXP7Qni8_la-gABrY2xhaW1fY291bnQCeBlpbmNsdWRlZF9yZXZpZXdfY2xhaW1faWRzgGttZXJrbGVfcm9vdHhHc2hhMjU2OjZhMDFhOWRkNzM4MDI3MTAxMTk2ZTNkYzAwZTZkYzhhYjk2ZmQ1MGZkMGVlZDEyZDM4MDJmMWM0OTcxZDBmNmZyYXVkaXRfY2hhaW5fYW5jaG9yuQADaWhlYWRfaGFzaHhAYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYW5oZWFkX3NpZ25hdHVyZXhWSFZLOUo3c2tRcEx4UTZILUhSQW8tN3NKQVV1WnlmOVpFdFRya0hJek9lbzdwTUM1dm5Nc0p1MDZFRjdjcm5xSmRHckZSckZ2ZXpuWWQtTGFzQUtrQXdqaGVhZF9hdF9tc_tCeLz-Vr6AAHgZcmV2b2NhdGlvbl9zbmFwc2hvdF9hdF9tc_tCeLz-Vp9AAG9zY2hlbWFfdmVyc2lvbnO5AAJoZW52ZWxvcGW5AAJndmVyc2lvbgFsY29udGVudF9oYXNoeEdzaGEyNTY6NzNiZGYwOTBhNmYyMzhkOTBiMGM2MmM5ZDQwOGQzZDVkMTFjMDU3MDUxODRhNjY5OGE0NmJmODhiZmJmODZhZm1ieV9jbGFpbV90eXBluQABbGludGVudF9jbGFpbbkAAmd2ZXJzaW9uAWxjb250ZW50X2hhc2h4R3NoYTI1NjoxYjY0ZTYzNjBlNzgwMGJmNDMzYzk2OThkNjBjOGZjZjQ4OTRjMTBiM2YzODhiOGNmZmE3NGMyMDU1MGZhY2MzeBljYW5vbmljYWxfc2NoZW1hX2Jhc2VfdXJseDBodHRwczovL2dldHN0YWNrLnJ1bi9zY2hlbWFzL3Bhc3Nwb3J0LWNsYWltcy92MS9qc3VwZXJzZWRlc_ZxY3Jvc3NfdGVuYW50X3JlZnOAdmV4dGVybmFsX2NoYWluX2FuY2hvcnOAZ3JlY2VpcHT2bWNvX3NpZ25hdHVyZXOAWED3jC8LbnzfY956xgpr8_q25IvjfF4V3dPLZdQTjRCwMc9pOIYrPA0pkLTIzCXBNvex9zRGiSZHJE3PoLIKzdQF",
+  "co_signatures": [
+    {
+      "signer_kid": "stack-system:v1",
+      "signer_role": "operator_attestation",
+      "cose_sign1": "hFgp2QEDowEnBE9zdGFjay1zeXN0ZW06djEQcHN0YWNrL2NsYWltK2Nvc2XZAQOgWQSKuQAJcGVudmVsb3BlX3ZlcnNpb24BZmlzc3Vlcm5vcF9jb25mb3JtYW5jZWdzdWJqZWN0eB9zdGFjazovL29wZXJhdG9yL29wX2NvbmZvcm1hbmNlaWlzc3VlZF9hdPtCeLz-VoAAAGpjbGFpbV90eXBlbWV2aWRlbmNlX3BhY2ttY2xhaW1fdmVyc2lvbgFncGF5bG9hZLkAD2R0eXBlbWV2aWRlbmNlX3BhY2tncGFja19pZG9wY2tfY29uZm9ybWFuY2VsY29udGVudF9oYXNoeEdzaGEyNTY6MmY2NmVlYjQ5MDIzZjgzMTIyNWQzZWRmM2MwYmQyZGE1ODg1NjU3ODZhMDRkYzFjMGMyMTcyNDY5ODFmZDczYWVzY29wZbkAAmRraW5kZ21pc3Npb25jcmVmbm1zX2NvbmZvcm1hbmNla3RpbWVfYm91bmRzuQACZXQwX21z-0J4vP5WgAAAZXQxX21z-0J4vP5WvoAAa2NsYWltX2NvdW50AngZaW5jbHVkZWRfcmV2aWV3X2NsYWltX2lkc4BrbWVya2xlX3Jvb3R4R3NoYTI1Njo2YTAxYTlkZDczODAyNzEwMTE5NmUzZGMwMGU2ZGM4YWI5NmZkNTBmZDBlZWQxMmQzODAyZjFjNDk3MWQwZjZmcmF1ZGl0X2NoYWluX2FuY2hvcrkAA2loZWFkX2hhc2h4QGFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFuaGVhZF9zaWduYXR1cmV4VkhWSzlKN3NrUXBMeFE2SC1IUkFvLTdzSkFVdVp5ZjlaRXRUcmtISXpPZW83cE1DNXZuTXNKdTA2RUY3Y3JucUpkR3JGUnJGdmV6bllkLUxhc0FLa0F3amhlYWRfYXRfbXP7Qni8_la-gAB4GXJldm9jYXRpb25fc25hcHNob3RfYXRfbXP7Qni8_lafQABvc2NoZW1hX3ZlcnNpb25zuQACaGVudmVsb3BluQACZ3ZlcnNpb24BbGNvbnRlbnRfaGFzaHhHc2hhMjU2OjczYmRmMDkwYTZmMjM4ZDkwYjBjNjJjOWQ0MDhkM2Q1ZDExYzA1NzA1MTg0YTY2OThhNDZiZjg4YmZiZjg2YWZtYnlfY2xhaW1fdHlwZbkAAWxpbnRlbnRfY2xhaW25AAJndmVyc2lvbgFsY29udGVudF9oYXNoeEdzaGEyNTY6MWI2NGU2MzYwZTc4MDBiZjQzM2M5Njk4ZDYwYzhmY2Y0ODk0YzEwYjNmMzg4YjhjZmZhNzRjMjA1NTBmYWNjM3gZY2Fub25pY2FsX3NjaGVtYV9iYXNlX3VybHgwaHR0cHM6Ly9nZXRzdGFjay5ydW4vc2NoZW1hcy9wYXNzcG9ydC1jbGFpbXMvdjEvanN1cGVyc2VkZXP2cWNyb3NzX3RlbmFudF9yZWZzgHZleHRlcm5hbF9jaGFpbl9hbmNob3JzgGdyZWNlaXB09m1jb19zaWduYXR1cmVzgFhAxh_UqyyD9f8c54hk2t0Lqk-muAqId0CZdwH5xWPBHNVCyUoAQTHZAR4BUtzPJLRcHvAlmDydtrndi_SrfmhTDA"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "pc_conformance_1",
+      "claim_hash": "cbc298967fb8a649f1c18e4e664d9b09190a632753eb9285ed5f53a7f1e54a2f",
+      "envelope_cose": "hFgx2QEDowEnBFdvcF9jb25mb3JtYW5jZTpjbGFpbTp2MRBwc3RhY2svY2xhaW0rY29zZdkBA6BYyrkACXBlbnZlbG9wZV92ZXJzaW9uAWZpc3N1ZXJub3BfY29uZm9ybWFuY2Vnc3ViamVjdHgfc3RhY2s6Ly9vcGVyYXRvci9vcF9jb25mb3JtYW5jZWlpc3N1ZWRfYXT7Qni8_laAAABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZLkAAmR0eXBlbGludGVudF9jbGFpbWV2YWx1ZQFncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQKONHhBMtNX5RPtLfnOiiosgdF7BC8qzCGW8lQyuZnGxydupacG6j7hseVGOP17lRCfIiklzaq92_RczF5zUYwE",
+      "revoked_at_ms": null
+    },
+    {
+      "claim_id": "pc_conformance_2",
+      "claim_hash": "d884d2dd3da0e29325d6a8f017c9378be3fb845220e5d789e517e1a453fa5e9b",
+      "envelope_cose": "hFgx2QEDowEnBFdvcF9jb25mb3JtYW5jZTpjbGFpbTp2MRBwc3RhY2svY2xhaW0rY29zZdkBA6BYyrkACXBlbnZlbG9wZV92ZXJzaW9uAWZpc3N1ZXJub3BfY29uZm9ybWFuY2Vnc3ViamVjdHgfc3RhY2s6Ly9vcGVyYXRvci9vcF9jb25mb3JtYW5jZWlpc3N1ZWRfYXT7Qni8_laAAABqY2xhaW1fdHlwZWxpbnRlbnRfY2xhaW1tY2xhaW1fdmVyc2lvbgFncGF5bG9hZLkAAmR0eXBlbGludGVudF9jbGFpbWV2YWx1ZQJncmVjZWlwdPZtY29fc2lnbmF0dXJlc4BYQFWLXxoCq_B5OqC7GLvpXYdHglejYVFqw1XQKgpAnveocG-9eEyQYR3mgImoDkSDJY-yKv45VBM-6RZuDLsqsg0",
+      "revoked_at_ms": null
+    }
+  ],
+  "audit_chain_proofs": [
+    {
+      "claim_hash": "cbc298967fb8a649f1c18e4e664d9b09190a632753eb9285ed5f53a7f1e54a2f",
+      "audit_position": 0,
+      "merkle_path": []
+    },
+    {
+      "claim_hash": "d884d2dd3da0e29325d6a8f017c9378be3fb845220e5d789e517e1a453fa5e9b",
+      "audit_position": 0,
+      "merkle_path": []
+    }
+  ],
+  "verification_material": {
+    "operator_jwks_url": "https://elsewhere.example/jwks.json",
+    "operator_jwks_inline": {
+      "keys": [
+        {
+          "crv": "Ed25519",
+          "x": "vHy8tWNjdfodgkNNRmck2SN39TuYBpXdSdJtDOEiBaU",
+          "kty": "OKP",
+          "kid": "op_conformance:claim:v1"
+        }
+      ]
+    },
+    "stack_system_jwks_url": "https://api.getstack.run/v1/.well-known/jwks.json",
+    "stack_system_jwks_inline": {
+      "keys": [
+        {
+          "crv": "Ed25519",
+          "x": "VRVPQgZepaG-oFRjgmviaE65LfksEAAnqrquV8pVQgc",
+          "kty": "OKP",
+          "kid": "stack-system:v1"
+        }
+      ]
+    }
+  },
+  "schemas_inline": {
+    "envelope": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "content_hash": "sha256:73bdf090a6f238d90b0c62c9d408d3d5d11c05705184a6698a46bf88bfbf86af",
+      "json_schema": {
+        "type": "object",
+        "$id": "envelope"
+      }
+    },
+    "intent_claim": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "content_hash": "sha256:1b64e6360e7800bf433c9698d60c8fcf4894c10b3f388b8cffa74c20550facc3",
+      "json_schema": {
+        "type": "object",
+        "$id": "intent_claim"
+      }
+    }
+  }
+}

@@ -1,0 +1,532 @@
+{
+  "spec": "stack-authority-receiver",
+  "version": "1.0.0",
+  "note": "A compact JWS is written as the array of its three dot-separated parts: join them with a full stop. Built by scripts/build-authority-vectors.mjs from the specification alone. Ed25519 signatures and the one JWE are deterministic. The keys are fixtures and protect nothing.",
+  "constants": {
+    "stackOrigin": "https://api.stack-conformance.test",
+    "presentationIssuer": "https://stack-conformance.test",
+    "receiverId": "rcv_conformance",
+    "receiverProfileVersionId": "apv_conformance_receiver",
+    "audience": "urn:conformance:receiver",
+    "nonce": "conformance-nonce-000000000001",
+    "receiverRequestId": "conformance-request-id-0000001",
+    "actionUri": "urn:conformance:action:file-return",
+    "stackKid": "stack-presentation-1",
+    "startedAt": 1790000000
+  },
+  "receiver_keys": {
+    "note": "Fixture keys. They protect nothing. The receiver under test holds the private halves of the first three and of response_encryption; STACK holds the public halves.",
+    "private_key_rule": "A private key is 32 bytes that all equal the byte seed_byte_hex: the Ed25519 seed, or the P-256 scalar d. The JWK of an Ed25519 key is {kty:OKP, crv:Ed25519, x, d} and of a P-256 key {kty:EC, crv:P-256, x, y, d}, d being the base64url of those 32 bytes.",
+    "request_signing": {
+      "use": "request_signing",
+      "algorithm": "EdDSA",
+      "seed_byte_hex": "41",
+      "public_jwk": {
+        "crv": "Ed25519",
+        "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+        "kty": "OKP",
+        "kid": "rcv-request-1",
+        "alg": "EdDSA"
+      }
+    },
+    "request_signing_es256": {
+      "use": "request_signing",
+      "algorithm": "ES256",
+      "seed_byte_hex": "47",
+      "public_jwk": {
+        "kty": "EC",
+        "x": "ctq_ed9EjHpb-uy3vA28mQoP_UO3pStQLIYKwKuDQP8",
+        "y": "I52BKZduhTBnkH2YwjHp40n4rt_B4cyy-kf-SUXeJGA",
+        "crv": "P-256",
+        "kid": "rcv-request-es-1",
+        "alg": "ES256"
+      }
+    },
+    "receipt_signing": {
+      "use": "receipt_signing",
+      "algorithm": "EdDSA",
+      "seed_byte_hex": "42",
+      "public_jwk": {
+        "crv": "Ed25519",
+        "x": "IVL40Zt5HSRFMkLhXy6rbLfP-ntqXtMAl5YOBpiB2xI",
+        "kty": "OKP",
+        "kid": "rcv-receipt-1",
+        "alg": "EdDSA"
+      }
+    },
+    "response_encryption": {
+      "use": "response_encryption",
+      "algorithm": "ECDH-ES+A256KW",
+      "seed_byte_hex": "43",
+      "public_jwk": {
+        "kty": "EC",
+        "x": "FSz1EqAD2T4rf34udOXYGlaf3NhxxhTeSe50DldUmCU",
+        "y": "iefburilLYLpEPdIAg2a6MfR7-FCXuEg8TQvBchtZP8",
+        "crv": "P-256",
+        "kid": "rcv-enc-1",
+        "alg": "ECDH-ES+A256KW"
+      }
+    }
+  },
+  "stack_jwks": {
+    "keys": [
+      {
+        "crv": "Ed25519",
+        "x": "11l5O7wTooGagnx2rbb7qKSa7gB_SfLQmS2ZuCWtLEg",
+        "kty": "OKP",
+        "kid": "stack-presentation-1",
+        "alg": "EdDSA",
+        "use": "sig"
+      }
+    ]
+  },
+  "digests": [
+    {
+      "name": "empty string",
+      "input": "",
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "canonical JSON, keys sorted at every depth",
+      "input": {
+        "b": [
+          3,
+          {
+            "y": 1,
+            "x": 2
+          }
+        ],
+        "a": null,
+        "c": "é \"quoted\""
+      },
+      "canonical": "{\"a\":null,\"b\":[3,{\"x\":2,\"y\":1}],\"c\":\"é \\\"quoted\\\"\"}",
+      "digest": "sha256:4da15cb226ba42f812fc1f7c7c4c6d6c4014067b9b6c7b2ede249663cd6d05b7"
+    },
+    {
+      "name": "request_hash",
+      "receiver_request_id": "conformance-request-id-0000001",
+      "normalized_request": {
+        "resource_type": "tax_return",
+        "resource_ref": "tax-return:2026",
+        "filing_year": 2026
+      },
+      "digest": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32"
+    },
+    {
+      "name": "resource_hash",
+      "receiver_request_id": "conformance-request-id-0000001",
+      "resource_ref": "tax-return:2026",
+      "digest": "sha256:338797ad48b9cc4b1d259fb25a6b345291a7046395911af194b38fbbe4c386ba"
+    },
+    {
+      "name": "agent key thumbprint",
+      "jwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "wFDFY3pE-oYp__PMzOIwDLNipj2Z2V_FQUUmb0MyRFo"
+      },
+      "digest": "sha256:865a8d9ef9eec3f83bb80815f12cb6911d211f7a2b328a7d6a53be041b5a5a8e"
+    }
+  ],
+  "assertions": [
+    {
+      "method": "POST",
+      "path": "/v1/authority/status-checks",
+      "body": {
+        "normalized_request": {
+          "b": 2,
+          "a": 1
+        },
+        "binding_id": "abn_conformance"
+      },
+      "jti": "assertion-vector-1",
+      "now": 1790000000,
+      "key": "request_signing",
+      "claims": {
+        "iss": "rcv_conformance",
+        "sub": "rcv_conformance",
+        "aud": "https://api.stack-conformance.test/v1/authority/status-checks",
+        "jti": "assertion-vector-1",
+        "iat": 1790000000,
+        "exp": 1790000030,
+        "htm": "POST",
+        "htu": "/v1/authority/status-checks",
+        "body_hash": "sha256:a73eb74687c0d1a9446fffe7876363deb8f68b8435b35fd4e7f77598d83f3603"
+      },
+      "jws": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZXF1ZXN0LTEiLCJ0eXAiOiJKV1QifQ",
+        "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0L3YxL2F1dGhvcml0eS9zdGF0dXMtY2hlY2tzIiwianRpIjoiYXNzZXJ0aW9uLXZlY3Rvci0xIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwMzAsImh0bSI6IlBPU1QiLCJodHUiOiIvdjEvYXV0aG9yaXR5L3N0YXR1cy1jaGVja3MiLCJib2R5X2hhc2giOiJzaGEyNTY6YTczZWI3NDY4N2MwZDFhOTQ0NmZmZmU3ODc2MzYzZGViOGY2OGI4NDM1YjM1ZmQ0ZTdmNzc1OThkODNmMzYwMyJ9",
+        "wp0QUBnkWpzAEya-Cwi8mfQUCve_oLH3zBBqMCi7lu6Ol_naPW3ISm2pMzXkNvdxNh90SB-78ftunUNrNvlpDQ"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/authority/presentation-requests/prs_conformance",
+      "jti": "assertion-vector-2",
+      "now": 1790000000,
+      "key": "request_signing",
+      "claims": {
+        "iss": "rcv_conformance",
+        "sub": "rcv_conformance",
+        "aud": "https://api.stack-conformance.test/v1/authority/presentation-requests/prs_conformance",
+        "jti": "assertion-vector-2",
+        "iat": 1790000000,
+        "exp": 1790000030,
+        "htm": "GET",
+        "htu": "/v1/authority/presentation-requests/prs_conformance",
+        "body_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "jws": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZXF1ZXN0LTEiLCJ0eXAiOiJKV1QifQ",
+        "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0L3YxL2F1dGhvcml0eS9wcmVzZW50YXRpb24tcmVxdWVzdHMvcHJzX2NvbmZvcm1hbmNlIiwianRpIjoiYXNzZXJ0aW9uLXZlY3Rvci0yIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwMzAsImh0bSI6IkdFVCIsImh0dSI6Ii92MS9hdXRob3JpdHkvcHJlc2VudGF0aW9uLXJlcXVlc3RzL3Byc19jb25mb3JtYW5jZSIsImJvZHlfaGFzaCI6InNoYTI1NjplM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0",
+        "JRDNJcrQbuyqHyZiX9acmwSAG36v-haNGrhng9jGU2jdaJ52a6CPJg5297g4892V0-t39ltSJnsxzhtApHrzDw"
+      ]
+    }
+  ],
+  "signed_request": {
+    "now": 1790000000,
+    "key": "request_signing",
+    "fields": {
+      "authority_ref": {
+        "binding_id": "abn_conformance",
+        "binding_version": 1,
+        "binding_claim_id": "pc_conformance",
+        "binding_digest": "sha256:80f70afeef3caa57646fd20afb95be9c3f2c03d38e091906de31838813dcc22e",
+        "receiver_id": "rcv_conformance",
+        "receiver_profile_version_id": "apv_conformance_receiver",
+        "expires_at": 1790003600
+      },
+      "receiver_profile_version_id": "apv_conformance_receiver",
+      "receiver_request_id": "conformance-request-id-0000001",
+      "mission_id": "ms_conformance",
+      "action_uri": "urn:conformance:action:file-return",
+      "resource_hash": "sha256:338797ad48b9cc4b1d259fb25a6b345291a7046395911af194b38fbbe4c386ba",
+      "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+      "normalized_request": {
+        "resource_type": "tax_return",
+        "resource_ref": "tax-return:2026",
+        "filing_year": 2026
+      },
+      "requested_facts": [
+        {
+          "fact_id": "person.over_18",
+          "mode": "predicate"
+        }
+      ],
+      "nonce": "conformance-nonce-000000000001",
+      "issued_at": 1790000000,
+      "expires_at": 1790000060,
+      "passport": [
+        "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+        "eyJzdWIiOiJhZ3RfY29uZm9ybWFuY2UifQ",
+        "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBw"
+      ],
+      "agent_proof": [
+        "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+        "eyJpc3MiOiJhZ3RfY29uZm9ybWFuY2UifQ",
+        "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBw"
+      ]
+    },
+    "claims": {
+      "iss": "rcv_conformance",
+      "sub": "rcv_conformance",
+      "aud": "https://api.stack-conformance.test/v1/authority/presentation-requests",
+      "jti": "request-vector-1",
+      "iat": 1790000000,
+      "exp": 1790000060,
+      "authority_ref": {
+        "binding_id": "abn_conformance",
+        "binding_version": 1,
+        "binding_claim_id": "pc_conformance",
+        "binding_digest": "sha256:80f70afeef3caa57646fd20afb95be9c3f2c03d38e091906de31838813dcc22e",
+        "receiver_id": "rcv_conformance",
+        "receiver_profile_version_id": "apv_conformance_receiver",
+        "expires_at": 1790003600
+      },
+      "receiver_profile_version_id": "apv_conformance_receiver",
+      "receiver_request_id": "conformance-request-id-0000001",
+      "mission_id": "ms_conformance",
+      "action_uri": "urn:conformance:action:file-return",
+      "resource_hash": "sha256:338797ad48b9cc4b1d259fb25a6b345291a7046395911af194b38fbbe4c386ba",
+      "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+      "requested_facts": [
+        {
+          "fact_id": "person.over_18",
+          "mode": "predicate"
+        }
+      ],
+      "nonce": "conformance-nonce-000000000001",
+      "issued_at": 1790000000,
+      "expires_at": 1790000060,
+      "normalized_request": {
+        "resource_type": "tax_return",
+        "resource_ref": "tax-return:2026",
+        "filing_year": 2026
+      },
+      "passport_hash": "sha256:a47e027958b5c4f6035700c207803c3aca92c489e69483ecc7af2032da683567",
+      "agent_proof_hash": "sha256:a625a6b02bd6aecbf2f986778c8c0aedfd90c02c63e18bb11ee6507b6c2c7e70"
+    },
+    "signed_request": [
+      "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZXF1ZXN0LTEiLCJ0eXAiOiJKV1QifQ",
+      "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0L3YxL2F1dGhvcml0eS9wcmVzZW50YXRpb24tcmVxdWVzdHMiLCJqdGkiOiJyZXF1ZXN0LXZlY3Rvci0xIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImF1dGhvcml0eV9yZWYiOnsiYmluZGluZ19pZCI6ImFibl9jb25mb3JtYW5jZSIsImJpbmRpbmdfdmVyc2lvbiI6MSwiYmluZGluZ19jbGFpbV9pZCI6InBjX2NvbmZvcm1hbmNlIiwiYmluZGluZ19kaWdlc3QiOiJzaGEyNTY6ODBmNzBhZmVlZjNjYWE1NzY0NmZkMjBhZmI5NWJlOWMzZjJjMDNkMzhlMDkxOTA2ZGUzMTgzODgxM2RjYzIyZSIsInJlY2VpdmVyX2lkIjoicmN2X2NvbmZvcm1hbmNlIiwicmVjZWl2ZXJfcHJvZmlsZV92ZXJzaW9uX2lkIjoiYXB2X2NvbmZvcm1hbmNlX3JlY2VpdmVyIiwiZXhwaXJlc19hdCI6MTc5MDAwMzYwMH0sInJlY2VpdmVyX3Byb2ZpbGVfdmVyc2lvbl9pZCI6ImFwdl9jb25mb3JtYW5jZV9yZWNlaXZlciIsInJlY2VpdmVyX3JlcXVlc3RfaWQiOiJjb25mb3JtYW5jZS1yZXF1ZXN0LWlkLTAwMDAwMDEiLCJtaXNzaW9uX2lkIjoibXNfY29uZm9ybWFuY2UiLCJhY3Rpb25fdXJpIjoidXJuOmNvbmZvcm1hbmNlOmFjdGlvbjpmaWxlLXJldHVybiIsInJlc291cmNlX2hhc2giOiJzaGEyNTY6MzM4Nzk3YWQ0OGI5Y2M0YjFkMjU5ZmIyNWE2YjM0NTI5MWE3MDQ2Mzk1OTExYWYxOTRiMzhmYmJlNGMzODZiYSIsInJlcXVlc3RfaGFzaCI6InNoYTI1Njo0ODJlNWEzYjI4NDQxZmM0YWJjZmFjNjVlODNkZTA3OTFmZjVjYjhkYWY1MmU5YjQzMzJiM2EwOWFiNWM1YjMyIiwicmVxdWVzdGVkX2ZhY3RzIjpbeyJmYWN0X2lkIjoicGVyc29uLm92ZXJfMTgiLCJtb2RlIjoicHJlZGljYXRlIn1dLCJub25jZSI6ImNvbmZvcm1hbmNlLW5vbmNlLTAwMDAwMDAwMDAwMSIsImlzc3VlZF9hdCI6MTc5MDAwMDAwMCwiZXhwaXJlc19hdCI6MTc5MDAwMDA2MCwibm9ybWFsaXplZF9yZXF1ZXN0Ijp7InJlc291cmNlX3R5cGUiOiJ0YXhfcmV0dXJuIiwicmVzb3VyY2VfcmVmIjoidGF4LXJldHVybjoyMDI2IiwiZmlsaW5nX3llYXIiOjIwMjZ9LCJwYXNzcG9ydF9oYXNoIjoic2hhMjU2OmE0N2UwMjc5NThiNWM0ZjYwMzU3MDBjMjA3ODAzYzNhY2E5MmM0ODllNjk0ODNlY2M3YWYyMDMyZGE2ODM1NjciLCJhZ2VudF9wcm9vZl9oYXNoIjoic2hhMjU2OmE2MjVhNmIwMmJkNmFlY2JmMmY5ODY3NzhjOGMwYWVkZmQ5MGMwMmM2M2UxOGJiMTFlZTY1MDdiNmMyYzdlNzAifQ",
+      "po2qEGm-tbNyhMNnHw-v33IXjBvC4ATK92A5duFA2wa0xvMVuFhIo4slz-lfNlhuDfNr5ty7c03hPLzvRBVABA"
+    ],
+    "body": {
+      "authority_ref": {
+        "binding_id": "abn_conformance",
+        "binding_version": 1,
+        "binding_claim_id": "pc_conformance",
+        "binding_digest": "sha256:80f70afeef3caa57646fd20afb95be9c3f2c03d38e091906de31838813dcc22e",
+        "receiver_id": "rcv_conformance",
+        "receiver_profile_version_id": "apv_conformance_receiver",
+        "expires_at": 1790003600
+      },
+      "receiver_profile_version_id": "apv_conformance_receiver",
+      "receiver_request_id": "conformance-request-id-0000001",
+      "mission_id": "ms_conformance",
+      "action_uri": "urn:conformance:action:file-return",
+      "resource_hash": "sha256:338797ad48b9cc4b1d259fb25a6b345291a7046395911af194b38fbbe4c386ba",
+      "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+      "normalized_request": {
+        "resource_type": "tax_return",
+        "resource_ref": "tax-return:2026",
+        "filing_year": 2026
+      },
+      "requested_facts": [
+        {
+          "fact_id": "person.over_18",
+          "mode": "predicate"
+        }
+      ],
+      "nonce": "conformance-nonce-000000000001",
+      "issued_at": 1790000000,
+      "expires_at": 1790000060,
+      "passport": [
+        "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+        "eyJzdWIiOiJhZ3RfY29uZm9ybWFuY2UifQ",
+        "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBw"
+      ],
+      "agent_proof": [
+        "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+        "eyJpc3MiOiJhZ3RfY29uZm9ybWFuY2UifQ",
+        "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBw"
+      ]
+    }
+  },
+  "presentation": {
+    "now": 1790000000,
+    "expected": {
+      "nonce": "conformance-nonce-000000000001",
+      "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32"
+    },
+    "payload": {
+      "iss": "https://stack-conformance.test",
+      "aud": "urn:conformance:receiver",
+      "jti": "pjt_conformance_vector",
+      "iat": 1790000000,
+      "exp": 1790000060,
+      "authority_use_id": "aus_conformance",
+      "agent_id": "agt_conformance",
+      "agent_key_thumbprint": "sha256:33e523c9a0d1e82b32332a18b14e63ee6dddcc21ca338562cc3a8c9e6a5db4ed",
+      "binding_ref": {
+        "binding_id": "abn_conformance",
+        "binding_version": 1,
+        "binding_claim_id": "pc_conformance",
+        "binding_digest": "sha256:80f70afeef3caa57646fd20afb95be9c3f2c03d38e091906de31838813dcc22e",
+        "receiver_id": "rcv_conformance",
+        "receiver_profile_version_id": "apv_conformance_receiver",
+        "expires_at": 1790003600
+      },
+      "principal_ref": "prn_conformance",
+      "mission_id": "ms_conformance",
+      "action_uri": "urn:conformance:action:file-return",
+      "resource_hash": "sha256:338797ad48b9cc4b1d259fb25a6b345291a7046395911af194b38fbbe4c386ba",
+      "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+      "receiver_id": "rcv_conformance",
+      "receiver_profile_version_id": "apv_conformance_receiver",
+      "domain_profile_version_id": "apv_conformance_domain",
+      "proof_profile_version_ids": [
+        "apv_conformance_proof"
+      ],
+      "live_check_time": 1790000000,
+      "evidence_refs": [
+        {
+          "proof_id": "prf_conformance",
+          "proof_version": 1,
+          "role": "principal_identity",
+          "authoriser_principal_id": null,
+          "group_key_hash": "sha256:689f6a627384c7dcb2dcc1487e540223e77bdf9dcd0d8be8a326eda65b0ce9a4",
+          "profile_version_id": "apv_conformance_proof",
+          "issuer_identifier": "urn:conformance:issuer",
+          "schema_uri": "urn:conformance:schema",
+          "schema_version": "1",
+          "assurance_uri": null,
+          "evidence_digest": "sha256:ee8250fb76e094b34b471f13a73dbbe51d1ae142e9df59d7c0d31ec20f0a0a8e",
+          "evidence_modes": [
+            "predicate"
+          ],
+          "status": "active"
+        }
+      ],
+      "approval_claim_refs": [],
+      "approval_requirements": [],
+      "proof_strength": "native_stack_attestation",
+      "nonce": "conformance-nonce-000000000001",
+      "disclosed_facts": [
+        {
+          "fact_id": "person.over_18",
+          "mode": "predicate",
+          "proof_id": "prf_conformance",
+          "assertion_source": "adapter_derived",
+          "proof_strength": "native_stack_attestation",
+          "provenance": {
+            "adapter_key": "conformance",
+            "adapter_version": 1,
+            "method": "conformance"
+          },
+          "value": true,
+          "evidence_digest": "sha256:ee8250fb76e094b34b471f13a73dbbe51d1ae142e9df59d7c0d31ec20f0a0a8e"
+        }
+      ]
+    },
+    "payload_digest": "sha256:eacbc6782e85b9e1733dcb57acad4038eb74ff7d19937343f41e3ae0b7dcbb9f",
+    "signed": [
+      "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXByZXNlbnRhdGlvbi0xIiwidHlwIjoiSldUIn0",
+      "eyJpc3MiOiJodHRwczovL3N0YWNrLWNvbmZvcm1hbmNlLnRlc3QiLCJhdWQiOiJ1cm46Y29uZm9ybWFuY2U6cmVjZWl2ZXIiLCJqdGkiOiJwanRfY29uZm9ybWFuY2VfdmVjdG9yIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImF1dGhvcml0eV91c2VfaWQiOiJhdXNfY29uZm9ybWFuY2UiLCJhZ2VudF9pZCI6ImFndF9jb25mb3JtYW5jZSIsImFnZW50X2tleV90aHVtYnByaW50Ijoic2hhMjU2OjMzZTUyM2M5YTBkMWU4MmIzMjMzMmExOGIxNGU2M2VlNmRkZGNjMjFjYTMzODU2MmNjM2E4YzllNmE1ZGI0ZWQiLCJiaW5kaW5nX3JlZiI6eyJiaW5kaW5nX2lkIjoiYWJuX2NvbmZvcm1hbmNlIiwiYmluZGluZ192ZXJzaW9uIjoxLCJiaW5kaW5nX2NsYWltX2lkIjoicGNfY29uZm9ybWFuY2UiLCJiaW5kaW5nX2RpZ2VzdCI6InNoYTI1Njo4MGY3MGFmZWVmM2NhYTU3NjQ2ZmQyMGFmYjk1YmU5YzNmMmMwM2QzOGUwOTE5MDZkZTMxODM4ODEzZGNjMjJlIiwicmVjZWl2ZXJfaWQiOiJyY3ZfY29uZm9ybWFuY2UiLCJyZWNlaXZlcl9wcm9maWxlX3ZlcnNpb25faWQiOiJhcHZfY29uZm9ybWFuY2VfcmVjZWl2ZXIiLCJleHBpcmVzX2F0IjoxNzkwMDAzNjAwfSwicHJpbmNpcGFsX3JlZiI6InBybl9jb25mb3JtYW5jZSIsIm1pc3Npb25faWQiOiJtc19jb25mb3JtYW5jZSIsImFjdGlvbl91cmkiOiJ1cm46Y29uZm9ybWFuY2U6YWN0aW9uOmZpbGUtcmV0dXJuIiwicmVzb3VyY2VfaGFzaCI6InNoYTI1NjozMzg3OTdhZDQ4YjljYzRiMWQyNTlmYjI1YTZiMzQ1MjkxYTcwNDYzOTU5MTFhZjE5NGIzOGZiYmU0YzM4NmJhIiwicmVxdWVzdF9oYXNoIjoic2hhMjU2OjQ4MmU1YTNiMjg0NDFmYzRhYmNmYWM2NWU4M2RlMDc5MWZmNWNiOGRhZjUyZTliNDMzMmIzYTA5YWI1YzViMzIiLCJyZWNlaXZlcl9pZCI6InJjdl9jb25mb3JtYW5jZSIsInJlY2VpdmVyX3Byb2ZpbGVfdmVyc2lvbl9pZCI6ImFwdl9jb25mb3JtYW5jZV9yZWNlaXZlciIsImRvbWFpbl9wcm9maWxlX3ZlcnNpb25faWQiOiJhcHZfY29uZm9ybWFuY2VfZG9tYWluIiwicHJvb2ZfcHJvZmlsZV92ZXJzaW9uX2lkcyI6WyJhcHZfY29uZm9ybWFuY2VfcHJvb2YiXSwibGl2ZV9jaGVja190aW1lIjoxNzkwMDAwMDAwLCJldmlkZW5jZV9yZWZzIjpbeyJwcm9vZl9pZCI6InByZl9jb25mb3JtYW5jZSIsInByb29mX3ZlcnNpb24iOjEsInJvbGUiOiJwcmluY2lwYWxfaWRlbnRpdHkiLCJhdXRob3Jpc2VyX3ByaW5jaXBhbF9pZCI6bnVsbCwiZ3JvdXBfa2V5X2hhc2giOiJzaGEyNTY6Njg5ZjZhNjI3Mzg0YzdkY2IyZGNjMTQ4N2U1NDAyMjNlNzdiZGY5ZGNkMGQ4YmU4YTMyNmVkYTY1YjBjZTlhNCIsInByb2ZpbGVfdmVyc2lvbl9pZCI6ImFwdl9jb25mb3JtYW5jZV9wcm9vZiIsImlzc3Vlcl9pZGVudGlmaWVyIjoidXJuOmNvbmZvcm1hbmNlOmlzc3VlciIsInNjaGVtYV91cmkiOiJ1cm46Y29uZm9ybWFuY2U6c2NoZW1hIiwic2NoZW1hX3ZlcnNpb24iOiIxIiwiYXNzdXJhbmNlX3VyaSI6bnVsbCwiZXZpZGVuY2VfZGlnZXN0Ijoic2hhMjU2OmVlODI1MGZiNzZlMDk0YjM0YjQ3MWYxM2E3M2RiYmU1MWQxYWUxNDJlOWRmNTlkN2MwZDMxZWMyMGYwYTBhOGUiLCJldmlkZW5jZV9tb2RlcyI6WyJwcmVkaWNhdGUiXSwic3RhdHVzIjoiYWN0aXZlIn1dLCJhcHByb3ZhbF9jbGFpbV9yZWZzIjpbXSwiYXBwcm92YWxfcmVxdWlyZW1lbnRzIjpbXSwicHJvb2Zfc3RyZW5ndGgiOiJuYXRpdmVfc3RhY2tfYXR0ZXN0YXRpb24iLCJub25jZSI6ImNvbmZvcm1hbmNlLW5vbmNlLTAwMDAwMDAwMDAwMSIsImRpc2Nsb3NlZF9mYWN0cyI6W3siZmFjdF9pZCI6InBlcnNvbi5vdmVyXzE4IiwibW9kZSI6InByZWRpY2F0ZSIsInByb29mX2lkIjoicHJmX2NvbmZvcm1hbmNlIiwiYXNzZXJ0aW9uX3NvdXJjZSI6ImFkYXB0ZXJfZGVyaXZlZCIsInByb29mX3N0cmVuZ3RoIjoibmF0aXZlX3N0YWNrX2F0dGVzdGF0aW9uIiwicHJvdmVuYW5jZSI6eyJhZGFwdGVyX2tleSI6ImNvbmZvcm1hbmNlIiwiYWRhcHRlcl92ZXJzaW9uIjoxLCJtZXRob2QiOiJjb25mb3JtYW5jZSJ9LCJ2YWx1ZSI6dHJ1ZSwiZXZpZGVuY2VfZGlnZXN0Ijoic2hhMjU2OmVlODI1MGZiNzZlMDk0YjM0YjQ3MWYxM2E3M2RiYmU1MWQxYWUxNDJlOWRmNTlkN2MwZDMxZWMyMGYwYTBhOGUifV19",
+      "uCRPnZOMgafbxSTjs5WKsoWodJc5WO7u2MfuKxS_ScBAi5Tl25YBkLKR3-xLd8bAveliv42U5O1wuMygwfSNCA"
+    ],
+    "jwe": "eyJhbGciOiJFQ0RILUVTK0EyNTZLVyIsImVuYyI6IkEyNTZHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiJyY3YtZW5jLTEiLCJlcGsiOnsia3R5IjoiRUMiLCJjcnYiOiJQLTI1NiIsIngiOiJRcVVlQTU2NTRMWE9XTVR4dU92TEtCLXVNcmtIS1hFV1FMREsxUHhjT01FIiwieSI6IkZ6eC1lMXZtNnBTN0VPQ2Z2dWZIc0lPUFAwLUk0QjZSSFREa1QwOC1tekkifX0.UQcYaRt6qDfNxZ8SyPBiQKuBGndyWWAftUMmwoydH7OBso2Jm6HAJg.ZmZmZmZmZmZmZmZm.WsT0OhdbSiCPAFpD_e2sNn5nIiF0GdU4PcjWUmmhMSRsUzPitX_Y3kq5K6HWjwkXLK69LIOTyPnnfn_fT4w39OrS_IaTzOYn6VnnqiSABCkecbHR1g02glG9QPBhERTpIRXza50-l96LcrAmgEf_EbvTXMs7XqoAX4VxI17FR6TE5BrLhUhrtAJMoUzfo_V5ZmuDQda5tJUU4UHW9tcvXFiDl4l3GV7jD8kjUVMGLrVcRlg_9Eq9DHpEo_x8zWrDzzju2Hs4bzUv2Q2ux9rfbarKwtHDujQDCAGA_Uc99xA1mAC12INyj9zWgYore1EUmnQgWOc5s1Rx9QmJVTuZVYX7_tdSBkCoANqHsIRrt1cKhng_OGkYdmMNMXxCfDcO7xwu-mDZCiQzP9_1brAA1v2wfGg0IO4DpcnElZAF-xSlgDqTfH6BkoAq6691kS03291eh8aoxfqM6bwpRjLca2oHdHNioJzvEu-NJa79aZ6auc_S7PjqjYb-ON9_XrlNO6WDlKhwoV7Nl9wRbA_lOAVhqdQ90PIALVT578LaMX0584nwh4Cj35XtM0hR1gSRosdxYzDwN29QerLoT69GwNYGHFHLM2IGOWZo5vkW-WwgiSuWWrDeQ9tAdk2rujvyduAFGvKpUiEgu0oxM-E2mmnRCyr-bA4phHhY0UVq-hKhpBYEM_iAU-Asv22WAS-qFK9HK6gCGmAITajedLPI4RGB7TxoOa0GfmXIzB7o7dJgRpYVBilEHnQ_7M3l4ahHxebeW15mBJR-IddJlF0dh3gf5ye0HvdmaPpNs2LRmA2MfWGlpfixX4CrnuwPozuDJYRgVwIlLJ0c6f3BNixA3vF_6HWscKw9Jxa0r-C2NfojhmA5BrMzRDF_jm_3o9ow0OoMRCbEjU06WUSYYRlPSc_m-t0n6C9JfOhUCuHxex4ax2cjJjRneXt4912bys2dtpKP2pRsKiPgGqt0RFQBiUFUOi8o80mQiSBAOi_6MIVMg0NhXTNW14et5uwxteqjX9TDkfrwaI878Cn3AQSoKez_Tw_tj5D870T3sBwiWJzfXWCRdAGHVCR6LNs0u-AOFyfkXp-JVIbb2v1zs9EMg479wM2xWV2jRBqPVqsvxh4Skjodlj7C3zrIix8vEfuYAHvXevpajExTU2xQLLWksPmxRIrSMtvqR4wLjfpZSNGf_tc-ejCU3lZvVdddx0GHZFs4Vt9JfxOAc-fks4YosfOGEP5M9zngvZkQ_uCpDq7SIVCWL1XpyJb3Wv9_-2qQ-TEV1W0FWVcrGNWXPiosyHGGOx1Wks5yesEb6Htlx8NSa3LCfGGrd0o04oUfj7OZ-rgEb_Ges7pRI01TA7PZNLUcFs60XPqW3_c4mrMUdOVoQs9ouUNaCpFUnDZGUgeSW9YquhNUyW2jFyJUiydbkLkKeYuqF_VDVnnxJJ79VQMyky4MNll-7ksZ76EYuaXiJ7dU41hAUIZCGOW1z_mth2AMgXNh4Q_ZxeoaKEGZgIHi65YH2tUqYauaT1E7N_p7lgwfE-OJ2Tjhd392Q3oH_CfUn70fPcVKy15Z_4CMnG86A9Bh1FBvaLBLkZoVbpGmwSGTLnMfrR84A2YgHCbg-p4hb2Ur8-T1APaGfe1G8Weuju_Me0CVkVrRKDK7fT1m3PrsjOQv4p3-K-2ar4R1jC_4YQWRjklQHzyTU59BjlnkqJX-v07R5e5Z-uIxxEGif_RAWxWgvvrB-Cf4SbVgO3CJIedfVdaF3oagbpFqCXZ0hJmUqcp-3eVk_mhCx-KBbJyHOnIU0M56wp1fvvzMcspSl4XD1DwABuQBMFuDSR4xO7tRGfwL9EnyqU1nvQT00ptyjWumwYCSK3_zEkEzVxQJ-r7bscrCYF2DZlruZhYtC7WLDTGcaxUeljHxmcRqWruVYtNuCr3b9qc5IAaSSXVNuL5K9COY3XqWrve4ztle3Jss4CQZHrbnTzoTwM-mUMLHoTWi6xuCJUHajug_Ju2SZZ0lfb0RHMSIRB-X0xQWhVRaLXxDAkWoRqOxCyFBSPAN06BCSIUyzmhUkTjp-KraLHvAucbI1US6x3goJB5lVJ4wiK5vTR-hQSs_DVXfmCcTHBK5gpY744YbMMF-PcVIjuqVB2JEyOZpAfH3FRrPDs_8GFfRBAh8wIru2ifWkIOhWEGCZYenTfEZyUw4Ff4h3_zoWlqVmJnUj3oHb1hd0rOsW6fqArkJ0PH5XHrhEAw3zQJMddpT7q4-Why7nGayMj3K31Ys_PQ5uqkD5LZk6qFvgyaxc4z9j8KijgNQasI5ddZmNYXtD81V-GCMjIRQcsml07PV2JPGTzdschN27yG4ojsvA4PMltf_qwxPYGJKW_u9Jg9xXr8_j06ZoYJZ9K9oFaYhl6e5JTBvY8eI_A2_Uthdp4gaApczDDk1g6W8IIFxHdNz3qxdobSJRXRejRva49_uWh1RWtckZMcu8M8gXLXU6vjVJxTeuFkB48yHa2PXkaKW3USURTMqX3QG9_XnkOl8KZyhsSWb_uXUA8v6XfidjcUHBfy1fzp5Kz6nCXy9_c4T3HQ48EGJ9D3xTW1aad8d-MPfXbvkX_S5P6IZbGA8YMfZT_IcmoOSGpTKn_pwtWSt_skk-Z1ivjf21cxNvP0t0Wb_ysOjt63dfPgGjcAO15QPb4BYxY2l5dy1meMHTYOt53rNSqzPw5VKcRGeTtvcrmwsxN1UjUrW4e_YKOisHAP620hraF0w4akw19YQQ7pH9kXFKtMFEurnjFFbsvDnMNkcFWeasZYzdd65g60hrNfYZ6fLw_F53ktQq7p3rGxXe6rxtEiF1RoDFm9Dz8Jrdb34DpryVpfke5bxX4E5-g2ecV8kpte3COLRy_dmUlpjbEC6yGCdtvVICjTBK-y83gmMQkZk8-V6TNRi19LXgUtOg_TCm-FHQ4aQBT3R6rbJ5LXGRHUHSUg5HmMt4O2yr_Ms2jqhZzo1fD6sTsTsEE1nPkm6VMbEo8WO48t_oCoj0Kkqghy1gJ-fiQh66ugUyRBQvvXkvrTxdS-fvZXvGi2UsL-_oyNuBco2FMtAWBDh9ciYUbMjUe9cQawI_Ng1aGd8EXyNeDDjZBhAQMStrKt8EYkp6CPDkIpiKb1QLfQD2gbi5w4kVzjo5GC9pqRtlS2TKfJL-I5ILbOxjp6uTjTUvAFrAE0gCaLQROcfzWL2IO3JxnO58MHK-G1BV_6f9qWW6WKuPbcJG9f2x0gsF6GQ1BMyULJsXNH07Vrqku9VWtHon4Aau8wMIrTGdCn0hKWVxbu95n4sjd1JlZzoNFUrDPjGVGGmq0gB71yO0AufQobYryWxVW5JuTL3EVBAHGXCFA9RLJlxmKLtiZ9iCmCrgUbPV-1gnrohf2RFwLxWk1ajnFAcFvScyUvfmU0roCbOR9eGzErAJSrKu5kRPkQZ-TUfm7QMK7461DcCCDn_92ErDY9vXM2baUNIxBFLo1NAG66kpjMlSTsTGwwmlcYrePfYmF0Kso2KKSuQyN9aOJFZ3L--eEwE2LAIMUGSLzQe4R3dxg6OrGaJShqcGP1lo4ipjGd5_0O8edmI5XoGz33z2rPls4bFS6sbXqB_4fiePzCDFNmrT_A7k85THBghdYLloFLoiGx2p8coXXgmNawOPG_fqDG2bR3PWjgIBm4eVoBADpnTSwtbcSrnOIgfFjcGmrmtJBa6Cp6XLiZt495V9eAwS9PurFacL4kemq7A_UVzpRujPzmkNQ8Il9LT1a9A23v0Ml5TMZwccdt8qwbFKNpEGNOq-jpuvU0Kb8aMcUEfY27wFb3eXXUZGRHDQvSt7LLYhjD0IZBFl9lfPnxMVl8AUtSUqoFsJRaDn0OBaCMS1h8Cn9d5MMpbr78r8fBirddMT3dMUATdrJXOC7gpr0KdRg7emL8VFLOBpT6Yz-LjcoBwsNB7DQL8ofHqj6ej03MhPiMQRYLW82M5A1-JAwPXTU47paRlNE3OQJEXe3IL-2vjhKYqoAqbNEstoJg1Cik2ncoSXzoT7JzbJ8jZOQHL7pBzWQ.Ah71Vz4c2O_GjxlZTIhMEg",
+    "recipient_key": "response_encryption"
+  },
+  "receipts": [
+    {
+      "now": 1790000000,
+      "key": "receipt_signing",
+      "presentation_id": "prs_conformance",
+      "outcome": "accepted",
+      "result": {
+        "outcome": "accepted",
+        "reference": "case-0",
+        "nested": {
+          "b": 1,
+          "a": [
+            2,
+            1
+          ]
+        }
+      },
+      "claims": {
+        "iss": "rcv_conformance",
+        "sub": "rcv_conformance",
+        "aud": "https://api.stack-conformance.test/v1/authority/presentations/prs_conformance/receipts",
+        "jti": "receipt-vector-1",
+        "iat": 1790000000,
+        "exp": 1790000030,
+        "receiver_id": "rcv_conformance",
+        "presentation_id": "prs_conformance",
+        "authority_use_id": "aus_conformance",
+        "presentation_payload_hash": "sha256:eacbc6782e85b9e1733dcb57acad4038eb74ff7d19937343f41e3ae0b7dcbb9f",
+        "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+        "action_uri": "urn:conformance:action:file-return",
+        "outcome": "accepted",
+        "result": {
+          "outcome": "accepted",
+          "reference": "case-0",
+          "nested": {
+            "b": 1,
+            "a": [
+              2,
+              1
+            ]
+          }
+        },
+        "result_commitment_nonce": "cHBwcHBwcHBwcHBwcHBwcHBw",
+        "result_hash": "sha256:07f9a9b0631ffaedf8278e39778e01aed659f9219f34b81546818a6980c5c87d",
+        "external_transaction_ref": "case-0"
+      },
+      "signed_receipt": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZWNlaXB0LTEiLCJ0eXAiOiJKV1QifQ",
+        "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0L3YxL2F1dGhvcml0eS9wcmVzZW50YXRpb25zL3Byc19jb25mb3JtYW5jZS9yZWNlaXB0cyIsImp0aSI6InJlY2VpcHQtdmVjdG9yLTEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDAzMCwicmVjZWl2ZXJfaWQiOiJyY3ZfY29uZm9ybWFuY2UiLCJwcmVzZW50YXRpb25faWQiOiJwcnNfY29uZm9ybWFuY2UiLCJhdXRob3JpdHlfdXNlX2lkIjoiYXVzX2NvbmZvcm1hbmNlIiwicHJlc2VudGF0aW9uX3BheWxvYWRfaGFzaCI6InNoYTI1NjplYWNiYzY3ODJlODViOWUxNzMzZGNiNTdhY2FkNDAzOGViNzRmZjdkMTk5MzczNDNmNDFlM2FlMGI3ZGNiYjlmIiwicmVxdWVzdF9oYXNoIjoic2hhMjU2OjQ4MmU1YTNiMjg0NDFmYzRhYmNmYWM2NWU4M2RlMDc5MWZmNWNiOGRhZjUyZTliNDMzMmIzYTA5YWI1YzViMzIiLCJhY3Rpb25fdXJpIjoidXJuOmNvbmZvcm1hbmNlOmFjdGlvbjpmaWxlLXJldHVybiIsIm91dGNvbWUiOiJhY2NlcHRlZCIsInJlc3VsdCI6eyJvdXRjb21lIjoiYWNjZXB0ZWQiLCJyZWZlcmVuY2UiOiJjYXNlLTAiLCJuZXN0ZWQiOnsiYiI6MSwiYSI6WzIsMV19fSwicmVzdWx0X2NvbW1pdG1lbnRfbm9uY2UiOiJjSEJ3Y0hCd2NIQndjSEJ3Y0hCd2NIQnciLCJyZXN1bHRfaGFzaCI6InNoYTI1NjowN2Y5YTliMDYzMWZmYWVkZjgyNzhlMzk3NzhlMDFhZWQ2NTlmOTIxOWYzNGI4MTU0NjgxOGE2OTgwYzVjODdkIiwiZXh0ZXJuYWxfdHJhbnNhY3Rpb25fcmVmIjoiY2FzZS0wIn0",
+        "sngI4lg_x1jDTbm-X3h-aUfkFl__SzpGSfqkcQRekBvMR_eOaUU0374oziyuDOi0FJtW8jGOnEvJfFU3o_81Aw"
+      ]
+    },
+    {
+      "now": 1790000000,
+      "key": "receipt_signing",
+      "presentation_id": "prs_conformance",
+      "outcome": "rejected",
+      "result": {
+        "outcome": "rejected",
+        "reference": "case-1",
+        "nested": {
+          "b": 1,
+          "a": [
+            2,
+            1
+          ]
+        }
+      },
+      "claims": {
+        "iss": "rcv_conformance",
+        "sub": "rcv_conformance",
+        "aud": "https://api.stack-conformance.test/v1/authority/presentations/prs_conformance/receipts",
+        "jti": "receipt-vector-2",
+        "iat": 1790000000,
+        "exp": 1790000030,
+        "receiver_id": "rcv_conformance",
+        "presentation_id": "prs_conformance",
+        "authority_use_id": "aus_conformance",
+        "presentation_payload_hash": "sha256:eacbc6782e85b9e1733dcb57acad4038eb74ff7d19937343f41e3ae0b7dcbb9f",
+        "request_hash": "sha256:482e5a3b28441fc4abcfac65e83de0791ff5cb8daf52e9b4332b3a09ab5c5b32",
+        "action_uri": "urn:conformance:action:file-return",
+        "outcome": "rejected",
+        "result": {
+          "outcome": "rejected",
+          "reference": "case-1",
+          "nested": {
+            "b": 1,
+            "a": [
+              2,
+              1
+            ]
+          }
+        },
+        "result_commitment_nonce": "cXFxcXFxcXFxcXFxcXFxcXFx",
+        "result_hash": "sha256:c9e037809c8df9eebde3a7ea091e2055a4a0e8ae0204ed0947cec45bda5b21fa",
+        "external_transaction_ref": "case-1"
+      },
+      "signed_receipt": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZWNlaXB0LTEiLCJ0eXAiOiJKV1QifQ",
+        "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0L3YxL2F1dGhvcml0eS9wcmVzZW50YXRpb25zL3Byc19jb25mb3JtYW5jZS9yZWNlaXB0cyIsImp0aSI6InJlY2VpcHQtdmVjdG9yLTIiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDAzMCwicmVjZWl2ZXJfaWQiOiJyY3ZfY29uZm9ybWFuY2UiLCJwcmVzZW50YXRpb25faWQiOiJwcnNfY29uZm9ybWFuY2UiLCJhdXRob3JpdHlfdXNlX2lkIjoiYXVzX2NvbmZvcm1hbmNlIiwicHJlc2VudGF0aW9uX3BheWxvYWRfaGFzaCI6InNoYTI1NjplYWNiYzY3ODJlODViOWUxNzMzZGNiNTdhY2FkNDAzOGViNzRmZjdkMTk5MzczNDNmNDFlM2FlMGI3ZGNiYjlmIiwicmVxdWVzdF9oYXNoIjoic2hhMjU2OjQ4MmU1YTNiMjg0NDFmYzRhYmNmYWM2NWU4M2RlMDc5MWZmNWNiOGRhZjUyZTliNDMzMmIzYTA5YWI1YzViMzIiLCJhY3Rpb25fdXJpIjoidXJuOmNvbmZvcm1hbmNlOmFjdGlvbjpmaWxlLXJldHVybiIsIm91dGNvbWUiOiJyZWplY3RlZCIsInJlc3VsdCI6eyJvdXRjb21lIjoicmVqZWN0ZWQiLCJyZWZlcmVuY2UiOiJjYXNlLTEiLCJuZXN0ZWQiOnsiYiI6MSwiYSI6WzIsMV19fSwicmVzdWx0X2NvbW1pdG1lbnRfbm9uY2UiOiJjWEZ4Y1hGeGNYRnhjWEZ4Y1hGeGNYRngiLCJyZXN1bHRfaGFzaCI6InNoYTI1NjpjOWUwMzc4MDljOGRmOWVlYmRlM2E3ZWEwOTFlMjA1NWE0YTBlOGFlMDIwNGVkMDk0N2NlYzQ1YmRhNWIyMWZhIiwiZXh0ZXJuYWxfdHJhbnNhY3Rpb25fcmVmIjoiY2FzZS0xIn0",
+        "i-KyPtTJVOqnIT6gwerbVOGvcgdawEvgIpHa3qdeP9fC3m3qZnp208tpg3Ck0yFAZkE1YPj2-3lqNVUOmplGAg"
+      ]
+    }
+  ],
+  "origin_document": {
+    "now": 1790000000,
+    "key": "request_signing",
+    "challenge": {
+      "challenge_id": "rvc_conformance",
+      "challenge": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE"
+    },
+    "claims": {
+      "iss": "rcv_conformance",
+      "sub": "rcv_conformance",
+      "aud": "https://api.stack-conformance.test",
+      "jti": "origin-vector-1",
+      "iat": 1790000000,
+      "exp": 1790000120,
+      "challenge_id": "rvc_conformance",
+      "challenge": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE"
+    },
+    "document": {
+      "origin": "https://receiver.stack-conformance.test",
+      "key_id": "rcv-request-1",
+      "signed_challenge": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InJjdi1yZXF1ZXN0LTEiLCJ0eXAiOiJKV1QifQ",
+        "eyJpc3MiOiJyY3ZfY29uZm9ybWFuY2UiLCJzdWIiOiJyY3ZfY29uZm9ybWFuY2UiLCJhdWQiOiJodHRwczovL2FwaS5zdGFjay1jb25mb3JtYW5jZS50ZXN0IiwianRpIjoib3JpZ2luLXZlY3Rvci0xIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAxMjAsImNoYWxsZW5nZV9pZCI6InJ2Y19jb25mb3JtYW5jZSIsImNoYWxsZW5nZSI6Ik1URXhNVEV4TVRFeE1URXhNVEV4TVRFeE1URXhNVEV4TVRFeE1URXhNVEUifQ",
+        "1g0Rf-Sqx-2relgmN5pTAxM1XAXXTcj-3uvhQk8Sgu04vljjAts-2xXJR4J9D5rWP-iN8RAfRA9k2XdJn4C9DA"
+      ]
+    }
+  }
+}

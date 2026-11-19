@@ -1,0 +1,179 @@
+packages:
+  - 'packages/*'
+  - 'apps/api'
+  - 'apps/worker'
+  - 'apps/mcp-server'
+  - 'spec/*'
+
+# ── supply-chain hardening (adopted 2026-05-14 during Mini Shai-Hulud) ──
+#
+# Every documented npm worm so far was detected and pulled within 24-72
+# hours of malicious publish. A 7-day cooldown means STACK never installs
+# the malicious window. Strict mode is implicit when minimumReleaseAge is
+# set explicitly (per pnpm 11 docs) — install fails rather than warns.
+minimumReleaseAge: 10080      # 7 days in minutes
+
+# Exception list — our own published packages need to be installable
+# immediately after publish (otherwise our SDK patch release would be
+# unusable for a week, defeating the point). @stack/* are workspace-only
+# (never resolved from the registry), so they don't strictly need to be
+# here, but listing them is defensive in case a workspace ever fails to
+# resolve and falls back to a registry fetch.
+minimumReleaseAgeExclude:
+  - '@getstackrun/sdk'
+  - '@getstackrun/cli'
+  - '@stack/*'
+  # AWS SDK + smithy. AWS publishes daily; the @smithy/* tree under
+  # @aws-sdk/client-kms has versions <7d old basically always. Excluding
+  # the whole AWS-controlled tree is a conscious trust call: we treat
+  # AWS's npm publishing pipeline as trusted (it's a high-value target
+  # but well-guarded). If AWS's npm credentials get compromised, this
+  # bypass is the attack vector. Mitigation: AWS publishes via OIDC and
+  # has 2FA + branch protection; if they ever ship a malicious version
+  # it will be detected by the broader community within hours. Revisit
+  # this exclude if a competitor or AWS itself adds SLSA verify-on-install.
+  - '@aws-sdk/*'
+  - '@smithy/*'
+  # GHSA-68fv-2mgg-jv7q (high): the fix, source-map-js 1.2.2, was published
+  # 2026-09-30, a day short of the 7-day window. Exempted at this exact version
+  # only, after reading the full 1.2.1 to 1.2.2 diff (2026-10-06): bounds checks
+  # and three linear-time rewrites, no install scripts, no I/O, same maintainer.
+  # Inert once 1.2.2 is older than the window; any later version is not covered.
+  - 'source-map-js@1.2.2'
+
+# ── transitive overrides ──
+#
+# pnpm 11 reads `overrides` from pnpm-workspace.yaml, NOT from
+# package.json's `pnpm.overrides` key (that was the pnpm 9 home). The
+# audit findings on b6400ba surfaced this: both overrides below were
+# set in package.json and were silently ignored, leaving the
+# vulnerable transitive versions in the lockfile.
+overrides:
+  # @esbuild-kit/core-utils is deprecated upstream and pins old esbuild
+  # versions vulnerable to GHSA-67mh-4wv8-2f99 (dev-server SSRF).
+  # drizzle-kit still pulls it transitively. Force every nested esbuild
+  # in that chain to >=0.25.0.
+  '@esbuild-kit/core-utils>esbuild': '^0.25.0'
+  # esbuild 0.27.3–0.28.0: dev-server request-handling advisory
+  # (GHSA on the 0.27 line, Dependabot low). Reached via vite 7.3.6 and
+  # drizzle-kit. Range-keyed to the vulnerable window only so the 0.25.x
+  # line drizzle-kit's OTHER esbuild dep pins is left untouched.
+  'esbuild@>=0.27.3 <0.28.1': '>=0.28.1'
+  # PostCSS source-map path disclosure and CSS stringify XSS
+  # (GHSA-fxqj-rqcc-2cmp, GHSA-qx2v-qp2m-jg93).
+  postcss: '8.5.23'
+  # qs parser/stringifier DoS (GHSA-q8mj-m7cp-5q26,
+  # GHSA-4mjr-xmp4-gh2g). Keep existing 6.x consumers on that major.
+  # GHSA-6pq8-jhm2-2vcw: fixed in 6.16.1 (2026-10-14).
+  'qs@>=6.11.1 <6.16.1': '6.16.1'
+  # GHSA-rgw5-rvv9-x895: incomplete expansion bounds allow memory DoS.
+  # Keep consumers on their existing major version.
+  # GHSA-6j4f-fj2g-mc7p, GHSA-qhr7-859c-m2p7 (high) and GHSA-q2hr-2g5m-vwhr:
+  # further expansion DoS paths, all fixed in 5.0.12 (2026-09-14).
+  'brace-expansion@>=5.0.0 <5.0.12': '5.0.12'
+  # hono <4.12.25: CORS middleware reflects any Origin WITH credentials
+  # when `origin` defaults to wildcard (high) + JWT-scheme laxness, cookie
+  # helper injection, encoded-path routing bugs (moderates). Reaches prod
+  # via @modelcontextprotocol/sdk -> @stack/mcp-server (mcp.getstack.run).
+  # 4.12.34 also fixes language/CORS DoS and cross-request memo exposure.
+  # 4.13.5 closes query-fragment parsing differentials, unbounded
+  # dot-notation form nesting and the incomplete toSSG path traversal fix.
+  # 4.13.7 (2026-09-04) fixes GHSA-hxh3-vqpv-xpqv.
+  # 4.13.16 (2026-11-01) fixes GHSA-3gg2-335m-rxc6, GHSA-46wx-v44x-9hh2,
+  # GHSA-4h7h-rv7c-7m2v, GHSA-4m76-xfj5-7975, GHSA-h7mg-cq63-vhpq and GHSA-5r4p-p66f-jhc7.
+  hono: 4.13.16
+  # GHSA-82fw-gwwq-j7x9: redirect mocks could read files outside the
+  # configured test root. Pin centrally so every workspace test runner is
+  # patched without changing the manifests of separately published packages.
+  # 4.1.12 (2026-10-15) also moves @vitest/mocker to 4.1.12 (GHSA-qxg6-89mg-rqv8,
+  # GHSA-xp26-3454-mjgp).
+  vitest: 4.1.12
+  # form-data 4.0.0–4.0.5: CRLF injection via unescaped multipart field
+  # names (high). Transitive via axios.
+  form-data: ^4.0.6
+  # undici <6.27.0: WebSocket fragment-count DoS (high) + Set-Cookie
+  # header-injection moderates. Only reached via node-gyp (build-time),
+  # but the bump is free. 6.28.0 also fixes blob/cookie header injection
+  # and retry response desynchronization (GHSA-m8rv-5g2x-5cg5 et al.).
+  # 6.28.1 (2026-09-04) fixes the advisory flagged by osv-scanner on 2026-09-29.
+  # 6.29.1 (2026-10-15) fixes GHSA-2m5v-pch6-74hx, GHSA-4qv8-2p9j-2685,
+  # GHSA-9fm3-97px-rjf6, GHSA-qrxm-fqhp-jwvm and GHSA-xjj6-f33q-929c; reached
+  # at runtime in the MCP and skill-runner images.
+  undici: 6.29.1
+  # tar <=7.5.20: archive extraction and recursive member-selection DoS
+  # (GHSA-23hp-3jrh-7fpw, GHSA-r292-9mhp-454m). Via node-gyp.
+  tar: 7.5.21
+  # Security patches within each existing major; exact versions make
+  # the reviewed release reproducible without updating unrelated packages.
+  # GHSA-gcfj-64vw-6mp9: inherited proxy configuration after cloning.
+  # 1.20.0 (2026-08-26) fixes the 2026-09 cluster: SSRF, socket hijacking,
+  # HTTP/2 control bypass and several DoS paths (GHSA-542g-h47m-68v8 et al.).
+  # Reached at runtime via posthog-node 4.x in the API and worker.
+  'axios@>=1.0.0 <1.20.0': '1.20.0'
+  # GHSA-fph4-wmhf-6fwf and related URI host-confusion vulnerabilities;
+  # CVE-2026-84292 (authority serialization) and CVE-2026-84394 (bracket
+  # host confusion), fixed in 3.1.7 and 4.1.4 (2026-09-02).
+  # GHSA-hrr3-gc8f-f4qj and GHSA-jvvf-x445-j334: fixed in 3.1.8 / 4.1.5
+  # (2026-09-15).
+  # GHSA-333x-w4r6-6crp, GHSA-w74x-v6f9-j3xg, GHSA-wjr9-j795-jxcr and
+  # GHSA-xhq7-xmqj-769h: fixed in 3.1.9 / 4.2.3 (2026-10-19).
+  'fast-uri@>=3.0.0 <3.1.9': '3.1.9'
+  'fast-uri@>=4.0.0 <4.2.3': '4.2.3'
+  # GHSA-c96f-x56v-gq3h: HTTP/2 method handling can crash routing.
+  'find-my-way@>=9.0.0 <9.7.0': '9.7.0'
+  # GHSA-mwp4-54f8-5fhr: leading-zero IPv4 octet interpretation; the
+  # advisory flagged on 2026-09-29 is fixed in 10.5.1 (2026-08-29).
+  # GHSA-h3mg-xc3c-68pw and GHSA-j6r3-76f7-8jcv: fixed in 10.7.1 (2026-09-15).
+  # GHSA-rxp7-6hxx-x8q5: fixed in 10.7.4 (2026-10-11).
+  'ip-address@>=10.0.0 <10.7.4': '10.7.4'
+  # GHSA-28wg-ghj8-5hjv: invalid sizes can hang non-secure generators.
+  'nanoid@>=5.0.0 <5.1.16': '5.1.16'
+  # GHSA-frvp-7c67-39w9: encoded-backslash static-file access on Windows.
+  # GHSA-jpvv-r467-5p4w: fixed in 1.19.18 (2026-11-02).
+  '@hono/node-server@>=1.0.0 <1.19.18': '1.19.18'
+  # GHSA-v422-hmwv-36x6: invalid limits can disable body-size enforcement.
+  # GHSA-27r3-jxmh-p828: fixed in 2.4.0 (2026-10-22).
+  'body-parser@>=2.0.0 <2.4.0': '2.4.0'
+  # GHSA-jqcg-44mw-7w3h: fixed in proxy-addr 2.0.8 (2026-09-15). Reached
+  # only via @modelcontextprotocol/sdk -> express 5. Our MCP server uses
+  # node:http and Fastify uses its own @fastify/proxy-addr, so no running
+  # code path calls it, but the bump is free and clears the gate.
+  'proxy-addr@<2.0.8': '2.0.8'
+  # GHSA-68fv-2mgg-jv7q (high): event-loop DoS from indexed source-map
+  # section offsets. Fixed in 1.2.2. Reached via postcss at build time only,
+  # on our own CSS, never on request input.
+  'source-map-js@<1.2.2': '1.2.2'
+  # vite <7.3.5: Dependabot high+moderate on the 7.3.x line (dev-server
+  # request handling). Dev-only (vitest), but the bump is free and it
+  # silences the failing Dependabot security jobs until the registry
+  # misroute (npm.pkg.github.com) is fixed in org settings. EXACT pin:
+  # a ^7.3.5 range override would not force re-resolution over the
+  # lockfile's existing 7.3.2 (pnpm 11 quirk); bump manually next time.
+  # 7.3.7 (2026-10-06) fixes GHSA-587h-7wmj-h5pm, GHSA-698v-4r3x-3vcv,
+  # GHSA-9jrq-w75r-8gcw, GHSA-r825-w8mm-5pxw and GHSA-rq7h-c2jc-7f22.
+  vite: 7.3.7
+  # @opentelemetry/core <2.8.0: unbounded memory allocation in W3C
+  # Baggage propagation (moderate). Runtime via @sentry/node's OTel
+  # instrumentation in the API.
+  '@opentelemetry/core': ^2.8.0
+  # GHSA-8r9p-f939-6h3c, GHSA-q3jh-wrc6-jgq8, GHSA-mrwp-f3q8-3g9p (high):
+  # fixed in follow-redirects 1.16.2 (2026-10-25). Transitive via axios.
+  'follow-redirects@<1.16.2': '1.16.2'
+  # GHSA-474x-hrwr-fgx4: fixed in 5.12.0 (2026-11-03). Also reaches an older
+  # @aws-sdk/xml-builder that pins 5.7.2 exactly.
+  'fast-xml-parser@<5.12.0': '5.12.0'
+
+# ── build-script allowlist (pnpm 11 default-deny) ──
+#
+# Every dep that ships a postinstall / preinstall / install script must
+# be explicitly allowlisted here. pnpm 11 blocks every build script by
+# default; only the entries below run. When pnpm install surfaces a NEW
+# package wanting a build script, audit it — only flip to true after
+# confirming the package's purpose. Most postinstall malware payloads
+# in the wild deliver themselves through this exact hook.
+allowBuilds:
+  esbuild: true            # bundler — needed to extract the bin binary
+  re2: true                # native regex engine — used by prompt-injection detectors
+  argon2: true             # native password hasher — transitive (not used by STACK; passwordless auth)
+  cbor-extract: true       # native CBOR codec — transitive via @sentry SDK
+  msgpackr-extract: true   # native msgpack codec — transitive via @sentry SDK

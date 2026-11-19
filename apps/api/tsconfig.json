@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": [
+  ],
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/vault" },
+    { "path": "../../packages/dropoff" },
+    { "path": "../../packages/mcp-server" }
+  ]
+}

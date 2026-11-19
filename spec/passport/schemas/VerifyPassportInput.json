@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:passport:1:VerifyPassportInput",
+  "title": "VerifyPassportInput",
+  "type": "object",
+  "properties": {
+    "token": {
+      "type": "string"
+    },
+    "service_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "token"
+  ],
+  "additionalProperties": false
+}

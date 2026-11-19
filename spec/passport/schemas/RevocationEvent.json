@@ -1,0 +1,211 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:passport:1:RevocationEvent",
+  "title": "RevocationEvent",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "single"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "jti": {
+          "type": "string"
+        },
+        "cascaded": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "jti",
+        "cascaded",
+        "reason",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bulk_agent"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "agent_id": {
+          "type": "string"
+        },
+        "revoked_count": {
+          "type": "number"
+        },
+        "cascaded_count": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "agent_id",
+        "revoked_count",
+        "cascaded_count",
+        "reason",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bulk_session"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "revoked_count": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "session_id",
+        "revoked_count",
+        "reason",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bulk_operator"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "revoked_count": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "revoked_count",
+        "reason",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bulk_claim"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "claim_id": {
+          "type": "string"
+        },
+        "revoked_count": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "claim_id",
+        "revoked_count",
+        "reason",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "bulk_mission"
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "mission_id": {
+          "type": "string"
+        },
+        "revoke_reason": {
+          "type": "string"
+        },
+        "cascaded_passport_jtis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "operator_id",
+        "mission_id",
+        "revoke_reason",
+        "cascaded_passport_jtis",
+        "at"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

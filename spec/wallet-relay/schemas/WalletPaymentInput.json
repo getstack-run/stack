@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:wallet-relay:1:WalletPaymentInput",
+  "title": "WalletPaymentInput",
+  "type": "object",
+  "properties": {
+    "typed_data": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "agent_signature": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]{60,120}={0,2}$"
+    }
+  },
+  "required": [
+    "typed_data",
+    "agent_signature"
+  ],
+  "additionalProperties": false
+}

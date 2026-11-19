@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthClientRegistrationResponse",
+  "title": "OAuthClientRegistrationResponse",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_id_issued_at": {
+      "type": "integer"
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redirect_uris": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "grant_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "response_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "const": "code"
+      },
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "token_endpoint_auth_method": {
+      "type": "string",
+      "const": "none"
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "client_id",
+    "client_id_issued_at",
+    "client_name",
+    "redirect_uris",
+    "grant_types",
+    "response_types",
+    "token_endpoint_auth_method",
+    "scope"
+  ],
+  "additionalProperties": false
+}

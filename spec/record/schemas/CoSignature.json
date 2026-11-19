@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:record:1:CoSignature",
+  "title": "CoSignature",
+  "type": "object",
+  "properties": {
+    "signer_kid": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signer_role": {
+      "type": "string",
+      "enum": [
+        "operator_attestation",
+        "agent_self",
+        "witness"
+      ]
+    },
+    "cose_sign1": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "signer_kid",
+    "signer_role",
+    "cose_sign1"
+  ],
+  "additionalProperties": false
+}

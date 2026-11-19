@@ -1,0 +1,64 @@
+{
+  "name": "@getstackrun/verify",
+  "version": "0.1.2",
+  "description": "Offline internal-integrity verifier and activity reader for STACK Signed records.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "stack-verify": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "!dist/.build-stamp.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "keywords": [
+    "stack",
+    "evidence-pack",
+    "audit",
+    "verification",
+    "cose",
+    "claims-registry",
+    "scitt"
+  ],
+  "homepage": "https://www.npmjs.com/package/@getstackrun/verify",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getstack-run/stack.git",
+    "directory": "packages/verifier"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "activity:sync": "node scripts/sync-activity-source.mjs --write",
+    "activity:check": "node scripts/sync-activity-source.mjs --check",
+    "prebuild": "pnpm run activity:check",
+    "build": "tsc && node ../../tooling/build-stamp.mjs",
+    "dev": "tsc --watch",
+    "pretypecheck": "pnpm run activity:check",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "pretest": "pnpm run activity:check",
+    "test": "vitest run",
+    "clean": "rm -rf dist .turbo",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "cbor-x": "^1.6.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.7"
+  }
+}

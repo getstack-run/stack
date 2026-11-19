@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:catalogue:1:CatalogueAccountView",
+  "title": "CatalogueAccountView",
+  "type": "object",
+  "properties": {
+    "account_id": {
+      "type": "string"
+    },
+    "catalogue_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connected_services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 330,
+            "pattern": "^(?:model|tool|service|skill|account|mcp_tool):[A-Za-z0-9~][A-Za-z0-9._~:@/+-]*$"
+          },
+          "provider": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "connection_id": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "connection_name": {
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "required": [
+          "id",
+          "provider",
+          "name",
+          "connection_id"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 10000
+    },
+    "pieces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 330,
+            "pattern": "^(?:model|tool|service|skill|account|mcp_tool):[A-Za-z0-9~][A-Za-z0-9._~:@/+-]*$"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "ready",
+              "paused",
+              "failed",
+              "closing",
+              "closed"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "state"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 64
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 330,
+            "pattern": "^(?:model|tool|service|skill|account|mcp_tool):[A-Za-z0-9~][A-Za-z0-9._~:@/+-]*$"
+          },
+          "listed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "listed"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "account_id",
+    "catalogue_version",
+    "connected_services",
+    "pieces"
+  ],
+  "additionalProperties": false
+}

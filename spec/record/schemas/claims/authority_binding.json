@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:73736da826de63d7a631d2fe8822334dd3d962b5c5fe2b509fe2963066c96dfe",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "authority_binding"
+      },
+      "binding_id": {
+        "type": "string",
+        "pattern": "^abn_[\\w-]+$"
+      },
+      "binding_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "binding_digest": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "principal_id": {
+        "type": "string",
+        "pattern": "^prn_[\\w-]+$"
+      },
+      "agent_id": {
+        "type": "string",
+        "pattern": "^(ag|agt)_[\\w-]+$"
+      },
+      "agent_key_thumbprint": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "receiver_id": {
+        "type": "string",
+        "pattern": "^rcv_[\\w-]+$"
+      },
+      "receiver_profile_version_id": {
+        "type": "string",
+        "pattern": "^apv_[\\w-]+$"
+      },
+      "domain_profile_version_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^apv_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "mission_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^ms_[\\w-]+$"
+        },
+        "maxItems": 64
+      },
+      "lineage_root_id": {
+        "type": "string",
+        "pattern": "^abn_[\\w-]+$"
+      },
+      "lineage_root_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "parent_binding_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^abn_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "parent_binding_version": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "delegation_depth": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4
+      },
+      "purpose_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "purpose_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "scope_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "approval_policy_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "disclosure_policy_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "delegation_policy_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "proof_set_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "valid_from": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "expires_at": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "pending_approval",
+          "active",
+          "suspended",
+          "revoked",
+          "replaced"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "binding_id",
+      "binding_version",
+      "binding_digest",
+      "principal_id",
+      "agent_id",
+      "agent_key_thumbprint",
+      "receiver_id",
+      "receiver_profile_version_id",
+      "domain_profile_version_id",
+      "mission_ids",
+      "lineage_root_id",
+      "lineage_root_version",
+      "parent_binding_id",
+      "parent_binding_version",
+      "delegation_depth",
+      "purpose_code",
+      "purpose_hash",
+      "scope_hash",
+      "approval_policy_hash",
+      "disclosure_policy_hash",
+      "delegation_policy_hash",
+      "proof_set_hash",
+      "valid_from",
+      "expires_at",
+      "status"
+    ],
+    "additionalProperties": false
+  }
+}

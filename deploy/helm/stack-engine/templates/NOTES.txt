@@ -1,0 +1,15 @@
+The STACK engine is installed as {{ .Release.Name }}.
+
+  Address:     {{ .Values.publicUrl }}
+  Migrations:  {{ if .Values.migrations.enabled }}ran as a Job before this release{{ else }}NOT run by this chart: run `node apps/api/dist/db/migrate.js` before the API starts{{ end }}
+  Licence:     read from the `licence-key` key of {{ .Values.secrets.existingSecret }}; without one the enterprise features are off
+
+Next:
+
+  1. Create the first operator and read its API key (shown once):
+       kubectl exec deploy/{{ include "stack-engine.fullname" . }}-api -- stack-engine operator create --email you@example.com
+  2. Check the install:
+       kubectl exec deploy/{{ include "stack-engine.fullname" . }}-api -- stack-engine doctor
+  3. A key cannot approve its own requests (registering an agent, loosening a
+     detector). Decide them on the machine:
+       kubectl exec deploy/{{ include "stack-engine.fullname" . }}-api -- stack-engine approvals list

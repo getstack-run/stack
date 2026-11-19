@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:rest-api:1:GovernanceApprovalView",
+  "title": "GovernanceApprovalView",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "fleet_policy_activate",
+        "detector_config_upsert",
+        "detector_config_reset",
+        "review_decide_approve",
+        "agent_unblock",
+        "agent_register",
+        "agent_setup",
+        "agent_authority_expand",
+        "agent_skill_allow",
+        "agent_key_enroll",
+        "agent_enrollment_ticket_mint",
+        "service_grant_expand",
+        "service_proxy_disable",
+        "service_allowed_hosts_expand",
+        "notification_config_mutate",
+        "billing_mutate",
+        "pii_config_upsert",
+        "pii_config_reset",
+        "authority_binding_activate",
+        "authority_principal_erase",
+        "authority_binding_erase",
+        "authority_proof_erase",
+        "authority_presentation_erase",
+        "authority_receiver_profile_activate",
+        "authority_profile_activate",
+        "authority_receiver_key_add",
+        "account_open",
+        "account_contact_consent_add",
+        "account_piece_resume",
+        "account_toll_free_verification_submit",
+        "account_email_change",
+        "account_delete",
+        "control_socket_change",
+        "account_control_loosen",
+        "control_review",
+        "network_install_key_add",
+        "making_order_approve",
+        "member_sso_binding_clear",
+        "sso_domain_add",
+        "sso_config_change",
+        "trust_widen",
+        "intent_approve",
+        "intent_approve_payment",
+        "identity_settings_loosen",
+        "service_requirement_loosen",
+        "agent_warnings_dismiss"
+      ]
+    },
+    "resource_id": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "policy_preview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "account_preview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "monthly_budget_cents": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "pieces": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "monthly_budget_cents",
+            "pieces"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "setup_preview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "grant_preview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "intent_preview": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "requested_via": {
+      "type": "string",
+      "enum": [
+        "operator_key",
+        "member_session",
+        "oauth",
+        "member_key"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "consumed",
+        "expired"
+      ]
+    },
+    "expires_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "decided_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decided_via": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tenant": {
+      "type": "object",
+      "properties": {
+        "operator_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "operator_id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "action",
+    "resource_id",
+    "summary",
+    "requested_via",
+    "status",
+    "expires_at",
+    "created_at",
+    "decided_at"
+  ],
+  "additionalProperties": false
+}

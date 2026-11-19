@@ -1,0 +1,7 @@
+apiVersion: v2
+name: stack-engine
+description: The STACK engine (API, worker, MCP server) for a self-managed install. Postgres, Redis and an S3-compatible archive are external.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.27.0-0"

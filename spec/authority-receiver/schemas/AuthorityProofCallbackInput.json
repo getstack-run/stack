@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityProofCallbackInput",
+  "title": "AuthorityProofCallbackInput",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "pattern": "^pcs_[\\w-]+$"
+    },
+    "state_token": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "signed_callback": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000000
+    }
+  },
+  "required": [
+    "session_id",
+    "state_token",
+    "signed_callback"
+  ],
+  "additionalProperties": false
+}

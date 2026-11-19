@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:DetectionRuleSetClaims",
+  "title": "DetectionRuleSetClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:detection-rules"
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "rs": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "version": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "packs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "input",
+                  "output"
+                ]
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": [
+                        "warning",
+                        "critical"
+                      ]
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "flags": {
+                      "type": "string",
+                      "maxLength": 8
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "severity",
+                    "pattern",
+                    "flags"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "direction",
+              "rules"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "v",
+        "version",
+        "revision",
+        "sha256",
+        "packs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "iat",
+    "exp",
+    "rs"
+  ],
+  "additionalProperties": false
+}

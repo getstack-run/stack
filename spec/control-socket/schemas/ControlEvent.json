@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:control-socket:1:ControlEvent",
+  "title": "ControlEvent",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "type": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "string"
+    },
+    "operator_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "account_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "layer": {
+      "type": "string"
+    },
+    "error_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "amount_cents": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "chain": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "entry_hash": {
+              "type": "string"
+            },
+            "prev_entry_hash": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "entry_hash",
+            "prev_entry_hash"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "refusal": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string"
+        },
+        "policy_revision": {
+          "type": "integer"
+        },
+        "section": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy_id",
+        "policy_revision",
+        "section",
+        "rule",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "gap": {
+      "type": "object",
+      "properties": {
+        "from_seq": {
+          "type": "integer"
+        },
+        "to_seq": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "from_seq",
+        "to_seq"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "seq",
+    "type",
+    "occurred_at",
+    "operator_id",
+    "agent_id",
+    "account_id",
+    "outcome",
+    "layer",
+    "error_code",
+    "decision_id",
+    "amount_cents",
+    "chain"
+  ],
+  "additionalProperties": false
+}

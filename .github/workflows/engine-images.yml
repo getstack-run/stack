@@ -1,0 +1,121 @@
+name: engine-images
+
+# Builds the engine's three container images (deploy/docker/Dockerfile), attaches
+# a software bill of materials and build provenance, pushes them, and signs each
+# by digest with a keyless signature tied to this workflow. Verification is in
+# docs/self-managed/operations.md.
+#
+# Runs on a tag named engine-v<version>, or by hand (then nothing is pushed
+# unless `push` is chosen). It uses no third-party action: docker, buildx and
+# cosign are run directly, so there is nothing to pin but checkout.
+#
+# Images are published only from the public repository, getstack-run/stack:
+# anywhere else the images are built and never logged in, pushed or signed, and
+# a request to publish fails the run. A request to publish also fails when the
+# checkout holds anything the public repository does not (a `src/hosted` folder,
+# or a package, app or folder outside its list), whatever the repository is
+# called, so no published image is built from a private tree.
+
+on:
+  push:
+    tags: ['engine-v*']
+  workflow_dispatch:
+    inputs:
+      push:
+        description: 'Push and sign the images'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io/getstack-run
+  COSIGN_VERSION: v2.4.1
+
+jobs:
+  images:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write # keyless signing
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            echo "tag=${GITHUB_REF_NAME#engine-v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=dev-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install cosign
+        run: go install github.com/sigstore/cosign/v2/cmd/cosign@${COSIGN_VERSION} && echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Set up buildx
+        run: docker buildx create --use --name engine
+
+      - name: Refuse to publish from another repository
+        if: (github.event_name == 'push' || inputs.push) && github.repository != 'getstack-run/stack'
+        run: |
+          echo "::error::engine images are published only from getstack-run/stack, not from ${GITHUB_REPOSITORY}"
+          exit 1
+
+      # The repository name is not enough: it is also the name the private repository carries until it is renamed, and
+      # a name can be reused. What decides is the tree itself, and the check is a list of what the public repository
+      # has: its top-level folders, its packages, its apps and the folder of docs it carries. Anything else, and any
+      # `src/hosted` folder, means this is not the public tree, so nothing is built to publish. The list is the
+      # export manifest's (the export's own checks fail when the two differ).
+      - name: Refuse to publish a tree that carries hosted code
+        if: github.event_name == 'push' || inputs.push
+        run: |
+          set -eu
+          found=$({
+            find . -mindepth 1 -maxdepth 1 -type d ! -name .git
+            find ./packages ./apps ./docs -mindepth 1 -maxdepth 1 -type d 2>/dev/null || true
+            find . -name .git -prune -o -type d -path '*/src/hosted' -print
+          } | sort -u | while IFS= read -r dir; do
+            case "${dir}" in
+              ./.github|./LICENSES|./apps|./deploy|./docs|./examples|./packages|./scripts|./sdk-python|./spec|./tooling) ;;
+              ./apps/api|./apps/mcp-server|./apps/worker) ;;
+              ./packages/cli|./packages/dropoff|./packages/mcp-server|./packages/sdk|./packages/shared|./packages/vault|./packages/verifier) ;;
+              ./docs/self-managed) ;;
+              *) echo "${dir}" ;;
+            esac
+          done)
+          if [ -n "${found}" ]; then
+            echo "::error::this checkout holds folders the public repository does not, so it is not the public tree; engine images are never published from it:"
+            echo "${found}"
+            exit 1
+          fi
+
+      - name: Log in to the registry
+        if: (github.event_name == 'push' || inputs.push) && github.repository == 'getstack-run/stack'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build, attest and push
+        env:
+          PUSH: ${{ (github.event_name == 'push' || inputs.push) && github.repository == 'getstack-run/stack' }}
+          VERSION: ${{ steps.version.outputs.tag }}
+        run: |
+          set -eu
+          for target in api worker mcp; do
+            image="${REGISTRY}/stack-engine-${target}"
+            if [ "${PUSH}" = "true" ]; then
+              docker buildx build -f deploy/docker/Dockerfile --target "${target}" \
+                --sbom=true --provenance=mode=max \
+                --metadata-file "meta-${target}.json" \
+                -t "${image}:${VERSION}" --push .
+              digest=$(node -e "console.log(require('./meta-${target}.json')['containerimage.digest'])")
+              cosign sign --yes "${image}@${digest}"
+              echo "${image}@${digest}" >> "$GITHUB_STEP_SUMMARY"
+            else
+              docker buildx build -f deploy/docker/Dockerfile --target "${target}" \
+                --sbom=true --provenance=mode=max -t "${image}:${VERSION}" .
+            fi
+          done

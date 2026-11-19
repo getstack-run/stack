@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:779319b26b9e11f7bd5e96795dfe3b5c944504bb7c92931368c4573e8326279c",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "external_proof_verification"
+      },
+      "proof_id": {
+        "type": "string",
+        "pattern": "^prf_[\\w-]+$"
+      },
+      "proof_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "subject_principal_id": {
+        "type": "string",
+        "pattern": "^prn_[\\w-]+$"
+      },
+      "represented_principal_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^prn_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "profile_version_id": {
+        "type": "string",
+        "pattern": "^apv_[\\w-]+$"
+      },
+      "proof_kind": {
+        "type": "string",
+        "enum": [
+          "identity",
+          "capacity",
+          "mandate",
+          "consent",
+          "signature",
+          "domain",
+          "workload"
+        ]
+      },
+      "source_kind": {
+        "type": "string",
+        "enum": [
+          "legacy_identity_claim",
+          "external_native",
+          "stack_derived"
+        ]
+      },
+      "issuer_identifier": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024
+      },
+      "issuer_key_thumbprint": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "schema_uri": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024
+      },
+      "schema_version": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "native_format": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "native_evidence_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "normalized_facts_hash": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "verification_method": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "verifier_identifier": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024
+      },
+      "verifier_version": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "assurance_uri": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "verified_at": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "valid_from": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "expires_at": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "active",
+          "suspended",
+          "revoked",
+          "replaced",
+          "erased"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "proof_id",
+      "proof_version",
+      "subject_principal_id",
+      "represented_principal_id",
+      "profile_version_id",
+      "proof_kind",
+      "source_kind",
+      "issuer_identifier",
+      "issuer_key_thumbprint",
+      "schema_uri",
+      "schema_version",
+      "native_format",
+      "native_evidence_hash",
+      "normalized_facts_hash",
+      "verification_method",
+      "verifier_identifier",
+      "verifier_version",
+      "assurance_uri",
+      "verified_at",
+      "valid_from",
+      "expires_at",
+      "status"
+    ],
+    "additionalProperties": false
+  }
+}

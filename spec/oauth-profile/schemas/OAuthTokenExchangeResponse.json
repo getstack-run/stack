@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthTokenExchangeResponse",
+  "title": "OAuthTokenExchangeResponse",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issued_token_type": {
+      "type": "string",
+      "const": "urn:stack:token-type:passport"
+    },
+    "token_type": {
+      "type": "string",
+      "const": "N_A"
+    },
+    "expires_in": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "access_token",
+    "issued_token_type",
+    "token_type",
+    "expires_in"
+  ],
+  "additionalProperties": false
+}

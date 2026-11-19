@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-identity:1:AgentIdentityView",
+  "title": "AgentIdentityView",
+  "type": "object",
+  "properties": {
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^agt_[A-Za-z0-9_-]{21}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "suspended",
+            "closed"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "identity_verified": {
+          "type": "boolean"
+        },
+        "good_standing": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "identity_verified",
+        "good_standing"
+      ],
+      "additionalProperties": false
+    },
+    "lookup": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "key_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            }
+          },
+          "required": [
+            "key_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "site": {
+              "type": "string",
+              "maxLength": 253,
+              "pattern": "^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$"
+            }
+          },
+          "required": [
+            "site"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "agent_id": {
+              "type": "string",
+              "pattern": "^agt_[A-Za-z0-9_-]{21}$"
+            }
+          },
+          "required": [
+            "agent_id"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "issued_at": {
+      "type": "integer"
+    },
+    "expires_at": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "statement",
+    "agent",
+    "owner",
+    "lookup",
+    "issued_at",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

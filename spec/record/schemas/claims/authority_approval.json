@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:b940a7f89d21a3ea231369c4551948135114f743a814bb848448c2b243c958e3",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "authority_approval"
+      },
+      "decision_id": {
+        "type": "string",
+        "pattern": "^apd_[\\w-]+$"
+      },
+      "request_id": {
+        "type": "string",
+        "pattern": "^apr_[\\w-]+$"
+      },
+      "binding_id": {
+        "type": "string",
+        "pattern": "^abn_[\\w-]+$"
+      },
+      "binding_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "authority_use_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^aus_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "authoriser_principal_id": {
+        "type": "string",
+        "pattern": "^prn_[\\w-]+$"
+      },
+      "identity_proof_id": {
+        "type": "string",
+        "pattern": "^prf_[\\w-]+$"
+      },
+      "identity_proof_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "capacity_proof_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^prf_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "capacity_proof_version": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "decision_proof_id": {
+        "type": "string",
+        "pattern": "^prf_[\\w-]+$"
+      },
+      "decision_proof_version": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "decision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "reject"
+        ]
+      },
+      "weight": {
+        "type": "integer",
+        "exclusiveMinimum": 0
+      },
+      "request_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "phase": {
+        "type": "string",
+        "enum": [
+          "activation",
+          "action",
+          "presentation"
+        ]
+      },
+      "group_key_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "approval_requirement_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "decided_at": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "expires_at": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "revoked_at": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "decision_id",
+      "request_id",
+      "binding_id",
+      "binding_version",
+      "authority_use_id",
+      "authoriser_principal_id",
+      "identity_proof_id",
+      "identity_proof_version",
+      "capacity_proof_id",
+      "capacity_proof_version",
+      "decision_proof_id",
+      "decision_proof_version",
+      "decision",
+      "weight",
+      "request_hash",
+      "phase",
+      "group_key_hash",
+      "approval_requirement_hash",
+      "decided_at",
+      "expires_at",
+      "revoked_at"
+    ],
+    "additionalProperties": false
+  }
+}

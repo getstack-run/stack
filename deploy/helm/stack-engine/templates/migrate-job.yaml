@@ -1,0 +1,51 @@
+{{- if .Values.migrations.enabled }}
+# Database changes are their own step: this Job runs before an install or an
+# upgrade, and the API and the worker start only after it has finished.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "stack-engine.fullname" . }}-migrate-{{ .Release.Revision }}
+  labels:
+    {{- include "stack-engine.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.migrations.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migrations.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "stack-engine.selector" (dict "root" . "component" "migrate") | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      # The chart's own ServiceAccount does not exist yet on a first install.
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: migrate
+          image: {{ include "stack-engine.image" (dict "root" . "name" .Values.image.api) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["node", "apps/api/dist/db/migrate.js"]
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          env:
+            {{- include "stack-engine.env" . | nindent 12 }}
+          resources:
+            requests: { cpu: 100m, memory: 192Mi }
+            limits: { memory: 384Mi }
+          volumeMounts:
+            - { name: secrets, mountPath: /run/secrets, readOnly: true }
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        {{- include "stack-engine.secretVolume" . | nindent 8 }}
+        - { name: tmp, emptyDir: {} }
+{{- end }}

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:workload-identity:1:WorkloadWitPassportResult",
+  "title": "WorkloadWitPassportResult",
+  "type": "object",
+  "properties": {
+    "passport": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jti": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "workload_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issuer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "passport",
+    "jti",
+    "expires_at",
+    "workload_id",
+    "issuer",
+    "claim_id",
+    "ttl_seconds"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:record:1:ClaimEnvelope",
+  "title": "ClaimEnvelope",
+  "type": "object",
+  "properties": {
+    "envelope_version": {
+      "type": "number",
+      "const": 1
+    },
+    "issuer": {
+      "type": "string",
+      "pattern": "^op_[\\w-]+$"
+    },
+    "subject": {
+      "type": "string",
+      "pattern": "^stack:\\/\\/[a-z]+\\/[\\w-]+(\\/[a-z]+\\/[\\w-]+)?$"
+    },
+    "issued_at": {
+      "type": "integer"
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "svid_attestation",
+        "workload_attestation",
+        "rats_evidence",
+        "slsa_provenance",
+        "c2pa_assertion",
+        "ai_bom_ref",
+        "intent_claim",
+        "intent_outcome",
+        "intent_denial",
+        "intent_simulation",
+        "entity_observation",
+        "detector_signal",
+        "skill_invocation",
+        "sandbox_run",
+        "workspace_action",
+        "checkpoint_approval",
+        "identity_claim",
+        "mission",
+        "behavioral_genome",
+        "twin_divergence",
+        "evidence_pack",
+        "operator_decision",
+        "operator_review",
+        "external_proof_verification",
+        "authority_binding",
+        "authority_approval",
+        "authority_use",
+        "receiver_transaction_receipt",
+        "authority_erasure_tombstone",
+        "passport_color",
+        "dossier",
+        "chain_anchor"
+      ]
+    },
+    "claim_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {},
+    "receipt": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "registry": {
+              "type": "string"
+            },
+            "registered_at": {
+              "type": "integer"
+            },
+            "registry_entry_uri": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "proof": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "scitt-cose-receipt",
+                        "rekor-v2-tle",
+                        "stack-merkle-v1"
+                      ]
+                    },
+                    "bytes": {
+                      "type": "string"
+                    },
+                    "log_index": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "tree_size": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "root_hash": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "bytes",
+                    "log_index",
+                    "tree_size",
+                    "root_hash"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "witnesses": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "registry": {
+                        "type": "string"
+                      },
+                      "registry_entry_uri": {
+                        "type": "string"
+                      },
+                      "proof_bytes": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "registry",
+                      "registry_entry_uri",
+                      "proof_bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "registry",
+            "registered_at",
+            "registry_entry_uri",
+            "proof",
+            "witnesses"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "co_signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "signer_kid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "signer_role": {
+            "type": "string",
+            "enum": [
+              "operator_attestation",
+              "agent_self",
+              "witness"
+            ]
+          },
+          "cose_sign1": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "signer_kid",
+          "signer_role",
+          "cose_sign1"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "envelope_version",
+    "issuer",
+    "subject",
+    "issued_at",
+    "claim_type",
+    "claim_version",
+    "receipt"
+  ],
+  "additionalProperties": false
+}

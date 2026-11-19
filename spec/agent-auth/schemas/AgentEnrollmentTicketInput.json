@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:AgentEnrollmentTicketInput",
+  "title": "AgentEnrollmentTicketInput",
+  "type": "object",
+  "properties": {
+    "machine_label": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:e4c6a63190480e460028479d0f7ebc652e253ec44a95206dc85f2e783e91e5c6",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "authority_erasure_tombstone"
+      },
+      "target_kind": {
+        "type": "string",
+        "enum": [
+          "principal",
+          "binding",
+          "proof",
+          "presentation",
+          "receiver_transaction_receipt"
+        ]
+      },
+      "target_id": {
+        "type": "string",
+        "pattern": "^(prn|abn|prf|prs|rtr)_[\\w-]+$"
+      },
+      "target_version": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "prior_artifact_digest": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "prior_claim_digest": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "tombstone_digest": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "erased_at": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "type",
+      "target_kind",
+      "target_id",
+      "target_version",
+      "prior_artifact_digest",
+      "prior_claim_digest",
+      "tombstone_digest",
+      "erased_at"
+    ],
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:VerifiedStatusQuery",
+  "title": "VerifiedStatusQuery",
+  "type": "object",
+  "properties": {
+    "passport_digest": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "install": {
+      "type": "string",
+      "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+    },
+    "agent": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    }
+  },
+  "additionalProperties": false
+}

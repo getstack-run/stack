@@ -1,0 +1,26 @@
+{
+  "name": {
+    "title": "Full name",
+    "description": "As you want it recorded with your agreement.",
+    "type": "string",
+    "required": true,
+    "githubKey": "name"
+  },
+  "email": {
+    "title": "Email address",
+    "description": "An address you can be reached at. It is kept with your agreement and is not published.",
+    "type": "string",
+    "required": true,
+    "githubKey": "email"
+  },
+  "employerRights": {
+    "title": "My employer, school or client has no rights in what I contribute, or has agreed that I may contribute it",
+    "type": "boolean",
+    "required": true
+  },
+  "agree": {
+    "title": "I have read the STACK Contributor Licence Agreement and I agree to it",
+    "type": "boolean",
+    "required": true
+  }
+}

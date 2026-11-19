@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:AgentEnrollmentTicketResult",
+  "title": "AgentEnrollmentTicketResult",
+  "type": "object",
+  "properties": {
+    "ticket": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jti": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_in": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "ticket",
+    "jti",
+    "expires_at",
+    "expires_in"
+  ],
+  "additionalProperties": false
+}

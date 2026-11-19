@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:9ea68b1fd9cb875e2d7ed186c64d78ebffd83b9ba0271edd0c6ef2cc8248c508",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "rats_evidence"
+      },
+      "evidence_format": {
+        "type": "string",
+        "enum": [
+          "aws-nitro-enclave",
+          "tpm-eat",
+          "amd-sev-snp",
+          "intel-tdx",
+          "arm-cca",
+          "generic-eat"
+        ]
+      },
+      "measurements": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "pubkey_jwk": {
+        "type": "object",
+        "additionalProperties": {}
+      },
+      "nonce": {
+        "type": "string"
+      },
+      "evidence_uri": {
+        "type": "string"
+      },
+      "evidence_sha256": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "attested_at": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "type",
+      "evidence_format",
+      "measurements",
+      "attested_at"
+    ],
+    "additionalProperties": false
+  }
+}

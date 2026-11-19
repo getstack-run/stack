@@ -1,0 +1,883 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:4c5ad44b725e2e4f521a83735db2216bbfdcfeb739f3bb42e8946b575a3e1299",
+  "json_schema": {
+    "anyOf": [
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "skill_invocation"
+          },
+          "actual_skill_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_input_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "output_envelope_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "exit_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type",
+          "actual_skill_id",
+          "actual_input_hash",
+          "output_envelope_hash",
+          "exit_code"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "http_call"
+          },
+          "actual_target": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_method_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_parameters_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "response_body_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "redactions_count": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "detector_fires_count": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type",
+          "actual_target",
+          "actual_method_path",
+          "actual_parameters_hash",
+          "status_code",
+          "response_body_hash",
+          "latency_ms"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "mcp_tool"
+          },
+          "actual_tool_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_args_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tool_result_envelope_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tool_error_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type",
+          "actual_tool_name",
+          "actual_args_hash",
+          "tool_result_envelope_hash",
+          "tool_error_code"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "onchain_tx"
+          },
+          "actual_contract": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^0x[0-9a-f]{40}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actual_function_selector": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_args_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tx_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^0x[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "block_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "gas_used": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revert_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type",
+          "actual_contract",
+          "actual_function_selector",
+          "actual_args_hash",
+          "tx_hash",
+          "block_number",
+          "gas_used",
+          "revert_reason"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "task_complete"
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_outcome"
+          },
+          "intent_claim_ref": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "timeout"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cost_actual": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "recorded_at": {
+            "type": "integer"
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome_type": {
+            "type": "string",
+            "const": "a2a_dispatch"
+          },
+          "actual_target_agent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_method": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actual_args_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remote_task_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "task_state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "in_progress",
+                  "completed",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "task_result_envelope_hash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "intent_claim_ref",
+          "status",
+          "duration_ms",
+          "cost_actual",
+          "recorded_at",
+          "outcome_type",
+          "actual_target_agent",
+          "actual_method",
+          "actual_args_hash",
+          "remote_task_id",
+          "task_state",
+          "task_result_envelope_hash"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  }
+}

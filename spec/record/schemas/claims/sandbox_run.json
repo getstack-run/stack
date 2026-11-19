@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:7268a6e78eb19b74c06de226e326df9a70d183de7dd8dbb0c589e451141d908e",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "sandbox_run"
+      },
+      "run_id": {
+        "type": "string",
+        "pattern": "^sbr_[\\w-]+$"
+      },
+      "account_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "runtime": {
+        "type": "string",
+        "enum": [
+          "javascript",
+          "python"
+        ]
+      },
+      "script_hash": {
+        "type": "string"
+      },
+      "input_hash": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "succeeded",
+          "failed",
+          "timed_out",
+          "cancelled"
+        ]
+      },
+      "output_hash": {
+        "type": "string"
+      },
+      "duration_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "cost_cents": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "error_code": {
+        "type": "string"
+      },
+      "at": {
+        "type": "integer"
+      },
+      "mission_ref": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      }
+    },
+    "required": [
+      "type",
+      "run_id",
+      "account_id",
+      "runtime",
+      "script_hash",
+      "input_hash",
+      "status",
+      "duration_ms",
+      "cost_cents",
+      "at",
+      "mission_ref"
+    ],
+    "additionalProperties": false
+  }
+}

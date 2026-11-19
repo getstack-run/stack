@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:partner:1:CreateInboundWebhookResult",
+  "title": "CreateInboundWebhookResult",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string",
+      "enum": [
+        "agentmail",
+        "generic"
+      ]
+    },
+    "slug": {
+      "type": "string"
+    },
+    "webhook_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "webhook_secret": {
+      "type": "string"
+    },
+    "incoming_signing_secret": {
+      "type": "string"
+    },
+    "signing_configured": {
+      "type": "boolean"
+    },
+    "agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "forward_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "slug",
+    "webhook_url",
+    "webhook_secret",
+    "signing_configured",
+    "agent_id",
+    "forward_url",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

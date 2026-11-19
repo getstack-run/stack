@@ -1,0 +1,132 @@
+# Values of the stack-engine chart. Postgres, Redis and an S3-compatible
+# archive are external: the chart runs the API, the worker and the MCP server,
+# and applies the database changes as a Job before they start.
+#
+# Every secret comes from one existing Secret (`secrets.existingSecret`); the
+# chart never creates one and never takes a secret as a value. Its keys:
+#
+#   database-url          postgresql://user:password@host:5432/stack
+#   redis-url             redis://host:6379  (or rediss://, with a password)
+#   api-key-pepper        32 or more random bytes
+#   stack-kek             the key-encryption key (stack-engine keys generate)
+#   session-signing-key   the passport signing key, PEM (stack-engine keys generate)
+#   archive-access-key    S3 access key for the audit archive
+#   archive-secret-key    S3 secret key
+#   mcp-attestation-key   32 or more random bytes, shared by the API and the MCP server
+#   licence-key           (optional) a STACK licence key
+#   network-key           (optional) the key for STACK's network services
+#   intent-model-key      (optional) the key of your own intent deviation model
+#   smtp-url              (optional) smtps://user:password@host:465
+
+image:
+  registry: ghcr.io/getstack-run
+  api: stack-engine-api
+  worker: stack-engine-worker
+  mcp: stack-engine-mcp
+  # Pin to a digest in production: `tag` is for trying it.
+  tag: ""          # defaults to the chart's appVersion
+  digest: ""       # sha256:...; wins over the tag when set
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+# The address people and agents reach this install at: an https origin, no path.
+# Tokens, OAuth discovery, evidence-pack links and email links are built from it.
+publicUrl: ""      # required, e.g. https://stack.example.com
+mcpPublicUrl: ""   # default: publicUrl, with /mcp and /directory routed to the MCP service
+dashboardUrl: ""   # where people approve things, if you run a console of your own
+issuer: ""         # default: the host of publicUrl; changing it invalidates issued tokens
+securityContact: ""  # an address or link that account-change emails give for "if this was not you"; default: your administrator
+
+secrets:
+  existingSecret: ""   # required
+
+archive:
+  bucket: stack-audit
+  endpoint: ""         # empty for AWS S3; the service URL for MinIO and the like
+  region: us-east-1
+
+email:
+  transport: none      # none | smtp | resend
+  from: ""             # required for smtp
+  # smtp: the secret key `smtp-url`. resend: add RESEND_API_KEY through extraEnv.
+
+network:               # STACK's network services; client only, off unless url is set
+  url: ""
+  rules: true
+  classifier: false    # true sends scanned content to STACK's classifier
+
+intentModel:           # a model of your own that grades intent deviation; off unless url and name are set
+  url: ""              # an OpenAI-compatible chat completions endpoint, https (or http on the same machine)
+  name: ""             # the model to ask there
+
+siem:                  # the security-monitoring connector (a licensed feature)
+  syslogUrl: ""        # udp://, tcp:// or tls://host:port
+  httpUrl: ""
+  streams: security    # security | audit | security,audit
+
+oauth:
+  enabled: false
+
+extraEnv: []           # [{name: X, value: Y}] for the API, the worker and the MCP server
+
+api:
+  replicas: 2
+  resources:
+    requests: { cpu: 250m, memory: 384Mi }
+    limits: { memory: 768Mi }
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+worker:
+  # One is enough: its jobs hold Redis locks, so a second only adds headroom.
+  replicas: 1
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { memory: 512Mi }
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+mcp:
+  enabled: true
+  replicas: 2
+  resources:
+    requests: { cpu: 100m, memory: 192Mi }
+    limits: { memory: 384Mi }
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+migrations:
+  # Runs before an install or upgrade as a Job. Turn it off to run
+  # `node apps/api/dist/db/migrate.js` yourself, as part of your own release.
+  enabled: true
+  backoffLimit: 2
+  activeDeadlineSeconds: 900
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  host: ""             # default: the host of publicUrl
+  tlsSecretName: ""
+
+serviceAccount:
+  create: true
+  name: ""
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile: { type: RuntimeDefault }
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: { drop: [ALL] }
+
+podDisruptionBudget:
+  enabled: true

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:AgentEnrollInput",
+  "title": "AgentEnrollInput",
+  "type": "object",
+  "properties": {
+    "public_key": {
+      "type": "object",
+      "properties": {
+        "kty": {
+          "type": "string",
+          "const": "OKP"
+        },
+        "crv": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      },
+      "required": [
+        "kty",
+        "crv",
+        "x"
+      ],
+      "additionalProperties": true
+    },
+    "challenge_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "signed_challenge": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "required": [
+    "public_key",
+    "challenge_id",
+    "signed_challenge"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthTokenResponse",
+  "title": "OAuthTokenResponse",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "type": "string",
+      "minLength": 1
+    },
+    "token_type": {
+      "type": "string",
+      "const": "Bearer"
+    },
+    "expires_in": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "refresh_token": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "access_token",
+    "token_type",
+    "expires_in",
+    "refresh_token",
+    "scope"
+  ],
+  "additionalProperties": false
+}

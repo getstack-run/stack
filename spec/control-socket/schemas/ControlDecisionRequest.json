@@ -1,0 +1,256 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:control-socket:1:ControlDecisionRequest",
+  "title": "ControlDecisionRequest",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "stack.decision.request"
+    },
+    "version": {
+      "type": "string",
+      "const": "1"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^dec_[A-Za-z0-9_-]{16,64}$"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "deadline_at": {
+      "type": "string"
+    },
+    "test": {
+      "type": "boolean"
+    },
+    "operator_id": {
+      "type": "string"
+    },
+    "socket_id": {
+      "type": "string"
+    },
+    "account": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "agent": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "passport_jti": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mission_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "passport_jti",
+            "mission_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "agent",
+            "owner",
+            "member"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "model.call",
+                "proxy.call",
+                "tool.run",
+                "email.send",
+                "sms.send",
+                "telegram.send",
+                "call.start",
+                "call.answer",
+                "meeting.join",
+                "browser.session.start",
+                "browser.navigate",
+                "card.checkout",
+                "wallet.payment",
+                "workspace.exec",
+                "account.open",
+                "dropoff.create",
+                "dropoff.deposit",
+                "a2a.send",
+                "skill.invoke",
+                "passport.delegate",
+                "wake.deliver",
+                "drive.upload",
+                "drive.share",
+                "memory.write",
+                "memory.delete",
+                "brain.add",
+                "site.publish",
+                "payment.request",
+                "letter.send",
+                "post.scan",
+                "post.forward",
+                "post.shred",
+                "making.quote",
+                "making.order"
+              ]
+            },
+            {
+              "type": "string",
+              "const": "test"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": {}
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "max_cents": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "currency": {
+              "type": "string"
+            },
+            "native": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "currency"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "max_cents",
+            "currency"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "purpose": {
+      "type": "object",
+      "properties": {
+        "agent_stated": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "agent_stated"
+      ],
+      "additionalProperties": false
+    },
+    "retry_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "type",
+    "version",
+    "decision_id",
+    "created_at",
+    "deadline_at",
+    "test",
+    "operator_id",
+    "socket_id",
+    "account",
+    "agent",
+    "actor",
+    "action",
+    "target",
+    "amount",
+    "purpose",
+    "retry_ref",
+    "request_digest"
+  ],
+  "additionalProperties": false
+}

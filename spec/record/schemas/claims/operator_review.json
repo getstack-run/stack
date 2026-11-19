@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:868e19f5ae860c74fb3c9147f769c0e00ba77919cc85466a4f98e9bbf168484f",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "operator_review"
+      },
+      "mission_ref": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      },
+      "operator_id": {
+        "type": "string",
+        "pattern": "^op_[\\w-]+$"
+      },
+      "authored_by": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "operator_owner"
+              },
+              "operator_id": {
+                "type": "string",
+                "pattern": "^op_[\\w-]+$"
+              }
+            },
+            "required": [
+              "kind",
+              "operator_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "team_member"
+              },
+              "member_id": {
+                "type": "string",
+                "pattern": "^mem_[\\w-]+$"
+              },
+              "role_at_signing": {
+                "type": "string",
+                "enum": [
+                  "standard",
+                  "admin"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "member_id",
+              "role_at_signing"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "authored_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "overall_judgment": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50000
+      },
+      "checkpoint_notes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "checkpoint_claim_id": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            }
+          },
+          "required": [
+            "checkpoint_claim_id",
+            "note"
+          ],
+          "additionalProperties": false
+        },
+        "maxItems": 500,
+        "default": []
+      },
+      "decision_rationales": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "operator_decision_claim_id": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "rationale": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            }
+          },
+          "required": [
+            "operator_decision_claim_id",
+            "rationale"
+          ],
+          "additionalProperties": false
+        },
+        "maxItems": 500,
+        "default": []
+      },
+      "alert_explanations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "detector_claim_id": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "explanation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            }
+          },
+          "required": [
+            "detector_claim_id",
+            "explanation"
+          ],
+          "additionalProperties": false
+        },
+        "maxItems": 500,
+        "default": []
+      },
+      "incident_classification": {
+        "type": "string",
+        "enum": [
+          "no_incident",
+          "false_positive",
+          "true_positive_handled",
+          "true_positive_escalated",
+          "inconclusive"
+        ]
+      },
+      "lessons_learned": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50000
+      },
+      "prior_review_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "assessment_basis": {
+        "type": "string",
+        "const": "operator_organization_assessment"
+      }
+    },
+    "required": [
+      "type",
+      "mission_ref",
+      "operator_id",
+      "authored_by",
+      "authored_at_ms",
+      "overall_judgment",
+      "incident_classification",
+      "lessons_learned",
+      "prior_review_ref",
+      "assessment_basis"
+    ],
+    "additionalProperties": false
+  }
+}

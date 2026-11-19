@@ -1,0 +1,53 @@
+{
+  "name": "@getstackrun/conformance",
+  "version": "1.1.0",
+  "description": "The STACK conformance kit: run it against your own decision server, events receiver, Passport verifier or issuer, provider adapter, record verifier, catalogue, agent sign-in, workload identity exchange, OAuth server, Web Bot Auth signer or site, partner API, A2A endpoint, network service, MCP tool listing, a service's MCP endpoint, agent identity server or verifier, security-monitoring exporter or collector, or single sign-on relying party.",
+  "type": "module",
+  "bin": {
+    "stack-conformance": "./bin/stack-conformance.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "fixtures",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "node scripts/build-record-fixtures.mjs --check && node scripts/build-catalogue-fixture.mjs --check && node scripts/build-authority-vectors.mjs --check && node scripts/build-web-bot-auth-vectors.mjs --check && node scripts/build-network-vectors.mjs --check && node scripts/build-identity-vectors.mjs --check && node scripts/build-agent-identity-vectors.mjs --check",
+    "fixtures": "node scripts/build-record-fixtures.mjs && node scripts/build-catalogue-fixture.mjs && node scripts/build-authority-vectors.mjs && node scripts/build-web-bot-auth-vectors.mjs && node scripts/build-network-vectors.mjs && node scripts/build-identity-vectors.mjs && node scripts/build-agent-identity-vectors.mjs",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "node scripts/typecheck-engine-reference.mjs",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "stack",
+    "conformance",
+    "agents",
+    "passport",
+    "mcp"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://getstack.run",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getstack-run/stack.git",
+    "directory": "spec/conformance"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@getstackrun/sdk": "workspace:*",
+    "@getstackrun/verify": "workspace:*",
+    "@modelcontextprotocol/sdk": "~1.32.0",
+    "@stack/mcp-server": "workspace:*",
+    "cbor-x": "^1.6.4",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.7"
+  }
+}

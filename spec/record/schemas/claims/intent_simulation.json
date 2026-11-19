@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:0ed880035e87703c5097fbd2bb86da285ee17948417188aa8546c528b8a8b96c",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "intent_simulation"
+      },
+      "intent_claim_ref": {
+        "type": "string",
+        "pattern": "^pc_[\\w-]+$"
+      },
+      "allowed": {
+        "type": "boolean"
+      },
+      "denial_reasons": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "constraint_violation",
+            "scope_mismatch",
+            "accountability_monotonicity",
+            "detector_block",
+            "tier_limit",
+            "requires_unmet"
+          ]
+        },
+        "default": []
+      },
+      "simulated_cost": {
+        "type": "object",
+        "properties": {
+          "wallet_cents": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "gas_gwei": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "wallet_cents",
+          "tokens",
+          "gas_gwei"
+        ],
+        "additionalProperties": false
+      },
+      "predicted_detector_fires": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "detector_key": {
+              "type": "string",
+              "pattern": "^[a-z][\\w]*$"
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ]
+            }
+          },
+          "required": [
+            "detector_key",
+            "severity"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      },
+      "projected_http": {
+        "type": "object",
+        "properties": {
+          "status_code": {
+            "type": "integer"
+          },
+          "headers_summary": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "default": {}
+          }
+        },
+        "required": [
+          "status_code"
+        ],
+        "additionalProperties": false
+      },
+      "simulated_at": {
+        "type": "integer"
+      },
+      "mission_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^ms_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "allowed",
+      "simulated_cost",
+      "simulated_at"
+    ],
+    "additionalProperties": false
+  }
+}

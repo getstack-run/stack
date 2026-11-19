@@ -1,0 +1,44 @@
+{{- if .Values.ingress.enabled }}
+{{- $host := default (urlParse (required "publicUrl is required" .Values.publicUrl)).host .Values.ingress.host }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "stack-engine.fullname" . }}
+  labels:
+    {{- include "stack-engine.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.tlsSecretName }}
+  tls:
+    - hosts: [{{ $host | quote }}]
+      secretName: {{ .Values.ingress.tlsSecretName }}
+  {{- end }}
+  rules:
+    - host: {{ $host | quote }}
+      http:
+        paths:
+          {{- if .Values.mcp.enabled }}
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service: { name: {{ include "stack-engine.fullname" . }}-mcp, port: { name: http } }
+          - path: /directory
+            pathType: Prefix
+            backend:
+              service: { name: {{ include "stack-engine.fullname" . }}-mcp, port: { name: http } }
+          - path: /.well-known/oauth-protected-resource
+            pathType: Prefix
+            backend:
+              service: { name: {{ include "stack-engine.fullname" . }}-mcp, port: { name: http } }
+          {{- end }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service: { name: {{ include "stack-engine.fullname" . }}-api, port: { name: http } }
+{{- end }}

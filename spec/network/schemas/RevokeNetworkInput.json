@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:RevokeNetworkInput",
+  "title": "RevokeNetworkInput",
+  "type": "object",
+  "properties": {
+    "reason": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "key_compromise",
+        "agent_decommissioned",
+        "superseded",
+        "policy_violation",
+        "owner_request"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

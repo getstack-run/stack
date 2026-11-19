@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:614e55ed961f810b7cfa887f0d1b8262c7a86e3a586b892fd1ea6d344b0b2f16",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "dossier"
+      },
+      "mission_ref": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      },
+      "authored_by_member_id": {
+        "type": "string",
+        "pattern": "^mem_[\\w-]+$"
+      },
+      "authored_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "narrative": {
+        "type": "string",
+        "maxLength": 50000
+      },
+      "decision_tree": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "checkpoint_id": {
+              "type": "string",
+              "pattern": "^chk_[\\w-]+$"
+            },
+            "decision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "rationale": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "checkpoint_id",
+            "decision",
+            "rationale"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      },
+      "alerts_walkthrough": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "detector_signal_claim_id": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ]
+            },
+            "narrative": {
+              "type": "string",
+              "maxLength": 8192
+            }
+          },
+          "required": [
+            "detector_signal_claim_id",
+            "severity",
+            "narrative"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      },
+      "lessons_learned": {
+        "type": "string",
+        "maxLength": 50000
+      },
+      "incident_classification": {
+        "type": "string",
+        "enum": [
+          "false_positive",
+          "true_positive_handled",
+          "true_positive_escalated",
+          "inconclusive"
+        ]
+      },
+      "prior_dossier_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "mission_ref",
+      "authored_by_member_id",
+      "authored_at_ms",
+      "narrative",
+      "lessons_learned",
+      "incident_classification",
+      "prior_dossier_ref"
+    ],
+    "additionalProperties": false
+  }
+}

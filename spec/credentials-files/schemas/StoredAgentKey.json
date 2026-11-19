@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:credentials-files:1:StoredAgentKey",
+  "title": "StoredAgentKey",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publicKey": {
+      "type": "object",
+      "properties": {
+        "kty": {
+          "type": "string",
+          "const": "OKP"
+        },
+        "crv": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      },
+      "required": [
+        "kty",
+        "crv",
+        "x"
+      ],
+      "additionalProperties": true
+    },
+    "privateKey": {
+      "type": "object",
+      "properties": {
+        "kty": {
+          "type": "string",
+          "const": "OKP"
+        },
+        "crv": {
+          "type": "string",
+          "const": "Ed25519"
+        },
+        "x": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        },
+        "d": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      },
+      "required": [
+        "kty",
+        "crv",
+        "x",
+        "d"
+      ],
+      "additionalProperties": true
+    },
+    "enrolled_at": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "agent_id",
+    "publicKey",
+    "privateKey",
+    "enrolled_at"
+  ],
+  "additionalProperties": true
+}

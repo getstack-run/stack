@@ -1,0 +1,13 @@
+{
+  "name": "control-socket-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test server.test.mjs"
+  },
+  "dependencies": {
+    "@getstackrun/sdk": "*"
+  },
+  "license": "Apache-2.0"
+}

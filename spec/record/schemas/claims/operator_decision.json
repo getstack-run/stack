@@ -1,0 +1,207 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:2105ef6fde2acd2661229e056e45544f1ba26e7bb029731995d2b6ed475824dc",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "operator_decision"
+      },
+      "decision_id": {
+        "type": "string",
+        "pattern": "^odec_[\\w-]+$"
+      },
+      "mission_ref": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      },
+      "operator_id": {
+        "type": "string",
+        "pattern": "^op_[\\w-]+$"
+      },
+      "authored_by": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "operator_owner"
+              },
+              "operator_id": {
+                "type": "string",
+                "pattern": "^op_[\\w-]+$"
+              }
+            },
+            "required": [
+              "kind",
+              "operator_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "team_member"
+              },
+              "member_id": {
+                "type": "string",
+                "pattern": "^mem_[\\w-]+$"
+              },
+              "role_at_signing": {
+                "type": "string",
+                "enum": [
+                  "standard",
+                  "admin"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "member_id",
+              "role_at_signing"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "partner_admin"
+              },
+              "partner_operator_id": {
+                "type": "string",
+                "pattern": "^op_[\\w-]+$"
+              },
+              "member_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^mem_[\\w-]+$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "partner_operator_id",
+              "member_id"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "action": {
+        "type": "string",
+        "enum": [
+          "checkout_approved",
+          "checkout_blocked",
+          "security_events_dismissed",
+          "agent_suspended",
+          "future_warning_block_enabled",
+          "future_critical_block_enabled",
+          "governance_approved",
+          "governance_rejected"
+        ]
+      },
+      "effect": {
+        "type": "string",
+        "enum": [
+          "checkout_released",
+          "checkout_blocked_and_agent_blocked",
+          "security_events_resolved",
+          "agent_suspended_and_events_resolved",
+          "checkouts_released_and_agent_warning_policy_set_to_block",
+          "checkouts_released_and_agent_critical_policy_set_to_block",
+          "governance_approval_approved",
+          "governance_approval_rejected"
+        ]
+      },
+      "effect_scope": {
+        "type": "string",
+        "enum": [
+          "mission",
+          "agent_global"
+        ]
+      },
+      "source_refs": {
+        "type": "object",
+        "properties": {
+          "checkout_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^cout_[\\w-]+$"
+            },
+            "maxItems": 100,
+            "default": []
+          },
+          "security_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^sevt_[\\w-]+$"
+            },
+            "maxItems": 100,
+            "default": []
+          },
+          "detector_claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "maxItems": 100,
+            "default": []
+          },
+          "approval_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^gvr_[\\w-]+$"
+            },
+            "maxItems": 100,
+            "default": []
+          }
+        },
+        "additionalProperties": false
+      },
+      "target_agent_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^(ag|agt)_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "decided_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "type",
+      "decision_id",
+      "mission_ref",
+      "operator_id",
+      "authored_by",
+      "action",
+      "effect",
+      "effect_scope",
+      "source_refs",
+      "target_agent_id",
+      "decided_at_ms"
+    ],
+    "additionalProperties": false
+  }
+}

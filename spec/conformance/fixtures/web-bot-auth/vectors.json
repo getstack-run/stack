@@ -1,0 +1,115 @@
+{
+  "description": "Web Bot Auth test vectors. Regenerate with `node spec/conformance/scripts/build-web-bot-auth-vectors.mjs`. The key is the RFC 9421 appendix B.1.4 TEST key. `base` is the signature base (lines joined by a newline, no trailing newline); `signature` is the standard base64 Ed25519 signature over it.",
+  "key": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs",
+    "d": "n4Ni-HpISpVObnQMW0wOhCKROaIKqKtW_2ZYb2p9KcU",
+    "thumbprint": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+  },
+  "now": 1790000000,
+  "vectors": [
+    {
+      "id": "rfc9421-b26",
+      "source": "RFC 9421 appendix B.2.6",
+      "message": {
+        "method": "POST",
+        "url": "https://example.com/foo?param=Value&Pet=dog",
+        "headers": {
+          "date": "Tue, 20 Apr 2021 02:07:55 GMT",
+          "content-type": "application/json",
+          "content-length": "18"
+        }
+      },
+      "covered": [
+        "date",
+        "@method",
+        "@path",
+        "@authority",
+        "content-type",
+        "content-length"
+      ],
+      "base": "\"date\": Tue, 20 Apr 2021 02:07:55 GMT\n\"@method\": POST\n\"@path\": /foo\n\"@authority\": example.com\n\"content-type\": application/json\n\"content-length\": 18\n\"@signature-params\": (\"date\" \"@method\" \"@path\" \"@authority\" \"content-type\" \"content-length\");created=1618884473;keyid=\"test-key-ed25519\"",
+      "signature": "wqcAqbmYJ2ji2glfAMaRy4gruYYnx2nEFN2HN6jrnDnQCK1u02Gb04v9EDgwUPiu4A0w6vuQv5lIp5WPpBKRCw=="
+    },
+    {
+      "id": "web-bot-auth-draft-a21",
+      "source": "draft-meunier-web-bot-auth-architecture appendix A.2.1",
+      "message": {
+        "method": "GET",
+        "url": "https://example.com/path/to/resource",
+        "headers": {}
+      },
+      "covered": [
+        "@authority"
+      ],
+      "base": "\"@authority\": example.com\n\"@signature-params\": (\"@authority\");created=1735689600;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=4889289600;nonce=\"g0iqFa9e1ffijlyOScDkXpfSmTbYpRNSGPJrQ1It20ahwgzB3jOUcdgLgFxUg7RMtW4V8IILaKKtA+YuSyIgJQ==\";tag=\"web-bot-auth\"",
+      "signature": "FFASViSdcgsyaqqYiCnkHreeZzbNKcTzDvZC5uVlP/dn9IbWj8j0o4wKFTH3rBnUiSUBduwm1Gp5VlIPCp01Ag=="
+    },
+    {
+      "id": "web-bot-auth-draft-a22",
+      "source": "draft-meunier-web-bot-auth-architecture appendix A.2.2 (the Signature-Agent member covered)",
+      "message": {
+        "method": "GET",
+        "url": "https://example.com/",
+        "headers": {
+          "signature-agent": "agent2=\"https://signature-agent.test\""
+        }
+      },
+      "covered": [
+        "@authority",
+        "signature-agent;key=\"agent2\""
+      ],
+      "base": "\"@authority\": example.com\n\"signature-agent\";key=\"agent2\": \"https://signature-agent.test\"\n\"@signature-params\": (\"@authority\" \"signature-agent\";key=\"agent2\");created=1735689600;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=4889289600;tag=\"web-bot-auth\"",
+      "signature": "n3KGXSgNi9ppHDf9paRO5V7nBkqxAAtNUNx5C+hemX9xqDKcuRlf8/mCJoIS083NBh8YaPOoE2XUUCoEP9F+Cg=="
+    },
+    {
+      "id": "stack-request-with-directory",
+      "source": "STACK profile, section 3: a request that names a directory",
+      "message": {
+        "method": "GET",
+        "url": "https://shop.example/products/42?utm=1",
+        "headers": {
+          "signature-agent": "sig1=\"https://agent.example\""
+        }
+      },
+      "headers": {
+        "signature-input": "sig1=(\"@authority\" \"@method\" \"@path\" \"signature-agent\";key=\"sig1\");created=1790000000;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=1790000300;nonce=\"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ\";tag=\"web-bot-auth\"",
+        "signature": "sig1=:Mu6RXTr9GPebOkQuKqkHzXvtjDlNIdXGEsl5BXPXZIPBEqEHTsZpElJacr0cPOp2WaYWRXo11EojeNIMLyQgDg==:",
+        "signature-agent": "sig1=\"https://agent.example\""
+      },
+      "base": "\"@authority\": shop.example\n\"@method\": GET\n\"@path\": /products/42\n\"signature-agent\";key=\"sig1\": \"https://agent.example\"\n\"@signature-params\": (\"@authority\" \"@method\" \"@path\" \"signature-agent\";key=\"sig1\");created=1790000000;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=1790000300;nonce=\"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ\";tag=\"web-bot-auth\"",
+      "signature": "Mu6RXTr9GPebOkQuKqkHzXvtjDlNIdXGEsl5BXPXZIPBEqEHTsZpElJacr0cPOp2WaYWRXo11EojeNIMLyQgDg=="
+    },
+    {
+      "id": "stack-request-no-directory-port-and-query",
+      "source": "STACK profile, section 3: no Signature-Agent, an upper-case host with a port, an escaped path and a query",
+      "message": {
+        "method": "POST",
+        "url": "https://Shop.Example:8443/a%20b?x=1",
+        "headers": {}
+      },
+      "headers": {
+        "signature-input": "sig1=(\"@authority\" \"@method\" \"@path\");created=1790000000;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=1790000300;nonce=\"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ\";tag=\"web-bot-auth\"",
+        "signature": "sig1=:x5LjsihuzxyRhJxx1D8swZTaha21Gkir+p5HEWBcw6lYRqT+rki1lbZckJZpp2yfD6LgpOHuaZcN6x0pFRbKCA==:"
+      },
+      "base": "\"@authority\": shop.example:8443\n\"@method\": POST\n\"@path\": /a%20b\n\"@signature-params\": (\"@authority\" \"@method\" \"@path\");created=1790000000;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=1790000300;nonce=\"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ\";tag=\"web-bot-auth\"",
+      "signature": "x5LjsihuzxyRhJxx1D8swZTaha21Gkir+p5HEWBcw6lYRqT+rki1lbZckJZpp2yfD6LgpOHuaZcN6x0pFRbKCA=="
+    },
+    {
+      "id": "stack-directory-response",
+      "source": "STACK profile, section 5: the directory of one key, asked at agent.example",
+      "authority": "agent.example",
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/http-message-signatures-directory+json",
+          "cache-control": "public, max-age=300",
+          "signature": "sig1=:l9oDqfqU7Amxr8AiAXub1u2zoKAy/zCRpzbmfaXhK5Q5EjidG8w0p50T/hGbZ3dY6xcNZnHFnYYxX2VdwDjVAQ==:",
+          "signature-input": "sig1=(\"@authority\";req);created=1790000000;keyid=\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\";alg=\"ed25519\";expires=1790086400;tag=\"http-message-signatures-directory\""
+        },
+        "body": "{\"keys\":[{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"x\":\"JrQLj5P_89iXES9-vFgrIy29clF9CC_oPPsw3c5D0bs\",\"kid\":\"poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U\",\"use\":\"sig\",\"nbf\":1789996400}]}"
+      }
+    }
+  ]
+}

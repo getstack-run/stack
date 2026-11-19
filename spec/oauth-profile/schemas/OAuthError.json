@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthError",
+  "title": "OAuthError",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error_description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "error"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:8d52ee204de567dbf6e498a4c619d8d246915fadbde1010dfc9e5e5dc71e9d4f",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "identity_claim"
+      },
+      "identity_claim_row_id": {
+        "type": "string"
+      },
+      "provider_key": {
+        "type": "string"
+      },
+      "layer": {
+        "type": "string",
+        "enum": [
+          "humanity",
+          "identity",
+          "delegation"
+        ]
+      },
+      "claim_type": {
+        "type": "string"
+      },
+      "assurance_level": {
+        "type": "string",
+        "enum": [
+          "low",
+          "substantial",
+          "high"
+        ]
+      },
+      "verified_at": {
+        "type": "integer"
+      },
+      "expires_at": {
+        "type": "integer"
+      },
+      "assertion_hash": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "delegated_scopes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "type",
+      "identity_claim_row_id",
+      "provider_key",
+      "layer",
+      "claim_type",
+      "assurance_level",
+      "verified_at",
+      "expires_at",
+      "assertion_hash"
+    ],
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:provider-interface:1:OpenAgentAccountInput",
+  "title": "OpenAgentAccountInput",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "monthly_budget_cents": {
+      "type": "integer",
+      "minimum": 100
+    },
+    "phone": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string",
+          "enum": [
+            "US",
+            "CA"
+          ]
+        },
+        "area_code": {
+          "type": "string",
+          "pattern": "^\\d{3}$"
+        },
+        "number_type": {
+          "type": "string",
+          "enum": [
+            "local",
+            "toll_free"
+          ]
+        }
+      },
+      "required": [
+        "country"
+      ],
+      "additionalProperties": false
+    },
+    "wallet": {
+      "type": "object",
+      "properties": {
+        "agent_public_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]{86,90}={0,2}$"
+        },
+        "per_payment_cap_usdc": {
+          "type": "number",
+          "minimum": 0.000001,
+          "maximum": 9007199254.740992
+        },
+        "daily_cap_usdc": {
+          "type": "number",
+          "minimum": 0.000001,
+          "maximum": 9007199254.740992
+        }
+      },
+      "required": [
+        "agent_public_key"
+      ],
+      "additionalProperties": false
+    },
+    "inbox": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 253,
+          "pattern": "^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$"
+        }
+      },
+      "required": [
+        "domain"
+      ],
+      "additionalProperties": false
+    },
+    "skip": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "inbox",
+          "phone",
+          "browser",
+          "card",
+          "wallet",
+          "making",
+          "workspace"
+        ]
+      },
+      "maxItems": 7,
+      "default": []
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+}

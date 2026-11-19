@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:partner:1:CreateInboundWebhookInput",
+  "title": "CreateInboundWebhookInput",
+  "type": "object",
+  "properties": {
+    "provider": {
+      "type": "string",
+      "enum": [
+        "agentmail",
+        "generic"
+      ]
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "forward_url": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "generic_config": {
+      "type": "object",
+      "properties": {
+        "signature_header": {
+          "type": "string",
+          "minLength": 1,
+          "default": "X-Webhook-Signature"
+        },
+        "signature_algorithm": {
+          "type": "string",
+          "enum": [
+            "hmac-sha256",
+            "hmac-sha1"
+          ],
+          "default": "hmac-sha256"
+        },
+        "dedupe_key_path": {
+          "type": "string",
+          "minLength": 1,
+          "default": "id"
+        },
+        "content_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "provider",
+    "agent_id"
+  ],
+  "additionalProperties": false
+}

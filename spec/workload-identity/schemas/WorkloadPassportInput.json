@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:workload-identity:1:WorkloadPassportInput",
+  "title": "WorkloadPassportInput",
+  "type": "object",
+  "properties": {
+    "mission_id": {
+      "type": "string",
+      "pattern": "^ms_[\\w-]+$"
+    }
+  },
+  "required": [
+    "mission_id"
+  ],
+  "additionalProperties": false
+}

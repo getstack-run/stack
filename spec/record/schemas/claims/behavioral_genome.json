@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:0e097a947407083aed4b04eb39c0e45f756ff980afba581651e441a46c9b1ed1",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "behavioral_genome"
+      },
+      "passport_jti": {
+        "type": "string",
+        "minLength": 1
+      },
+      "window_start_ms": {
+        "type": "integer"
+      },
+      "window_end_ms": {
+        "type": "integer"
+      },
+      "call_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "mean_latency_ms": {
+        "type": "number",
+        "minimum": 0
+      },
+      "stddev_latency_ms": {
+        "type": "number",
+        "minimum": 0
+      },
+      "mean_request_bytes": {
+        "type": "number",
+        "minimum": 0
+      },
+      "stddev_request_bytes": {
+        "type": "number",
+        "minimum": 0
+      },
+      "mean_response_bytes": {
+        "type": "number",
+        "minimum": 0
+      },
+      "stddev_response_bytes": {
+        "type": "number",
+        "minimum": 0
+      },
+      "mean_request_entropy": {
+        "type": "number",
+        "minimum": 0
+      },
+      "stddev_request_entropy": {
+        "type": "number",
+        "minimum": 0
+      },
+      "mean_response_entropy": {
+        "type": "number",
+        "minimum": 0
+      },
+      "stddev_response_entropy": {
+        "type": "number",
+        "minimum": 0
+      },
+      "error_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "scope_histogram": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "default": {}
+      },
+      "time_of_day_histogram": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minItems": 24,
+        "maxItems": 24
+      },
+      "mean_prompt_tokens": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0
+      },
+      "stddev_prompt_tokens": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0
+      },
+      "mean_completion_tokens": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0
+      },
+      "stddev_completion_tokens": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0
+      },
+      "model_distribution": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "default": {}
+      },
+      "prior_genome_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "passport_jti",
+      "window_start_ms",
+      "window_end_ms",
+      "call_count",
+      "mean_latency_ms",
+      "stddev_latency_ms",
+      "mean_request_bytes",
+      "stddev_request_bytes",
+      "mean_response_bytes",
+      "stddev_response_bytes",
+      "mean_request_entropy",
+      "stddev_request_entropy",
+      "mean_response_entropy",
+      "stddev_response_entropy",
+      "error_rate",
+      "time_of_day_histogram",
+      "prior_genome_ref"
+    ],
+    "additionalProperties": false
+  }
+}

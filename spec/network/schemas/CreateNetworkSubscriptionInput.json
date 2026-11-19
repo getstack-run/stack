@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:CreateNetworkSubscriptionInput",
+  "title": "CreateNetworkSubscriptionInput",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2000
+    },
+    "installs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+      },
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "url"
+  ],
+  "additionalProperties": false
+}

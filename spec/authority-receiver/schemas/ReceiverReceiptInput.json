@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:ReceiverReceiptInput",
+  "title": "ReceiverReceiptInput",
+  "type": "object",
+  "properties": {
+    "native_format": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "signed_receipt": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000000
+    }
+  },
+  "required": [
+    "native_format",
+    "signed_receipt"
+  ],
+  "additionalProperties": false
+}

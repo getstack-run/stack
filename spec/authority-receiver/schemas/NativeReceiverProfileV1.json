@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:NativeReceiverProfileV1",
+  "title": "NativeReceiverProfileV1",
+  "type": "object",
+  "properties": {
+    "receiver_id": {
+      "type": "string",
+      "pattern": "^rcv_[\\w-]+$"
+    },
+    "protocol": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "key",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "audience": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "request_authentication": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "signing_key_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "allowed_algs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "EdDSA",
+              "ES256"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "maximum_age_seconds": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 120
+        }
+      },
+      "required": [
+        "method",
+        "signing_key_ids",
+        "allowed_algs",
+        "maximum_age_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "delivery": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https:\\/\\/"
+        },
+        "mode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "encryption_key_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "allowed_key_management_algs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "const": "ECDH-ES+A256KW"
+          },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "allowed_content_encryption_algs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "const": "A256GCM"
+          },
+          "minItems": 1,
+          "maxItems": 1
+        }
+      },
+      "required": [
+        "endpoint",
+        "mode",
+        "encryption_key_ids",
+        "allowed_key_management_algs",
+        "allowed_content_encryption_algs"
+      ],
+      "additionalProperties": false
+    },
+    "accepted_proofs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "proof_kind": {
+            "type": "string",
+            "enum": [
+              "identity",
+              "capacity",
+              "mandate",
+              "consent",
+              "signature",
+              "domain",
+              "workload"
+            ]
+          },
+          "profile_version_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^apv_[\\w-]+$"
+            },
+            "minItems": 1,
+            "maxItems": 64
+          },
+          "issuer_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "maxItems": 256
+          },
+          "minimum_assurance_uri": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maximum_age_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "live_status_required": {
+            "type": "boolean"
+          },
+          "evidence_modes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "predicate",
+                "pairwise",
+                "exact_private",
+                "issuer_evidence",
+                "status_only"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 5
+          }
+        },
+        "required": [
+          "proof_kind",
+          "profile_version_ids",
+          "issuer_ids",
+          "minimum_assurance_uri",
+          "maximum_age_seconds",
+          "live_status_required",
+          "evidence_modes"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 128
+    },
+    "required_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "allowed_modes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "predicate",
+                "pairwise",
+                "exact_private",
+                "issuer_evidence",
+                "status_only"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "lawful_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "retention_rule": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              {
+                "type": "array",
+                "items": {}
+              },
+              {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            ]
+          }
+        },
+        "required": [
+          "fact_id",
+          "allowed_modes",
+          "purpose",
+          "lawful_basis",
+          "retention_rule"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 256
+    },
+    "approval_policy": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {}
+          },
+          {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        ]
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "signing_key_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "maxItems": 64
+        },
+        "allowed_algs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "EdDSA",
+              "ES256"
+            ]
+          },
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "required",
+        "signing_key_ids",
+        "allowed_algs"
+      ],
+      "additionalProperties": false
+    },
+    "live_status_required": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "receiver_id",
+    "protocol",
+    "audience",
+    "request_authentication",
+    "delivery",
+    "accepted_proofs",
+    "required_facts",
+    "approval_policy",
+    "receipt"
+  ],
+  "additionalProperties": false
+}

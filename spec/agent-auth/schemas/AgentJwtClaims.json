@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:AgentJwtClaims",
+  "title": "AgentJwtClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "const": "stack-sdk"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:agent"
+    },
+    "sub": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,128}$"
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "nbf": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,200}$"
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "sub",
+    "iat",
+    "exp",
+    "jti"
+  ],
+  "additionalProperties": false
+}

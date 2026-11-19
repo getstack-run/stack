@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-identity:1:AgentIdentityLookupQuery",
+  "title": "AgentIdentityLookupQuery",
+  "type": "object",
+  "properties": {
+    "key_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "site": {
+      "type": "string",
+      "maxLength": 253,
+      "pattern": "^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$"
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^agt_[A-Za-z0-9_-]{21}$"
+    }
+  },
+  "additionalProperties": false
+}

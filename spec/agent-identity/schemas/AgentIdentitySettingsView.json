@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-identity:1:AgentIdentitySettingsView",
+  "title": "AgentIdentitySettingsView",
+  "type": "object",
+  "properties": {
+    "account_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "show_name": {
+      "type": "boolean"
+    },
+    "urls": {
+      "type": "object",
+      "properties": {
+        "lookup": {
+          "type": "string"
+        },
+        "agent_card": {
+          "type": "string"
+        },
+        "mcp_server_card": {
+          "type": "string"
+        },
+        "key_directory": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lookup",
+        "agent_card",
+        "mcp_server_card",
+        "key_directory"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "account_id",
+    "agent_id",
+    "enabled",
+    "show_name",
+    "urls"
+  ],
+  "additionalProperties": false
+}

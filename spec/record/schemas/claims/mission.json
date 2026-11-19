@@ -1,0 +1,278 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:30570bdd0fa8e71d70c53f3fd78453d97ddfb03873e1f10ad571639e616e13ae",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "mission"
+      },
+      "mission_id": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      },
+      "assigned_agent_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "authorization_digest": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "output_digest": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "operator_id": {
+        "type": "string"
+      },
+      "passport_jti": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "default": null
+      },
+      "intent_summary": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "intent_services": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": []
+      },
+      "baseline_profile": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "behavioral_diff": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "max_z": {
+                "type": "number"
+              },
+              "l2_norm": {
+                "type": "number"
+              },
+              "per_dimension": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              }
+            },
+            "required": [
+              "max_z",
+              "l2_norm",
+              "per_dimension"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "expected_output_shape": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "expected_counterparties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": []
+      },
+      "max_actions": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "max_dropoff_bytes": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "coverage_cap_cents": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "max_duration_seconds": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "max_concurrent_intents": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "max_actions_per_service": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "default": {}
+      },
+      "cap_behavior": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string",
+          "enum": [
+            "auto_revoke",
+            "deny_and_flag"
+          ]
+        },
+        "propertyNames": {
+          "enum": [
+            "coverage_cap_cents",
+            "max_dropoff_bytes",
+            "max_concurrent_intents",
+            "max_actions",
+            "max_duration_seconds",
+            "max_actions_per_service"
+          ]
+        },
+        "default": {}
+      },
+      "started_at": {
+        "type": "integer"
+      },
+      "expires_at": {
+        "type": "integer"
+      },
+      "completed_at": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "terminal_state": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "completed_successful",
+              "completed_expired",
+              "completed_cap_breached",
+              "revoked_adversarial",
+              "revoked_operator_clean"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "revoke_reason": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "adversarial",
+              "cap_breach_hard",
+              "operator_initiated_clean",
+              "cascade_from_passport"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "type",
+      "mission_id",
+      "operator_id",
+      "intent_summary",
+      "started_at",
+      "expires_at"
+    ],
+    "additionalProperties": false
+  }
+}

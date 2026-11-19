@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:44035bc9fcfe79766ead5c2a06035b39b99ca5a405ba358b38dad37cf12ed40d",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "skill_invocation"
+      },
+      "invocation_id": {
+        "type": "string",
+        "pattern": "^inv_[\\w-]+$"
+      },
+      "skill_id": {
+        "type": "string"
+      },
+      "provider_operator_id": {
+        "type": "string"
+      },
+      "execution_mode": {
+        "type": "string",
+        "enum": [
+          "sealed",
+          "open",
+          "source"
+        ]
+      },
+      "input_hash": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "submitted",
+          "completed",
+          "failed"
+        ]
+      },
+      "output_hash": {
+        "type": "string"
+      },
+      "duration_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "cost_actual": {
+        "type": "object",
+        "properties": {
+          "wallet_cents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "tokens": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "wallet_cents",
+          "tokens"
+        ],
+        "additionalProperties": false
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "at": {
+        "type": "integer"
+      },
+      "mission_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^ms_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "invocation_id",
+      "skill_id",
+      "provider_operator_id",
+      "execution_mode",
+      "input_hash",
+      "status",
+      "at"
+    ],
+    "additionalProperties": false
+  }
+}

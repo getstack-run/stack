@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:sso-login:1:SsoDomainAddInput",
+  "title": "SsoDomainAddInput",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253
+    }
+  },
+  "required": [
+    "domain"
+  ],
+  "additionalProperties": false
+}

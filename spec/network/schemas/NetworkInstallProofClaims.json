@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:NetworkInstallProofClaims",
+  "title": "NetworkInstallProofClaims",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "iss": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "sub": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "aud": {
+          "type": "string",
+          "const": "stack:network"
+        },
+        "iat": {
+          "type": "integer"
+        },
+        "exp": {
+          "type": "integer"
+        },
+        "jti": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,64}$"
+        },
+        "act": {
+          "type": "string",
+          "const": "rules"
+        }
+      },
+      "required": [
+        "iss",
+        "sub",
+        "aud",
+        "iat",
+        "exp",
+        "jti",
+        "act"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "iss": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "sub": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "aud": {
+          "type": "string",
+          "const": "stack:network"
+        },
+        "iat": {
+          "type": "integer"
+        },
+        "exp": {
+          "type": "integer"
+        },
+        "jti": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,64}$"
+        },
+        "act": {
+          "type": "string",
+          "const": "classify"
+        }
+      },
+      "required": [
+        "iss",
+        "sub",
+        "aud",
+        "iat",
+        "exp",
+        "jti",
+        "act"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "iss": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "sub": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "aud": {
+          "type": "string",
+          "const": "stack:network"
+        },
+        "iat": {
+          "type": "integer"
+        },
+        "exp": {
+          "type": "integer"
+        },
+        "jti": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,64}$"
+        },
+        "act": {
+          "type": "string",
+          "const": "countersign"
+        },
+        "pd": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        },
+        "pjti": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 3600
+        }
+      },
+      "required": [
+        "iss",
+        "sub",
+        "aud",
+        "iat",
+        "exp",
+        "jti",
+        "act",
+        "pd"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "iss": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "sub": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "aud": {
+          "type": "string",
+          "const": "stack:network"
+        },
+        "iat": {
+          "type": "integer"
+        },
+        "exp": {
+          "type": "integer"
+        },
+        "jti": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,64}$"
+        },
+        "act": {
+          "type": "string",
+          "const": "revoke"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "passport",
+            "agent",
+            "key",
+            "install"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "unspecified",
+            "key_compromise",
+            "agent_decommissioned",
+            "superseded",
+            "policy_violation",
+            "owner_request"
+          ]
+        }
+      },
+      "required": [
+        "iss",
+        "sub",
+        "aud",
+        "iat",
+        "exp",
+        "jti",
+        "act",
+        "kind",
+        "subject"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

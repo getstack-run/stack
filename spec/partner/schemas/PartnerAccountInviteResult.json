@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:partner:1:PartnerAccountInviteResult",
+  "title": "PartnerAccountInviteResult",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "invited"
+    },
+    "expires_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

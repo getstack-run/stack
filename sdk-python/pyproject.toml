@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "getstack"
+version = "4.4.0"
+description = "Python SDK for STACK — trust infrastructure for AI agents"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [{ name = "STACK", email = "hello@getstack.run" }]
+keywords = ["ai", "agents", "trust", "passport", "mcp", "stack"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "httpx>=0.25.0",
+    # The agent-keypair runtime needs Ed25519 sign + verify and
+    # JWT mint. cryptography is the de-facto standalone Ed25519 lib in
+    # the Python ecosystem; ~10MB install. Pinned to a major to avoid
+    # surprise breakage but minor floats.
+    "cryptography>=42.0.0",
+    # PyJWT for agent JWT minting; pure-Python, tiny (~50KB), no native
+    # deps beyond cryptography (which we already need).
+    "pyjwt>=2.8.0",
+    # cbor2 for customer-managed COSE_Sign1 claim signing (sign_claim.py).
+    # Pure-Python CBOR; produces byte-compatible output with the JS SDK's
+    # cbor-x for the COSE sig structure (proven by the cross-language
+    # round-trip test).
+    "cbor2>=5.6.0",
+]
+
+[project.urls]
+Homepage = "https://getstack.run"
+Documentation = "https://getstack.run/docs/sdk"
+Repository = "https://github.com/getstack-run/stack/tree/main/sdk-python"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/getstack"]
+
+[project.optional-dependencies]
+# The live stream of a call (AccountCallsService.live) is a WebSocket.
+live = ["websockets>=13.0"]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.9.0",
+    "mypy>=1.13.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort import order
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "RUF", # ruff-specific rules
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["getstack"]
+
+[tool.mypy]
+strict = true
+mypy_path = "src"
+files = ["src"]
+
+[[tool.mypy.overrides]]
+# websockets is the optional "live" extra: the live stream of a call imports it only when it is used.
+module = ["websockets", "websockets.*"]
+ignore_missing_imports = true

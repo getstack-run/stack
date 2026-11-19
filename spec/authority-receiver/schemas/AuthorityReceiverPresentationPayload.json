@@ -1,0 +1,862 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityReceiverPresentationPayload",
+  "title": "AuthorityReceiverPresentationPayload",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048
+    },
+    "aud": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^pjt_[\\w-]+$"
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exp": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "authority_use_id": {
+      "type": "string",
+      "pattern": "^aus_[\\w-]+$"
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^(ag|agt)_[\\w-]+$"
+    },
+    "agent_key_thumbprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "binding_ref": {
+      "type": "object",
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "pattern": "^abn_[\\w-]+$"
+        },
+        "binding_version": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "binding_claim_id": {
+          "type": "string",
+          "pattern": "^pc_[\\w-]+$"
+        },
+        "binding_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "receiver_id": {
+          "type": "string",
+          "pattern": "^rcv_[\\w-]+$"
+        },
+        "receiver_profile_version_id": {
+          "type": "string",
+          "pattern": "^apv_[\\w-]+$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "binding_id",
+        "binding_version",
+        "binding_claim_id",
+        "binding_digest",
+        "receiver_id",
+        "receiver_profile_version_id",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "principal_ref": {
+      "type": "string",
+      "pattern": "^prn_[\\w-]+$"
+    },
+    "mission_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^ms_[\\w-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "action_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z][A-Za-z0-9._:/-]*$"
+    },
+    "resource_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "receiver_id": {
+      "type": "string",
+      "pattern": "^rcv_[\\w-]+$"
+    },
+    "receiver_profile_version_id": {
+      "type": "string",
+      "pattern": "^apv_[\\w-]+$"
+    },
+    "domain_profile_version_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^apv_[\\w-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proof_profile_version_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^apv_[\\w-]+$"
+      },
+      "maxItems": 256
+    },
+    "live_check_time": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "proof_id": {
+            "type": "string",
+            "pattern": "^prf_[\\w-]+$"
+          },
+          "proof_version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "principal_identity",
+              "authoriser_identity",
+              "authoriser_capacity",
+              "mandate",
+              "consent",
+              "domain"
+            ]
+          },
+          "authoriser_principal_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^prn_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "group_key_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "profile_version_id": {
+            "type": "string",
+            "pattern": "^apv_[\\w-]+$"
+          },
+          "issuer_identifier": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "schema_uri": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "schema_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "assurance_uri": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "evidence_modes": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "predicate",
+                    "pairwise",
+                    "exact_private",
+                    "issuer_evidence",
+                    "status_only"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "const": "none"
+                }
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "valid",
+              "unknown",
+              "revoked"
+            ]
+          }
+        },
+        "required": [
+          "proof_id",
+          "proof_version",
+          "role",
+          "authoriser_principal_id",
+          "group_key_hash",
+          "profile_version_id",
+          "issuer_identifier",
+          "schema_uri",
+          "schema_version",
+          "assurance_uri",
+          "evidence_digest",
+          "evidence_modes",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 256
+    },
+    "approval_claim_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "claim_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "activation",
+              "action",
+              "presentation"
+            ]
+          }
+        },
+        "required": [
+          "claim_id",
+          "claim_hash",
+          "phase"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 256
+    },
+    "approval_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": {
+            "type": "string",
+            "enum": [
+              "activation",
+              "action",
+              "presentation"
+            ]
+          },
+          "group_key_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "required_weight": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "collected_weight": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reject_mode": {
+            "type": "string",
+            "enum": [
+              "any_reject",
+              "threshold_reject"
+            ]
+          },
+          "request_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "approval_requirement_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "satisfied",
+              "rejected",
+              "expired",
+              "consumed",
+              "cancelled"
+            ]
+          },
+          "decision_claim_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "claim_id": {
+                  "type": "string",
+                  "pattern": "^pc_[\\w-]+$"
+                },
+                "claim_hash": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "claim_id",
+                "claim_hash"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 256
+          }
+        },
+        "required": [
+          "phase",
+          "group_key_hash",
+          "required_weight",
+          "collected_weight",
+          "reject_mode",
+          "request_hash",
+          "approval_requirement_hash",
+          "status",
+          "decision_claim_refs"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 256
+    },
+    "proof_strength": {
+      "type": "string",
+      "enum": [
+        "native_issuer_evidence",
+        "native_stack_attestation",
+        "proxy_stack_enforced"
+      ]
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "disclosed_facts": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "proof_id": {
+                "type": "string",
+                "pattern": "^prf_[\\w-]+$"
+              },
+              "assertion_source": {
+                "type": "string",
+                "const": "stack_derived"
+              },
+              "proof_strength": {
+                "type": "string",
+                "const": "native_stack_attestation"
+              },
+              "provenance": {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  ]
+                }
+              },
+              "mode": {
+                "type": "string",
+                "const": "exact_private"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {}
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  }
+                ]
+              }
+            },
+            "required": [
+              "fact_id",
+              "proof_id",
+              "assertion_source",
+              "proof_strength",
+              "provenance",
+              "mode",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "proof_id": {
+                "type": "string",
+                "pattern": "^prf_[\\w-]+$"
+              },
+              "assertion_source": {
+                "type": "string",
+                "const": "stack_derived"
+              },
+              "proof_strength": {
+                "type": "string",
+                "const": "native_stack_attestation"
+              },
+              "provenance": {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  ]
+                }
+              },
+              "mode": {
+                "type": "string",
+                "const": "status_only"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "active",
+                  "suspended",
+                  "revoked",
+                  "replaced",
+                  "erased",
+                  "valid",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "fact_id",
+              "proof_id",
+              "assertion_source",
+              "proof_strength",
+              "provenance",
+              "mode",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "proof_id": {
+                "type": "string",
+                "pattern": "^prf_[\\w-]+$"
+              },
+              "assertion_source": {
+                "type": "string",
+                "const": "adapter_derived"
+              },
+              "proof_strength": {
+                "type": "string",
+                "const": "native_stack_attestation"
+              },
+              "provenance": {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  ]
+                }
+              },
+              "mode": {
+                "type": "string",
+                "const": "predicate"
+              },
+              "value": {
+                "type": "boolean"
+              },
+              "evidence_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "fact_id",
+              "proof_id",
+              "assertion_source",
+              "proof_strength",
+              "provenance",
+              "mode",
+              "value",
+              "evidence_digest"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "proof_id": {
+                "type": "string",
+                "pattern": "^prf_[\\w-]+$"
+              },
+              "assertion_source": {
+                "type": "string",
+                "const": "stack_derived"
+              },
+              "proof_strength": {
+                "type": "string",
+                "const": "native_stack_attestation"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "profile_version_id": {
+                    "type": "string",
+                    "pattern": "^apv_[\\w-]+$"
+                  },
+                  "method": {
+                    "type": "string",
+                    "const": "stack.core.hmac-sha256/v1"
+                  }
+                },
+                "required": [
+                  "profile_version_id",
+                  "method"
+                ],
+                "additionalProperties": false
+              },
+              "mode": {
+                "type": "string",
+                "const": "pairwise"
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^hmac-sha256:[A-Za-z0-9_-]{43}$"
+              },
+              "evidence_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "fact_id",
+              "proof_id",
+              "assertion_source",
+              "proof_strength",
+              "provenance",
+              "mode",
+              "value",
+              "evidence_digest"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "proof_id": {
+                "type": "string",
+                "pattern": "^prf_[\\w-]+$"
+              },
+              "assertion_source": {
+                "type": "string",
+                "const": "issuer_native"
+              },
+              "proof_strength": {
+                "type": "string",
+                "const": "native_issuer_evidence"
+              },
+              "provenance": {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {}
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": {}
+                    }
+                  ]
+                }
+              },
+              "mode": {
+                "type": "string",
+                "const": "issuer_evidence"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {}
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  }
+                ]
+              },
+              "evidence_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "fact_id",
+              "proof_id",
+              "assertion_source",
+              "proof_strength",
+              "provenance",
+              "mode",
+              "value",
+              "evidence_digest"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "maxItems": 256
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "jti",
+    "iat",
+    "exp",
+    "authority_use_id",
+    "agent_id",
+    "agent_key_thumbprint",
+    "binding_ref",
+    "principal_ref",
+    "mission_id",
+    "action_uri",
+    "resource_hash",
+    "request_hash",
+    "receiver_id",
+    "receiver_profile_version_id",
+    "domain_profile_version_id",
+    "proof_profile_version_ids",
+    "live_check_time",
+    "evidence_refs",
+    "approval_claim_refs",
+    "approval_requirements",
+    "proof_strength",
+    "nonce",
+    "disclosed_facts"
+  ],
+  "additionalProperties": false
+}

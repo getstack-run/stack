@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:sso-login:1:OidcIdpConfigCreateInput",
+  "title": "OidcIdpConfigCreateInput",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "issuer_uri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https:\\/\\/"
+    },
+    "client_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "client_secret": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "audience": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "not": {}
+            },
+            {
+              "type": "string",
+              "maxLength": 512
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "redirect_uri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https:\\/\\/"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "claim_mapping_policy": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "not": {}
+            },
+            {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "jwks_cache_ttl_seconds": {
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 3600
+    },
+    "allowed_return_origins": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "not": {}
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https:\\/\\/"
+              },
+              "maxItems": 10
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sso_slug": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "not": {}
+            },
+            {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 63,
+              "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "default_member_role": {
+      "type": "string",
+      "enum": [
+        "readonly",
+        "standard",
+        "admin"
+      ]
+    },
+    "active": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "issuer_uri",
+    "client_id",
+    "client_secret",
+    "redirect_uri"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityStatusCheckInput",
+  "title": "AuthorityStatusCheckInput",
+  "type": "object",
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "pattern": "^abn_[\\w-]+$"
+    },
+    "binding_claim_id": {
+      "type": "string",
+      "pattern": "^pc_[\\w-]+$"
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^(ag|agt)_[\\w-]+$"
+    },
+    "agent_key_thumbprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "mission_id": {
+      "type": "string",
+      "pattern": "^ms_[\\w-]+$"
+    },
+    "action_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z][A-Za-z0-9._:/-]*$"
+    },
+    "receiver_request_id": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "resource_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "normalized_request": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {}
+          },
+          {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "binding_id",
+    "binding_claim_id",
+    "agent_id",
+    "agent_key_thumbprint",
+    "action_uri",
+    "receiver_request_id",
+    "request_hash",
+    "normalized_request"
+  ],
+  "additionalProperties": false
+}

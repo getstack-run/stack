@@ -1,0 +1,212 @@
+# A single-host install of the STACK engine: the API, the worker and the MCP
+# server, with Postgres, Valkey (a Redis-protocol server) and an S3-compatible archive
+# (SeaweedFS) beside them. Every image is pinned to an exact version: to move to a newer
+# one, change its tag here after reading the release notes.
+#
+#   ./init-secrets.sh            once: writes ./secrets and ./.env
+#   docker compose up -d         migrations run first, as their own step
+#   docker compose exec api stack-engine doctor
+#
+# Everything an operator sets is in .env (see env.example); every secret is a
+# file under ./secrets, mounted read-only and read through NAME_FILE settings.
+# Postgres and Redis are on a private network and publish no port. For a real
+# deployment, point DATABASE_URL and the archive at managed services instead
+# and delete the services you replace; nothing else changes.
+
+name: stack-engine
+
+x-engine-env: &engine-env
+  NODE_ENV: production
+  STACK_DEPLOYMENT: self_managed
+  STACK_API_BASE_URL: ${STACK_API_BASE_URL:?set STACK_API_BASE_URL in .env}
+  DASHBOARD_URL: ${DASHBOARD_URL:-}
+  STACK_MCP_BASE_URL: ${STACK_MCP_BASE_URL:-}
+  STACK_ISSUER: ${STACK_ISSUER:-}
+  STACK_SECURITY_CONTACT: ${STACK_SECURITY_CONTACT:-}
+  REDIS_URL: redis://redis:6379
+  DATABASE_URL_FILE: /run/secrets/database-url
+  API_KEY_PEPPER_FILE: /run/secrets/api-key-pepper
+  STACK_KEY_FILE: /run/secrets/stack-kek
+  MCP_ELICITATION_ATTESTATION_KEY_FILE: /run/secrets/mcp-attestation-key
+  SESSION_SIGNING_KEY_FILE: /run/secrets/session-signing-key
+  AUDIT_ARCHIVE_BUCKET: ${AUDIT_ARCHIVE_BUCKET:-stack-audit}
+  AUDIT_ARCHIVE_ENDPOINT: ${AUDIT_ARCHIVE_ENDPOINT:-http://archive:8333}
+  AUDIT_ARCHIVE_REGION: ${AUDIT_ARCHIVE_REGION:-us-east-1}
+  AWS_ACCESS_KEY_ID_FILE: /run/secrets/archive-access-key
+  AWS_SECRET_ACCESS_KEY_FILE: /run/secrets/archive-secret-key
+  STACK_EMAIL_TRANSPORT: ${STACK_EMAIL_TRANSPORT:-}
+  SMTP_URL: ${SMTP_URL:-}
+  EMAIL_FROM: ${EMAIL_FROM:-}
+  STACK_LICENCE_KEY: ${STACK_LICENCE_KEY:-}
+  STACK_NETWORK_URL: ${STACK_NETWORK_URL:-}
+  STACK_NETWORK_KEY: ${STACK_NETWORK_KEY:-}
+  STACK_NETWORK_RULES: ${STACK_NETWORK_RULES:-}
+  STACK_NETWORK_CLASSIFIER: ${STACK_NETWORK_CLASSIFIER:-}
+  STACK_INTENT_MODEL_URL: ${STACK_INTENT_MODEL_URL:-}
+  STACK_INTENT_MODEL_NAME: ${STACK_INTENT_MODEL_NAME:-}
+  STACK_INTENT_MODEL_KEY: ${STACK_INTENT_MODEL_KEY:-}
+  STACK_SIEM_SYSLOG_URL: ${STACK_SIEM_SYSLOG_URL:-}
+  STACK_SIEM_HTTP_URL: ${STACK_SIEM_HTTP_URL:-}
+  STACK_SIEM_STREAMS: ${STACK_SIEM_STREAMS:-}
+  OAUTH_ENABLED: ${OAUTH_ENABLED:-false}
+  OAUTH_SCOPE_ENFORCEMENT: ${OAUTH_ENABLED:-false}
+
+x-engine-secrets: &engine-secrets
+  - database-url
+  - api-key-pepper
+  - stack-kek
+  - session-signing-key
+  - archive-access-key
+  - archive-secret-key
+  - mcp-attestation-key
+
+x-engine-service: &engine-service
+  restart: unless-stopped
+  # The host user that owns ./secrets (init-secrets.sh writes these to .env), so the files can stay mode 0400.
+  user: "${STACK_UID:-1000}:${STACK_GID:-1000}"
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  networks: [backend]
+
+services:
+  postgres:
+    image: postgres:17.10-trixie
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: stack
+      POSTGRES_DB: stack
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+    secrets: [postgres-password]
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    networks: [backend]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stack -d stack"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Valkey (BSD-3-Clause) speaks the Redis protocol the engine uses and puts no limit on how it is used. The
+  # service keeps the name `redis` because that is the address in REDIS_URL.
+  redis:
+    image: valkey/valkey:8.1.10-alpine
+    restart: unless-stopped
+    command: ["valkey-server", "--appendonly", "yes"]
+    volumes: [redis-data:/data]
+    networks: [backend]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # S3-compatible store for the audit archive (SeaweedFS, Apache-2.0). Any
+  # S3 store works: point AUDIT_ARCHIVE_* at it and delete these two services.
+  archive:
+    image: ${ARCHIVE_IMAGE:-chrislusf/seaweedfs:4.48}
+    restart: unless-stopped
+    command: ["server", "-dir=/data", "-s3", "-s3.config=/run/secrets/archive-s3-config"]
+    secrets: [archive-s3-config]
+    volumes: [archive-data:/data]
+    networks: [backend]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9333/cluster/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  archive-bucket:
+    <<: *engine-service
+    image: ${STACK_ENGINE_API_IMAGE:-ghcr.io/getstack-run/stack-engine-api}:${STACK_ENGINE_VERSION:-0.1.0}
+    restart: "no"
+    command: ["stack-engine", "archive", "init"]
+    environment: *engine-env
+    secrets: *engine-secrets
+    depends_on:
+      archive: { condition: service_healthy }
+
+  # Database changes are their own step: nothing starts until they have been applied.
+  migrate:
+    <<: *engine-service
+    image: ${STACK_ENGINE_API_IMAGE:-ghcr.io/getstack-run/stack-engine-api}:${STACK_ENGINE_VERSION:-0.1.0}
+    restart: "no"
+    command: ["node", "apps/api/dist/db/migrate.js"]
+    environment: *engine-env
+    secrets: *engine-secrets
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  api:
+    <<: *engine-service
+    image: ${STACK_ENGINE_API_IMAGE:-ghcr.io/getstack-run/stack-engine-api}:${STACK_ENGINE_VERSION:-0.1.0}
+    environment: *engine-env
+    secrets: *engine-secrets
+    ports: ["${STACK_BIND:-127.0.0.1}:8080:8080"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      archive-bucket: { condition: service_completed_successfully }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  worker:
+    <<: *engine-service
+    image: ${STACK_ENGINE_WORKER_IMAGE:-ghcr.io/getstack-run/stack-engine-worker}:${STACK_ENGINE_VERSION:-0.1.0}
+    environment: *engine-env
+    secrets: *engine-secrets
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      archive-bucket: { condition: service_completed_successfully }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  mcp:
+    <<: *engine-service
+    image: ${STACK_ENGINE_MCP_IMAGE:-ghcr.io/getstack-run/stack-engine-mcp}:${STACK_ENGINE_VERSION:-0.1.0}
+    environment:
+      STACK_DEPLOYMENT: self_managed
+      STACK_API_BASE_URL: ${STACK_API_BASE_URL:?set STACK_API_BASE_URL in .env}
+      STACK_MCP_BASE_URL: ${STACK_MCP_BASE_URL:-}
+      STACK_ISSUER: ${STACK_ISSUER:-}
+      # The MCP server reaches the API over the private network.
+      API_URL: http://api:8080
+      OAUTH_ENABLED: ${OAUTH_ENABLED:-false}
+      MCP_ELICITATION_ATTESTATION_KEY_FILE: /run/secrets/mcp-attestation-key
+    secrets: [mcp-attestation-key]
+    ports: ["${STACK_BIND:-127.0.0.1}:3001:3001"]
+    depends_on:
+      api: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+networks:
+  backend: {}
+
+volumes:
+  postgres-data: {}
+  redis-data: {}
+  archive-data: {}
+
+secrets:
+  database-url: { file: ./secrets/database-url }
+  postgres-password: { file: ./secrets/postgres-password }
+  api-key-pepper: { file: ./secrets/api-key-pepper }
+  stack-kek: { file: ./secrets/stack-kek }
+  session-signing-key: { file: ./secrets/session-signing-key.pem }
+  archive-access-key: { file: ./secrets/archive-access-key }
+  archive-secret-key: { file: ./secrets/archive-secret-key }
+  archive-s3-config: { file: ./secrets/archive-s3-config }
+  mcp-attestation-key: { file: ./secrets/mcp-attestation-key }

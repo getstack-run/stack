@@ -1,0 +1,70 @@
+{
+  "name": "@getstackrun/sdk",
+  "version": "4.4.0",
+  "description": "Official JavaScript/TypeScript SDK for STACK - the runtime control plane for AI agents",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "clean": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.rmSync('.turbo',{recursive:true,force:true})\"",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "stack",
+    "getstack",
+    "ai-agents",
+    "agent-security",
+    "mcp",
+    "passports",
+    "identity",
+    "skills",
+    "revocation",
+    "audit",
+    "eddsa",
+    "jwt"
+  ],
+  "license": "MIT",
+  "homepage": "https://getstack.run",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getstack-run/stack.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "email": "support@getstack.run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "cbor-x": "^1.6.4",
+    "jose": "^6.2.2"
+  },
+  "devDependencies": {
+    "@stack/shared": "workspace:*",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.7"
+  }
+}

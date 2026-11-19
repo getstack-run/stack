@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityPresentationView",
+  "title": "AuthorityPresentationView",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^prs_[\\w-]+$"
+    },
+    "authority_use_id": {
+      "type": "string",
+      "pattern": "^aus_[\\w-]+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "prepared",
+        "delivered",
+        "delivery_failed",
+        "accepted",
+        "rejected",
+        "expired",
+        "erased"
+      ]
+    },
+    "disclosure_manifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact_id": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "predicate",
+              "pairwise",
+              "exact_private",
+              "issuer_evidence",
+              "status_only"
+            ]
+          }
+        },
+        "required": [
+          "fact_id",
+          "mode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "proof_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "proof_id": {
+            "type": "string",
+            "pattern": "^prf_[\\w-]+$"
+          },
+          "proof_version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "proof_id",
+          "proof_version"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "authority_use_id",
+    "status",
+    "disclosure_manifest",
+    "proof_refs",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

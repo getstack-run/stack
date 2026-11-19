@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthClientRegistrationRequest",
+  "title": "OAuthClientRegistrationRequest",
+  "type": "object",
+  "properties": {
+    "redirect_uris": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "grant_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scope": {
+      "type": "string",
+      "maxLength": 1024
+    },
+    "software_id": {
+      "type": "string"
+    },
+    "software_version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "redirect_uris",
+    "client_name"
+  ],
+  "additionalProperties": true
+}

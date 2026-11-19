@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:partner:1:InboundWebhookView",
+  "title": "InboundWebhookView",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "managed": {
+      "type": "boolean"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "webhook_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "forward_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "revoked_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_used_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_block_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "total_calls": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_blocked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "signing_configured": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "managed",
+    "slug",
+    "webhook_url",
+    "agent_id",
+    "forward_url",
+    "created_at",
+    "revoked_at",
+    "last_used_at",
+    "last_block_at",
+    "total_calls",
+    "total_blocked",
+    "signing_configured"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,199 @@
+{
+  "spec": "stack-record",
+  "spec_version": "1.0.0",
+  "fixtures": [
+    {
+      "file": "01-valid-empty.json",
+      "level": 1,
+      "options": {},
+      "description": "a pack with no claims verifies",
+      "valid": true,
+      "complete": false,
+      "errors": []
+    },
+    {
+      "file": "02-valid-two-claims.json",
+      "level": 1,
+      "options": {},
+      "description": "a pack with two signed claims and a system co-signature verifies",
+      "valid": true,
+      "complete": false,
+      "errors": []
+    },
+    {
+      "file": "03-valid-no-cosignature.json",
+      "level": 1,
+      "options": {},
+      "description": "a pack without a co-signature is valid (a warning, not an error)",
+      "valid": true,
+      "complete": false,
+      "errors": []
+    },
+    {
+      "file": "04-content-hash-mismatch.json",
+      "level": 1,
+      "options": {},
+      "description": "a manifest member covered by the content hash was changed after signing",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "CONTENT_HASH_MISMATCH"
+      ]
+    },
+    {
+      "file": "05-merkle-root-mismatch.json",
+      "level": 1,
+      "options": {},
+      "description": "the signed merkle_root is not the root of the claim hashes",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "MERKLE_ROOT_MISMATCH"
+      ]
+    },
+    {
+      "file": "06-claim-count-mismatch.json",
+      "level": 1,
+      "options": {},
+      "description": "the signed claim_count is not the number of claims",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "CLAIM_COUNT_MISMATCH"
+      ]
+    },
+    {
+      "file": "07-claim-envelope-replaced.json",
+      "level": 1,
+      "options": {},
+      "description": "a claim envelope was replaced by another while its claim_hash was kept",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "CLAIM_HASH_MISMATCH",
+        "CONTENT_HASH_MISMATCH"
+      ]
+    },
+    {
+      "file": "08-pack-signed-by-unknown-key.json",
+      "level": 1,
+      "options": {},
+      "description": "the pack claim is signed by a key that is in neither key set",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "PRIMARY_SIG_INVALID"
+      ]
+    },
+    {
+      "file": "09-unsupported-pack-version.json",
+      "level": 1,
+      "options": {},
+      "description": "pack_version is not 1",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "INVALID_MANIFEST"
+      ]
+    },
+    {
+      "file": "10-pack-claim-undecodable.json",
+      "level": 1,
+      "options": {},
+      "description": "the pack claim is not a COSE_Sign1",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "COSE_DECODE_FAILED"
+      ]
+    },
+    {
+      "file": "11-not-an-evidence-pack.json",
+      "level": 1,
+      "options": {},
+      "description": "the pack claim payload is not an evidence pack",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "NOT_EVIDENCE_PACK"
+      ]
+    },
+    {
+      "file": "12-cosignature-by-wrong-key.json",
+      "level": 1,
+      "options": {},
+      "description": "the co-signature was made with the operator key, not the system key",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "COSIG_SIG_INVALID"
+      ]
+    },
+    {
+      "file": "13-claim-signed-by-unknown-key.json",
+      "level": 1,
+      "options": {},
+      "description": "a claim is signed by a key that is in neither key set",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "CLAIM_SIG_INVALID"
+      ]
+    },
+    {
+      "file": "14-claim-id-duplicate.json",
+      "level": 1,
+      "options": {},
+      "description": "two claims share a claim_id",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "CLAIM_ID_DUPLICATE"
+      ]
+    },
+    {
+      "file": "15-schema-pin-mismatch.json",
+      "level": 1,
+      "options": {},
+      "description": "a schema pin in the signed pack claim differs from the inline schema",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "SCHEMA_PIN_MISMATCH"
+      ]
+    },
+    {
+      "file": "16-unknown-claim-type-default.json",
+      "level": 1,
+      "options": {},
+      "description": "a claim type without an inline schema is a warning in the default mode",
+      "valid": true,
+      "complete": false,
+      "errors": []
+    },
+    {
+      "file": "17-unknown-claim-type-strict.json",
+      "level": 1,
+      "options": {
+        "strict": true
+      },
+      "description": "a claim type without an inline schema is an error in strict mode",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "UNKNOWN_CLAIM_TYPE"
+      ]
+    },
+    {
+      "file": "18-anchor-signature-invalid.json",
+      "level": 2,
+      "options": {},
+      "description": "the signed head of the audit chain was not signed by a key of the pack",
+      "valid": false,
+      "complete": false,
+      "errors": [
+        "ANCHOR_SIG_INVALID"
+      ]
+    }
+  ]
+}

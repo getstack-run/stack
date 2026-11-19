@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:3a810a8207568c392cb1f712c3dda6d7e5a761ead789830c856bd5923bbab3cc",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "intent_denial"
+      },
+      "attempted_intent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "intent_claim"
+          },
+          "policy_decision": {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "string",
+                "const": "fleet_policy"
+              },
+              "policy_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "policy_revision": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "mission_id": {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              "rule_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "request_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "effect": {
+                "type": "string",
+                "enum": [
+                  "allow",
+                  "review"
+                ]
+              }
+            },
+            "required": [
+              "origin",
+              "policy_id",
+              "policy_revision",
+              "mission_id",
+              "rule_id",
+              "request_hash",
+              "effect"
+            ],
+            "additionalProperties": false
+          },
+          "intent_type": {
+            "type": "string",
+            "enum": [
+              "http_call",
+              "mcp_tool",
+              "skill_invocation",
+              "onchain_tx",
+              "task_complete",
+              "a2a_dispatch"
+            ]
+          },
+          "agent_id": {
+            "type": "string",
+            "pattern": "^(ag|agt)_[\\w-]+$"
+          },
+          "named_intent": {
+            "type": "string",
+            "pattern": "^[a-z][\\w-]*:[a-z][\\w-]*:[a-z][\\w-]*$"
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "For http_call: the granted service SLUG (e.g. 'stripe'), NOT a URL — put the URL in parameters.url. For mcp_tool: tool URI. For skill_invocation: skill_id. For onchain_tx: contract address."
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "estimated_cost": {
+            "type": "object",
+            "properties": {
+              "wallet_cents": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tokens": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "gas_gwei": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "wallet_cents",
+              "tokens",
+              "gas_gwei"
+            ],
+            "additionalProperties": false
+          },
+          "accountability": {
+            "type": "string",
+            "enum": [
+              "enforced",
+              "logged",
+              "standard"
+            ],
+            "default": "standard"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requires": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^pc_[\\w-]+$"
+            },
+            "default": []
+          },
+          "user_subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mission_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^ms_[\\w-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "submitted_at": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "intent_type",
+          "agent_id",
+          "named_intent",
+          "target",
+          "action",
+          "parameters",
+          "estimated_cost",
+          "reason",
+          "user_subject",
+          "mission_ref",
+          "submitted_at"
+        ],
+        "additionalProperties": false
+      },
+      "denial_reason": {
+        "type": "string",
+        "enum": [
+          "constraint_violation",
+          "scope_mismatch",
+          "accountability_monotonicity",
+          "detector_block",
+          "tier_limit",
+          "simulation_failure",
+          "requires_unmet"
+        ]
+      },
+      "denying_detector_key": {
+        "type": "string",
+        "pattern": "^[a-z][\\w]*$"
+      },
+      "message": {
+        "type": "string",
+        "maxLength": 1024
+      },
+      "parameters_hash": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "retry_count": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "default": 1
+      },
+      "metadata": {
+        "type": "object",
+        "additionalProperties": {},
+        "default": {}
+      },
+      "denied_at": {
+        "type": "integer"
+      },
+      "mission_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^ms_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "attempted_intent",
+      "denial_reason",
+      "message",
+      "parameters_hash",
+      "denied_at"
+    ],
+    "additionalProperties": false
+  }
+}

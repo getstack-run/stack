@@ -1,0 +1,226 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:passport:1:DelegatePassportInput",
+  "title": "DelegatePassportInput",
+  "type": "object",
+  "properties": {
+    "parent_passport_token": {
+      "type": "string"
+    },
+    "child_agent_id": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service_connection_id": {
+            "type": "string"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "op": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "not_eq",
+                        "in",
+                        "not_in",
+                        "matches",
+                        "starts_with",
+                        "lt",
+                        "lte",
+                        "gt",
+                        "gte",
+                        "exists",
+                        "not_exists"
+                      ]
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 1024
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "maxLength": 1024
+                          },
+                          "maxItems": 256
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "op",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "const": "any_of"
+                    },
+                    "op": {
+                      "type": "string",
+                      "const": "any_of"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 128
+                            },
+                            "op": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "not_eq",
+                                "in",
+                                "not_in",
+                                "matches",
+                                "starts_with",
+                                "lt",
+                                "lte",
+                                "gt",
+                                "gte",
+                                "exists",
+                                "not_exists"
+                              ]
+                            },
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "maxLength": 1024
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 1024
+                                  },
+                                  "maxItems": 256
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "op",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 32
+                      },
+                      "minItems": 2,
+                      "maxItems": 16
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "op",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "maxItems": 32
+          },
+          "intents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "params": {
+                  "type": "object",
+                  "additionalProperties": {},
+                  "default": {}
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 32
+          },
+          "allow_data_from": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "service_connection_id",
+          "scopes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 3600
+    }
+  },
+  "required": [
+    "parent_passport_token",
+    "child_agent_id",
+    "scopes"
+  ],
+  "additionalProperties": false
+}

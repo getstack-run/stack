@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:1541bcc06502998197400e4122164d9c50fa9e0826da8e5c28e229b7b82f7a89",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "svid_attestation"
+      },
+      "spiffe_id": {
+        "type": "string"
+      },
+      "trust_domain": {
+        "type": "string"
+      },
+      "not_after_svid": {
+        "type": "number"
+      },
+      "issuer": {
+        "type": "string"
+      },
+      "attested_at": {
+        "type": "number"
+      },
+      "svid_format": {
+        "type": "string",
+        "enum": [
+          "jwt-svid",
+          "x509-svid"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "spiffe_id",
+      "trust_domain",
+      "not_after_svid",
+      "issuer",
+      "attested_at",
+      "svid_format"
+    ],
+    "additionalProperties": false
+  }
+}

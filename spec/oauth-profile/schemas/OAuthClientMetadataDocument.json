@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:oauth-profile:1:OAuthClientMetadataDocument",
+  "title": "OAuthClientMetadataDocument",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 1024
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "redirect_uris": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "grant_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "response_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "const": "code"
+      },
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "token_endpoint_auth_method": {
+      "type": "string"
+    },
+    "token_endpoint_auth_methods_supported": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "redirect_uris"
+  ],
+  "additionalProperties": true
+}

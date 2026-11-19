@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:rest-api:1:ErrorEnvelope",
+  "title": "ErrorEnvelope",
+  "type": "object",
+  "description": "The body of every error answer: one object with one property, `error`.",
+  "required": [
+    "error"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "description": "A stable code in upper case with underscores. A client decides what to do by the code, never by the message."
+        },
+        "message": {
+          "type": "string",
+          "description": "A sentence for a person. It can change between versions."
+        },
+        "details": {
+          "type": "object",
+          "description": "Fields that depend on the code. Absent when a code has none. Never a secret, a credential or text a caller sent."
+        }
+      }
+    }
+  }
+}

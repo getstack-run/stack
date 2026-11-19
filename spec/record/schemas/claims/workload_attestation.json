@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:4ddcf123e800cfdf6849a4b651bc50891875b9a2d1fca8dbd8c08f3bb4a04170",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "workload_attestation"
+      },
+      "workload_id": {
+        "type": "string"
+      },
+      "issuer": {
+        "type": "string"
+      },
+      "audience": {
+        "type": "string"
+      },
+      "not_after_token": {
+        "type": "number"
+      },
+      "attested_at": {
+        "type": "number"
+      },
+      "token_format": {
+        "type": "string",
+        "enum": [
+          "wimse-wit"
+        ]
+      },
+      "confirmation_jwk": {
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    "required": [
+      "type",
+      "workload_id",
+      "issuer",
+      "not_after_token",
+      "attested_at",
+      "token_format"
+    ],
+    "additionalProperties": false
+  }
+}

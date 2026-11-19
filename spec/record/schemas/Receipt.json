@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:record:1:Receipt",
+  "title": "Receipt",
+  "type": "object",
+  "properties": {
+    "registry": {
+      "type": "string"
+    },
+    "registered_at": {
+      "type": "integer"
+    },
+    "registry_entry_uri": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": [
+                "scitt-cose-receipt",
+                "rekor-v2-tle",
+                "stack-merkle-v1"
+              ]
+            },
+            "bytes": {
+              "type": "string"
+            },
+            "log_index": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "tree_size": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "root_hash": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "format",
+            "bytes",
+            "log_index",
+            "tree_size",
+            "root_hash"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "witnesses": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "registry": {
+                "type": "string"
+              },
+              "registry_entry_uri": {
+                "type": "string"
+              },
+              "proof_bytes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "registry",
+              "registry_entry_uri",
+              "proof_bytes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "registry",
+    "registered_at",
+    "registry_entry_uri",
+    "proof",
+    "witnesses"
+  ],
+  "additionalProperties": false
+}

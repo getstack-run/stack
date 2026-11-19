@@ -1,0 +1,711 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:passport:1:PassportClaims",
+  "title": "PassportClaims",
+  "type": "object",
+  "properties": {
+    "operator_id": {
+      "type": "string"
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "agent_name": {
+      "type": "string"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service_id": {
+            "type": "string"
+          },
+          "service_name": {
+            "type": "string"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "credential_ref": {
+            "type": "string"
+          },
+          "connection_id": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "op": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "not_eq",
+                        "in",
+                        "not_in",
+                        "matches",
+                        "starts_with",
+                        "lt",
+                        "lte",
+                        "gt",
+                        "gte",
+                        "exists",
+                        "not_exists"
+                      ]
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 1024
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "maxLength": 1024
+                          },
+                          "maxItems": 256
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "op",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "const": "any_of"
+                    },
+                    "op": {
+                      "type": "string",
+                      "const": "any_of"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 128
+                            },
+                            "op": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "not_eq",
+                                "in",
+                                "not_in",
+                                "matches",
+                                "starts_with",
+                                "lt",
+                                "lte",
+                                "gt",
+                                "gte",
+                                "exists",
+                                "not_exists"
+                              ]
+                            },
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "maxLength": 1024
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 1024
+                                  },
+                                  "maxItems": 256
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "op",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 32
+                      },
+                      "minItems": 2,
+                      "maxItems": 16
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "op",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "maxItems": 32
+          },
+          "policy": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "closed",
+                  "open"
+                ]
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 16
+                      },
+                      "minItems": 1,
+                      "maxItems": 8
+                    },
+                    "path": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "exact"
+                            },
+                            "value": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 512
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "prefix"
+                            },
+                            "value": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 512
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "regex"
+                            },
+                            "value": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 512
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "allow_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "maxItems": 128,
+                      "default": []
+                    },
+                    "constraints": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "op": {
+                                "type": "string",
+                                "enum": [
+                                  "eq",
+                                  "not_eq",
+                                  "in",
+                                  "not_in",
+                                  "matches",
+                                  "starts_with",
+                                  "lt",
+                                  "lte",
+                                  "gt",
+                                  "gte",
+                                  "exists",
+                                  "not_exists"
+                                ]
+                              },
+                              "value": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "maxLength": 1024
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "maxLength": 1024
+                                    },
+                                    "maxItems": 256
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "op",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "const": "any_of"
+                              },
+                              "op": {
+                                "type": "string",
+                                "const": "any_of"
+                              },
+                              "value": {
+                                "type": "array",
+                                "items": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "path": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 128
+                                      },
+                                      "op": {
+                                        "type": "string",
+                                        "enum": [
+                                          "eq",
+                                          "not_eq",
+                                          "in",
+                                          "not_in",
+                                          "matches",
+                                          "starts_with",
+                                          "lt",
+                                          "lte",
+                                          "gt",
+                                          "gte",
+                                          "exists",
+                                          "not_exists"
+                                        ]
+                                      },
+                                      "value": {
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "maxLength": 1024
+                                          },
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "boolean"
+                                          },
+                                          {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string",
+                                              "maxLength": 1024
+                                            },
+                                            "maxItems": 256
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "path",
+                                      "op",
+                                      "value"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "minItems": 1,
+                                  "maxItems": 32
+                                },
+                                "minItems": 2,
+                                "maxItems": 16
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "op",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "maxItems": 32
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "methods",
+                    "path"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 64,
+                "default": []
+              }
+            },
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": false
+          },
+          "allow_data_from": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "maxItems": 32
+          }
+        },
+        "required": [
+          "service_id",
+          "service_name",
+          "scopes",
+          "credential_ref"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "identity_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "layer": {
+            "type": "string",
+            "enum": [
+              "humanity",
+              "identity",
+              "delegation",
+              "workload"
+            ]
+          },
+          "claim_type": {
+            "type": "string"
+          },
+          "assurance_level": {
+            "type": "string",
+            "enum": [
+              "low",
+              "substantial",
+              "high"
+            ]
+          },
+          "verified_at": {
+            "type": "number"
+          },
+          "expires_at": {
+            "type": "number"
+          },
+          "humanity_verified": {
+            "type": "boolean"
+          },
+          "delegated_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "spiffe_id": {
+            "type": "string"
+          },
+          "trust_domain": {
+            "type": "string"
+          },
+          "not_after_svid": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "claim_id",
+          "provider",
+          "layer",
+          "claim_type",
+          "assurance_level",
+          "verified_at",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "delegation_depth": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "parent_passport_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "accountability": {
+      "type": "string",
+      "enum": [
+        "enforced",
+        "logged",
+        "standard"
+      ]
+    },
+    "intent_summary": {
+      "type": "string"
+    },
+    "intent_services": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "intent_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "params": {
+            "type": "object",
+            "additionalProperties": {},
+            "default": {}
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "checkpoint_interval": {
+      "type": "number"
+    },
+    "platform_intent": {
+      "type": "string",
+      "enum": [
+        "staff",
+        "monitor"
+      ]
+    },
+    "mission_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      }
+    },
+    "authority_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "binding_id": {
+            "type": "string",
+            "pattern": "^abn_[\\w-]+$"
+          },
+          "binding_version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "binding_claim_id": {
+            "type": "string",
+            "pattern": "^pc_[\\w-]+$"
+          },
+          "binding_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receiver_id": {
+            "type": "string",
+            "pattern": "^rcv_[\\w-]+$"
+          },
+          "receiver_profile_version_id": {
+            "type": "string",
+            "pattern": "^apv_[\\w-]+$"
+          },
+          "expires_at": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "binding_id",
+          "binding_version",
+          "binding_claim_id",
+          "binding_digest",
+          "receiver_id",
+          "receiver_profile_version_id",
+          "expires_at"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 8
+    },
+    "fleet": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "policy_revision": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "membership_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "mission_id": {
+          "type": "string",
+          "pattern": "^ms_[\\w-]+$"
+        },
+        "internal_root": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "policy_id",
+        "policy_revision",
+        "membership_id",
+        "mission_id"
+      ],
+      "additionalProperties": false
+    },
+    "workspace_command": {
+      "type": "object",
+      "properties": {
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "workspace_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "operator_id",
+    "agent_id",
+    "agent_name",
+    "services",
+    "delegation_depth",
+    "session_id"
+  ],
+  "additionalProperties": false
+}

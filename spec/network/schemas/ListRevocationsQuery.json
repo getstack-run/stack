@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:ListRevocationsQuery",
+  "title": "ListRevocationsQuery",
+  "type": "object",
+  "properties": {
+    "after": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500
+    },
+    "install": {
+      "type": "string",
+      "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+    }
+  },
+  "additionalProperties": false
+}

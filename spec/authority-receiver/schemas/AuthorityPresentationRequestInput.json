@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:AuthorityPresentationRequestInput",
+  "title": "AuthorityPresentationRequestInput",
+  "type": "object",
+  "properties": {
+    "signed_request": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1000000,
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+    },
+    "agent_proof": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1000000,
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+    },
+    "passport": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000000
+    },
+    "authority_ref": {
+      "type": "object",
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "pattern": "^abn_[\\w-]+$"
+        },
+        "binding_version": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "binding_claim_id": {
+          "type": "string",
+          "pattern": "^pc_[\\w-]+$"
+        },
+        "binding_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "receiver_id": {
+          "type": "string",
+          "pattern": "^rcv_[\\w-]+$"
+        },
+        "receiver_profile_version_id": {
+          "type": "string",
+          "pattern": "^apv_[\\w-]+$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "binding_id",
+        "binding_version",
+        "binding_claim_id",
+        "binding_digest",
+        "receiver_id",
+        "receiver_profile_version_id",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "receiver_profile_version_id": {
+      "type": "string",
+      "pattern": "^apv_[\\w-]+$"
+    },
+    "receiver_request_id": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "mission_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^ms_[\\w-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "action_uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z][A-Za-z0-9._:/-]*$"
+    },
+    "resource_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "normalized_request": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {}
+          },
+          {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        ]
+      }
+    },
+    "requested_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "predicate",
+              "pairwise",
+              "exact_private",
+              "issuer_evidence",
+              "status_only"
+            ]
+          }
+        },
+        "required": [
+          "fact_id",
+          "mode"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 256
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "issued_at": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_at": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "signed_request",
+    "agent_proof",
+    "passport",
+    "authority_ref",
+    "receiver_profile_version_id",
+    "receiver_request_id",
+    "mission_id",
+    "action_uri",
+    "resource_hash",
+    "request_hash",
+    "normalized_request",
+    "requested_facts",
+    "nonce",
+    "issued_at",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

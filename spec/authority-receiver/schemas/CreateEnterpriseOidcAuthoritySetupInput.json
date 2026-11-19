@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:authority-receiver:1:CreateEnterpriseOidcAuthoritySetupInput",
+  "title": "CreateEnterpriseOidcAuthoritySetupInput",
+  "type": "object",
+  "properties": {
+    "organisation_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "role_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "role_claim_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z_][A-Za-z0-9_-]*(?:\\.[A-Za-z_][A-Za-z0-9_-]*)*$"
+    },
+    "role_claim_value": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^(ag|agt)_[\\w-]+$"
+    },
+    "mission_id": {
+      "type": "string",
+      "pattern": "^ms_[\\w-]+$"
+    },
+    "service_connection_id": {
+      "type": "string",
+      "pattern": "^scon_[\\w-]+$"
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "http_method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ]
+    },
+    "resource_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^\\/[A-Za-z0-9._~!$&'()*+,;=:@%/-]*$"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "not_eq",
+              "in",
+              "not_in",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "exists",
+              "not_exists"
+            ]
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 2048
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "maxItems": 256
+              }
+            ]
+          },
+          "value_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "path",
+          "op"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 16,
+      "default": []
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "organisation_name",
+    "role_name",
+    "role_claim_path",
+    "role_claim_value",
+    "agent_id",
+    "service_connection_id",
+    "provider",
+    "purpose",
+    "http_method",
+    "resource_path",
+    "expires_at"
+  ],
+  "additionalProperties": false
+}

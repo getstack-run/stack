@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:CountersignatureClaims",
+  "title": "CountersignatureClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:countersignature"
+    },
+    "sub": {
+      "type": "string",
+      "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^csg_[A-Za-z0-9_-]{16,40}$"
+    },
+    "cs": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "install": {
+          "type": "string",
+          "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "owner_verified": {
+          "type": "boolean"
+        },
+        "key": {
+          "type": "object",
+          "properties": {
+            "kid": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            },
+            "jwk": {
+              "type": "object",
+              "properties": {
+                "kty": {
+                  "type": "string",
+                  "const": "OKP"
+                },
+                "crv": {
+                  "type": "string",
+                  "const": "Ed25519"
+                },
+                "x": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{43}$"
+                }
+              },
+              "required": [
+                "kty",
+                "crv",
+                "x"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kid",
+            "jwk"
+          ],
+          "additionalProperties": false
+        },
+        "passport": {
+          "type": "object",
+          "properties": {
+            "alg": {
+              "type": "string",
+              "const": "sha256"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            },
+            "jti": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "agent": {
+              "type": "string",
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "alg",
+            "digest"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "v",
+        "install",
+        "owner",
+        "owner_verified",
+        "key",
+        "passport"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "sub",
+    "iat",
+    "exp",
+    "jti",
+    "cs"
+  ],
+  "additionalProperties": false
+}

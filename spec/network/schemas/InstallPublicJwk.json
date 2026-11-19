@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:InstallPublicJwk",
+  "title": "InstallPublicJwk",
+  "type": "object",
+  "properties": {
+    "kty": {
+      "type": "string",
+      "const": "OKP"
+    },
+    "crv": {
+      "type": "string",
+      "const": "Ed25519"
+    },
+    "x": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    }
+  },
+  "required": [
+    "kty",
+    "crv",
+    "x"
+  ],
+  "additionalProperties": false
+}

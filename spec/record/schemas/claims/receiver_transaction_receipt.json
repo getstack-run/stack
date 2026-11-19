@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:2dc3cc33859befd301f8acc723305f953af32b96b7319cb0b64127b520d7c228",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "receiver_transaction_receipt"
+      },
+      "receipt_id": {
+        "type": "string",
+        "pattern": "^rtr_[\\w-]+$"
+      },
+      "authority_use_id": {
+        "type": "string",
+        "pattern": "^aus_[\\w-]+$"
+      },
+      "presentation_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^prs_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "receiver_id": {
+        "type": "string",
+        "pattern": "^rcv_[\\w-]+$"
+      },
+      "receiver_profile_version_id": {
+        "type": "string",
+        "pattern": "^apv_[\\w-]+$"
+      },
+      "receiver_key_id": {
+        "type": "string",
+        "pattern": "^rky_[\\w-]+$"
+      },
+      "receipt_jti_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "native_format": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "receipt_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "presentation_payload_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "action_uri": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1024,
+        "pattern": "^[A-Za-z][A-Za-z0-9._:/-]*$"
+      },
+      "request_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "result_hash": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "outcome": {
+        "type": "string",
+        "enum": [
+          "accepted",
+          "rejected",
+          "failed"
+        ]
+      },
+      "external_transaction_ref_hash": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "verified_at": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "received_at": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "type",
+      "receipt_id",
+      "authority_use_id",
+      "presentation_id",
+      "receiver_id",
+      "receiver_profile_version_id",
+      "receiver_key_id",
+      "receipt_jti_hash",
+      "native_format",
+      "receipt_hash",
+      "presentation_payload_hash",
+      "action_uri",
+      "request_hash",
+      "result_hash",
+      "outcome",
+      "external_transaction_ref_hash",
+      "verified_at",
+      "received_at"
+    ],
+    "additionalProperties": false
+  }
+}

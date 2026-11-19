@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:siem-export:1:SiemRecord",
+  "title": "SiemRecord",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "stream": {
+          "type": "string",
+          "const": "security"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "critical"
+          ]
+        },
+        "operator_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fields": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "passport_jti": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "mission_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "message": {
+                  "type": "string"
+                },
+                "metadata": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "resolved": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "passport_jti",
+                "mission_id",
+                "message",
+                "metadata",
+                "resolved"
+              ],
+              "additionalProperties": true
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncated": {
+                  "type": "boolean",
+                  "const": true
+                }
+              },
+              "required": [
+                "truncated"
+              ],
+              "additionalProperties": true
+            }
+          ]
+        }
+      },
+      "required": [
+        "stream",
+        "id",
+        "time",
+        "severity",
+        "operator_id",
+        "agent_id",
+        "event",
+        "fields"
+      ],
+      "additionalProperties": true
+    },
+    {
+      "type": "object",
+      "properties": {
+        "stream": {
+          "type": "string",
+          "const": "audit"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "critical"
+          ]
+        },
+        "operator_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fields": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "passport_jti": {
+                  "type": "string"
+                },
+                "layer": {
+                  "type": "string"
+                },
+                "outcome": {
+                  "type": "string"
+                },
+                "error_code": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "trace_id": {
+                  "type": "string"
+                },
+                "entry_hash": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "passport_jti",
+                "layer",
+                "outcome",
+                "error_code",
+                "trace_id",
+                "entry_hash"
+              ],
+              "additionalProperties": true
+            },
+            {
+              "type": "object",
+              "properties": {
+                "truncated": {
+                  "type": "boolean",
+                  "const": true
+                }
+              },
+              "required": [
+                "truncated"
+              ],
+              "additionalProperties": true
+            }
+          ]
+        }
+      },
+      "required": [
+        "stream",
+        "id",
+        "time",
+        "severity",
+        "operator_id",
+        "agent_id",
+        "event",
+        "fields"
+      ],
+      "additionalProperties": true
+    }
+  ]
+}

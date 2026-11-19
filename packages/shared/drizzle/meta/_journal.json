@@ -1,0 +1,146 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790224300000,
+      "tag": "0000_engine_baseline",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790224400000,
+      "tag": "0001_webhook_secret_rotation",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790224600000,
+      "tag": "0002_member_sso_subject",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790225000000,
+      "tag": "0003_sso_verified_domains",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790225300000,
+      "tag": "0004_agents_name_unique_live",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790225600000,
+      "tag": "0005_dropoff_recipients",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790227500000,
+      "tag": "0006_connect_link_custom_service",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790329500000,
+      "tag": "0007_mission_recipient_pins",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790330900000,
+      "tag": "0008_mission_cap_behaviour",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790331000000,
+      "tag": "0009_decision_approvals",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790331200000,
+      "tag": "0010_dropoff_end_announced",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790331400000,
+      "tag": "0011_identity_session_expired",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790332400000,
+      "tag": "0012_service_connection_mcp_url",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790333100000,
+      "tag": "0013_control_socket_on_unavailable",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1790333300000,
+      "tag": "0014_team_member_role_default",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1790333500000,
+      "tag": "0015_subscription_trial_end",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1790333700000,
+      "tag": "0016_key_connection_scopes",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790333800000,
+      "tag": "0017_service_connection_names",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790333900000,
+      "tag": "0018_connect_link_connection_name",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1790421500000,
+      "tag": "0019_remove_retired_identity_providers",
+      "breakpoints": true
+    }
+  ]
+}

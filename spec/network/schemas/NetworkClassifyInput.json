@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:NetworkClassifyInput",
+  "title": "NetworkClassifyInput",
+  "type": "object",
+  "properties": {
+    "content": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200000
+        },
+        {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      ]
+    },
+    "context": {
+      "type": "string",
+      "enum": [
+        "email",
+        "document",
+        "webpage",
+        "chat_log",
+        "api_response",
+        "calendar",
+        "other"
+      ]
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "additionalProperties": false
+}

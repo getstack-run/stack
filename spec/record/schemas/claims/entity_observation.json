@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:9e4804d731b2b696a984ef6ba575b55dcb7e4a752b964f455f92e490bf728fc4",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "entity_observation"
+      },
+      "intent_outcome_ref": {
+        "type": "string",
+        "pattern": "^pc_[\\w-]+$"
+      },
+      "entities": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "maxItems": 256,
+        "default": []
+      },
+      "entity_types": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "url_host",
+            "url_path",
+            "email",
+            "account_id",
+            "file_path",
+            "arn",
+            "gcp_resource",
+            "azure_resource",
+            "phone",
+            "ip_address",
+            "money_amount",
+            "account_number",
+            "other"
+          ]
+        },
+        "default": []
+      },
+      "request_entities": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "maxItems": 256
+      },
+      "agent_id": {
+        "type": "string",
+        "pattern": "^(ag|agt)_[\\w-]+$"
+      },
+      "source_service": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "content_fingerprints": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "maxItems": 512,
+        "default": []
+      },
+      "metadata": {
+        "type": "object",
+        "additionalProperties": {},
+        "default": {}
+      },
+      "observed_at": {
+        "type": "integer"
+      },
+      "mission_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^ms_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "agent_id",
+      "observed_at"
+    ],
+    "additionalProperties": false
+  }
+}

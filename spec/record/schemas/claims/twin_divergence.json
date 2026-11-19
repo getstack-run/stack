@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:5bdef39432f5cb281134052c0c6e831006cd24816144d5f65b0e5b0f84ab3678",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "twin_divergence"
+      },
+      "passport_jti": {
+        "type": "string",
+        "minLength": 1
+      },
+      "mission_ref": {
+        "type": "string",
+        "pattern": "^ms_[\\w-]+$"
+      },
+      "real_intent_outcomes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^pc_[\\w-]+$"
+        },
+        "default": []
+      },
+      "twin_intent_outcomes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^pc_[\\w-]+$"
+        },
+        "default": []
+      },
+      "divergence_dimensions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "dimension": {
+              "type": "string",
+              "enum": [
+                "output_shape",
+                "counterparty",
+                "cost",
+                "detector_signal_set"
+              ]
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ]
+            },
+            "diff": {
+              "type": "object",
+              "additionalProperties": {}
+            }
+          },
+          "required": [
+            "dimension",
+            "severity",
+            "diff"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      },
+      "diff_summary": {
+        "type": "string",
+        "maxLength": 2048
+      },
+      "evaluated_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "type",
+      "passport_jti",
+      "mission_ref",
+      "diff_summary",
+      "evaluated_at_ms"
+    ],
+    "additionalProperties": false
+  }
+}

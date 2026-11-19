@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:siem-export:1:SiemSecurityFields",
+  "title": "SiemSecurityFields",
+  "type": "object",
+  "properties": {
+    "passport_jti": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mission_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "metadata": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "resolved": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "passport_jti",
+    "mission_id",
+    "message",
+    "metadata",
+    "resolved"
+  ],
+  "additionalProperties": true
+}

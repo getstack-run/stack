@@ -1,0 +1,163 @@
+{
+  "schema_set": "stack/passport-claims",
+  "version": "v1",
+  "generated_at_ms": 1794381147072,
+  "base_url": "https://getstack.run/schemas/passport-claims/v1/",
+  "entries": {
+    "envelope": {
+      "version": 1,
+      "content_hash": "sha256:76b9f7b6f979f6d3644104be3d69a48a0cc04f2a024e2180b50e9bd5b1dc5edf",
+      "url": "https://getstack.run/schemas/passport-claims/v1/envelope.json"
+    },
+    "svid_attestation": {
+      "version": 1,
+      "content_hash": "sha256:1541bcc06502998197400e4122164d9c50fa9e0826da8e5c28e229b7b82f7a89",
+      "url": "https://getstack.run/schemas/passport-claims/v1/svid_attestation.json"
+    },
+    "workload_attestation": {
+      "version": 1,
+      "content_hash": "sha256:4ddcf123e800cfdf6849a4b651bc50891875b9a2d1fca8dbd8c08f3bb4a04170",
+      "url": "https://getstack.run/schemas/passport-claims/v1/workload_attestation.json"
+    },
+    "rats_evidence": {
+      "version": 1,
+      "content_hash": "sha256:9ea68b1fd9cb875e2d7ed186c64d78ebffd83b9ba0271edd0c6ef2cc8248c508",
+      "url": "https://getstack.run/schemas/passport-claims/v1/rats_evidence.json"
+    },
+    "slsa_provenance": {
+      "version": 1,
+      "content_hash": "sha256:7ee16d13732c61c1ace57f65552c379ff89440bb2ec0862db10a743aa03c624f",
+      "url": "https://getstack.run/schemas/passport-claims/v1/slsa_provenance.json"
+    },
+    "ai_bom_ref": {
+      "version": 1,
+      "content_hash": "sha256:19f9718e58bc61fdd5bc3db40c4c3f4ccdb8a79dee2b963e1cef869bb2a9d85a",
+      "url": "https://getstack.run/schemas/passport-claims/v1/ai_bom_ref.json"
+    },
+    "c2pa_assertion": {
+      "version": 1,
+      "content_hash": "sha256:2af4b1d5a4fe479645bdbc9bbf1ed1f9ed2a6298266706e83d46eaccd410aa67",
+      "url": "https://getstack.run/schemas/passport-claims/v1/c2pa_assertion.json"
+    },
+    "intent_claim": {
+      "version": 1,
+      "content_hash": "sha256:0305fd29a947bf3dcd0f210a13368104cd49eaa09932d70cd0bb2ef51073b8c1",
+      "url": "https://getstack.run/schemas/passport-claims/v1/intent_claim.json"
+    },
+    "detector_signal": {
+      "version": 1,
+      "content_hash": "sha256:caf070cd15a4068601a564f07b58365588cf77a11f850846843131462b77bfc8",
+      "url": "https://getstack.run/schemas/passport-claims/v1/detector_signal.json"
+    },
+    "intent_outcome": {
+      "version": 1,
+      "content_hash": "sha256:4c5ad44b725e2e4f521a83735db2216bbfdcfeb739f3bb42e8946b575a3e1299",
+      "url": "https://getstack.run/schemas/passport-claims/v1/intent_outcome.json"
+    },
+    "intent_denial": {
+      "version": 1,
+      "content_hash": "sha256:3a810a8207568c392cb1f712c3dda6d7e5a761ead789830c856bd5923bbab3cc",
+      "url": "https://getstack.run/schemas/passport-claims/v1/intent_denial.json"
+    },
+    "intent_simulation": {
+      "version": 1,
+      "content_hash": "sha256:0ed880035e87703c5097fbd2bb86da285ee17948417188aa8546c528b8a8b96c",
+      "url": "https://getstack.run/schemas/passport-claims/v1/intent_simulation.json"
+    },
+    "entity_observation": {
+      "version": 1,
+      "content_hash": "sha256:9e4804d731b2b696a984ef6ba575b55dcb7e4a752b964f455f92e490bf728fc4",
+      "url": "https://getstack.run/schemas/passport-claims/v1/entity_observation.json"
+    },
+    "checkpoint_approval": {
+      "version": 1,
+      "content_hash": "sha256:f6aa07dae9e1b5ef6d1558286645ffdee5a96ed6403999a564a0a9ad516ff09a",
+      "url": "https://getstack.run/schemas/passport-claims/v1/checkpoint_approval.json"
+    },
+    "skill_invocation": {
+      "version": 1,
+      "content_hash": "sha256:44035bc9fcfe79766ead5c2a06035b39b99ca5a405ba358b38dad37cf12ed40d",
+      "url": "https://getstack.run/schemas/passport-claims/v1/skill_invocation.json"
+    },
+    "sandbox_run": {
+      "version": 1,
+      "content_hash": "sha256:7268a6e78eb19b74c06de226e326df9a70d183de7dd8dbb0c589e451141d908e",
+      "url": "https://getstack.run/schemas/passport-claims/v1/sandbox_run.json"
+    },
+    "workspace_action": {
+      "version": 1,
+      "content_hash": "sha256:8917ec47a80bf2cdea19b9605583bcffc609a0ac256492bc0775948967fa110c",
+      "url": "https://getstack.run/schemas/passport-claims/v1/workspace_action.json"
+    },
+    "identity_claim": {
+      "version": 1,
+      "content_hash": "sha256:8d52ee204de567dbf6e498a4c619d8d246915fadbde1010dfc9e5e5dc71e9d4f",
+      "url": "https://getstack.run/schemas/passport-claims/v1/identity_claim.json"
+    },
+    "mission": {
+      "version": 1,
+      "content_hash": "sha256:30570bdd0fa8e71d70c53f3fd78453d97ddfb03873e1f10ad571639e616e13ae",
+      "url": "https://getstack.run/schemas/passport-claims/v1/mission.json"
+    },
+    "behavioral_genome": {
+      "version": 1,
+      "content_hash": "sha256:0e097a947407083aed4b04eb39c0e45f756ff980afba581651e441a46c9b1ed1",
+      "url": "https://getstack.run/schemas/passport-claims/v1/behavioral_genome.json"
+    },
+    "twin_divergence": {
+      "version": 1,
+      "content_hash": "sha256:5bdef39432f5cb281134052c0c6e831006cd24816144d5f65b0e5b0f84ab3678",
+      "url": "https://getstack.run/schemas/passport-claims/v1/twin_divergence.json"
+    },
+    "dossier": {
+      "version": 1,
+      "content_hash": "sha256:614e55ed961f810b7cfa887f0d1b8262c7a86e3a586b892fd1ea6d344b0b2f16",
+      "url": "https://getstack.run/schemas/passport-claims/v1/dossier.json"
+    },
+    "evidence_pack": {
+      "version": 1,
+      "content_hash": "sha256:26f9fcce77f8ef0700f56f3bb46f396a2daaf0de3314bd7f3625feb8ce877a69",
+      "url": "https://getstack.run/schemas/passport-claims/v1/evidence_pack.json"
+    },
+    "operator_decision": {
+      "version": 1,
+      "content_hash": "sha256:2105ef6fde2acd2661229e056e45544f1ba26e7bb029731995d2b6ed475824dc",
+      "url": "https://getstack.run/schemas/passport-claims/v1/operator_decision.json"
+    },
+    "operator_review": {
+      "version": 1,
+      "content_hash": "sha256:868e19f5ae860c74fb3c9147f769c0e00ba77919cc85466a4f98e9bbf168484f",
+      "url": "https://getstack.run/schemas/passport-claims/v1/operator_review.json"
+    },
+    "external_proof_verification": {
+      "version": 1,
+      "content_hash": "sha256:779319b26b9e11f7bd5e96795dfe3b5c944504bb7c92931368c4573e8326279c",
+      "url": "https://getstack.run/schemas/passport-claims/v1/external_proof_verification.json"
+    },
+    "authority_binding": {
+      "version": 1,
+      "content_hash": "sha256:73736da826de63d7a631d2fe8822334dd3d962b5c5fe2b509fe2963066c96dfe",
+      "url": "https://getstack.run/schemas/passport-claims/v1/authority_binding.json"
+    },
+    "authority_approval": {
+      "version": 1,
+      "content_hash": "sha256:b940a7f89d21a3ea231369c4551948135114f743a814bb848448c2b243c958e3",
+      "url": "https://getstack.run/schemas/passport-claims/v1/authority_approval.json"
+    },
+    "authority_use": {
+      "version": 1,
+      "content_hash": "sha256:09446941ab3d9e0a62f19bf8f274050bb26e466472e38c66a5ab6352884037f0",
+      "url": "https://getstack.run/schemas/passport-claims/v1/authority_use.json"
+    },
+    "receiver_transaction_receipt": {
+      "version": 1,
+      "content_hash": "sha256:2dc3cc33859befd301f8acc723305f953af32b96b7319cb0b64127b520d7c228",
+      "url": "https://getstack.run/schemas/passport-claims/v1/receiver_transaction_receipt.json"
+    },
+    "authority_erasure_tombstone": {
+      "version": 1,
+      "content_hash": "sha256:e4c6a63190480e460028479d0f7ebc652e253ec44a95206dc85f2e783e91e5c6",
+      "url": "https://getstack.run/schemas/passport-claims/v1/authority_erasure_tombstone.json"
+    }
+  }
+}

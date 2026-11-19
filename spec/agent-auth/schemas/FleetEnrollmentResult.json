@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:agent-auth:1:FleetEnrollmentResult",
+  "title": "FleetEnrollmentResult",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "membership_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "identity_expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "agent_id",
+    "membership_id",
+    "identity_expires_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:VerifyCountersignatureInput",
+  "title": "VerifyCountersignatureInput",
+  "type": "object",
+  "properties": {
+    "countersignature": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 24000,
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+    },
+    "passport": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 24000,
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+    }
+  },
+  "required": [
+    "countersignature"
+  ],
+  "additionalProperties": false
+}

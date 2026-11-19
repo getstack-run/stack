@@ -1,0 +1,361 @@
+{
+  "description": "Deterministic vectors for the STACK network formats (spec/network/SPEC.md, section 14). Every token is its three dot-separated parts as an array: join with a dot. Produced by the public generator named in `generator`, from the public test keys described there; regenerate with `node spec/conformance/scripts/build-network-vectors.mjs`.",
+  "generator": "spec/conformance/scripts/build-network-vectors.mjs",
+  "now": 1790000000,
+  "stack": {
+    "jwks": {
+      "keys": [
+        {
+          "crv": "Ed25519",
+          "x": "iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+          "kty": "OKP",
+          "kid": "stack-passport-v1",
+          "alg": "EdDSA",
+          "use": "sig"
+        }
+      ]
+    },
+    "kid": "stack-passport-v1"
+  },
+  "install": {
+    "id": "ins_vector0000000000000",
+    "kid": "aVBtapLd11SUVKIMGJfPzOEDuN0sXcmzJQNVT-_sKEU",
+    "public_jwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "gTl3Dqh9F19Wo1Rmw0x-zMuNipG07jeiXfYPW4_Js5Q"
+    },
+    "private_seed_hex": "0202020202020202020202020202020202020202020202020202020202020202"
+  },
+  "typ": {
+    "countersignature": "stack-countersignature+jwt"
+  },
+  "passport": {
+    "parts": [
+      "eyJhbGciOiJFZERTQSIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+      "eyJzdGsiOnsiYWdlbnRfaWQiOiJzdXBwb3J0LWJvdCIsInNlc3Npb25faWQiOiJzZXNfdmVjdG9yIn0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0Iiwic3ViIjoic3VwcG9ydC1ib3QiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDkwMCwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAwIn0",
+      "rBFuHYqhUVf-LjSmQp0RNPq8dDUP0-6nAY8lDeh8ZJN0HepRCPBFKi4Zl3mZaUryjq061vhAohJNJ6QKyC32CQ"
+    ],
+    "digest": "UMOFA82xe7vsyYmnhGqQaPye_ItlFVvQok0nUFmhpP0"
+  },
+  "countersignature": [
+    "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+    "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+    "687p1g2GuJEpPZr-_IDdiGULOfX07OnJgTjdbdHOALDzXJN3bpdEZPZ-ymikA1fCCazi6uT2LKJkuoDUGmSVAg"
+  ],
+  "verified_statement": [
+    "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stdmVyaWZpZWQrand0In0",
+    "eyJ2cyI6eyJ2IjoxLCJtYXJrIjoiU1RBQ0stdmVyaWZpZWQiLCJzdGF0dXMiOiJsaXZlIiwiaW5zdGFsbCI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwiY291bnRlcnNpZ25hdHVyZSI6ImNzZ192ZWN0b3IwMDAwMDAwMDAwMDAiLCJ2YWxpZF91bnRpbCI6IjIwMjYtMDktMjFUMTQ6Mjg6MjAuMDAwWiIsInBhc3Nwb3J0X2RpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAifSwiaXNzIjoiZ2V0c3RhY2sucnVuIiwiYXVkIjoic3RhY2s6dmVyaWZpZWQiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwic3ViIjoicGFzc3BvcnQ6VU1PRkE4MnhlN3ZzeVltbmhHcVFhUHllX0l0bEZWdlFvazBuVUZtaHBQMCJ9",
+    "ryyx1uBcBd82VPOX6UYszLRAAfffWiyg7_FdGAWAAFFl7tHzV1DB9M2Bock5GOc7ttODC_E2A1DEBpHir-tXAg"
+  ],
+  "revocation_list": [
+    "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stcmV2b2NhdGlvbi1saXN0K2p3dCJ9",
+    "eyJybCI6eyJ2IjoxLCJhZnRlciI6MCwiaGVhZCI6MiwibmV4dCI6bnVsbCwiZW50cmllcyI6W3sic2VxIjoxLCJpZCI6InJldl92ZWN0b3IwMDAwMDAwMDAwMDAwMSIsImtpbmQiOiJhZ2VudCIsInN1YmplY3QiOiJzdXBwb3J0LWJvdCIsImluc3RhbGwiOiJpbnNfdmVjdG9yMDAwMDAwMDAwMDAwMCIsInJlYXNvbiI6ImFnZW50X2RlY29tbWlzc2lvbmVkIiwiYnkiOiJpbnN0YWxsIiwiYXQiOiIyMDI2LTA5LTIxVDE0OjEzOjIwLjAwMFoifSx7InNlcSI6MiwiaWQiOiJyZXZfdmVjdG9yMDAwMDAwMDAwMDAwMDIiLCJraW5kIjoia2V5Iiwic3ViamVjdCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUiLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJyZWFzb24iOiJrZXlfY29tcHJvbWlzZSIsImJ5Ijoib3duZXIiLCJhdCI6IjIwMjYtMDktMjFUMTQ6MTM6MjAuMDAwWiJ9XX0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnJldm9jYXRpb24tbGlzdCIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwfQ",
+    "yuFZiAXUBsbxckEFoZ_kf3Uh1U2eGU6jWmH4Za-DXtEKbjLaj0pj07u4Yu6F05ifkOUBqHKYbng3jfxzwqviCg"
+  ],
+  "detection_rules": [
+    "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stZGV0ZWN0aW9uLXJ1bGVzK2p3dCJ9",
+    "eyJycyI6eyJ2IjoxLCJ2ZXJzaW9uIjoicjEtdmVjdG9yMDAwMDAwIiwicmV2aXNpb24iOjEsInNoYTI1NiI6ImFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWEiLCJwYWNrcyI6W3siaWQiOiJwcm9tcHRfaW5qZWN0aW9uIiwiZGlyZWN0aW9uIjoiaW5wdXQiLCJydWxlcyI6W3siaWQiOiJvdmVycmlkZV9pZ25vcmVfcHJldmlvdXMiLCJzZXZlcml0eSI6ImNyaXRpY2FsIiwicGF0dGVybiI6IlxcYmlnbm9yZVxccythbGxcXHMrcHJldmlvdXNcXHMraW5zdHJ1Y3Rpb25zXFxiIiwiZmxhZ3MiOiJpIn1dfV19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpkZXRlY3Rpb24tcnVsZXMiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDI1OTIwMH0",
+    "XwbS7DLjvlgC8dyKW-_M_FWmIUrrmN8473X8AnoTkP25KfNTVqF1OaX_KaD9IJsQLmw1AbWfSuDyA9NIroFBAA"
+  ],
+  "install_proofs": {
+    "rules": [
+      "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+      "eyJhY3QiOiJydWxlcyIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6Imp0aVZlY3RvclJ1bGVzMDAwMCJ9",
+      "bHAvnwjzRADCrPmhyZ7P0W-nlsJAqYCKxOQnmvQ8F2GNAKtnxMHsC_O5YsjYTgs51vQskmI0sGTOVScgpfLgAQ"
+    ],
+    "countersign": [
+      "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+      "eyJhY3QiOiJjb3VudGVyc2lnbiIsInBkIjoiVU1PRkE4MnhlN3ZzeVltbmhHcVFhUHllX0l0bEZWdlFvazBuVUZtaHBQMCIsInBqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90IiwidHRsIjo5MDAsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6Imp0aVZlY3RvckNvdW50ZXIwMCJ9",
+      "CZDPBgkCbLJAAuiBSGpiqF7OerWz05KE2TmCRHR842UEYLchwejYscbkMBjosW6E7zWhdQ4P-8uG2Dkey5w8DA"
+    ],
+    "revoke": [
+      "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+      "eyJhY3QiOiJyZXZva2UiLCJraW5kIjoiYWdlbnQiLCJzdWJqZWN0Ijoic3VwcG9ydC1ib3QiLCJyZWFzb24iOiJhZ2VudF9kZWNvbW1pc3Npb25lZCIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6Imp0aVZlY3RvclJldm9rZTAwMCJ9",
+      "ixKCV2kOKO_ylqje12ZQ9O5U-GZutYH6rDwlyXeWZ-RmgVc0U4apenP1Hiov7WLYG2RvBewbfG4jqM_k-dZMAg"
+    ]
+  },
+  "key_proof_of_possession": {
+    "nonce": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+    "proof": [
+      "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwtcG9wK2p3dCIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+      "eyJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJub25jZSI6Im5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5uIiwiaXNzIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImF1ZCI6InN0YWNrOm5ldHdvcmsiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDEyMH0",
+      "ahamUxMtLXgNWxkv6fWJkBjDLrZkCDzNu65mMahzNoBXo8vd55jBNQ52fjL5INBKjmbM9pHh-T0H64zeM9_MBg"
+    ]
+  },
+  "negative": {
+    "cross_kind": [
+      {
+        "token_of": "countersignature",
+        "presented_as": "verified"
+      },
+      {
+        "token_of": "countersignature",
+        "presented_as": "revocation_list"
+      },
+      {
+        "token_of": "countersignature",
+        "presented_as": "detection_rules"
+      },
+      {
+        "token_of": "verified_statement",
+        "presented_as": "countersignature"
+      },
+      {
+        "token_of": "verified_statement",
+        "presented_as": "revocation_list"
+      },
+      {
+        "token_of": "verified_statement",
+        "presented_as": "detection_rules"
+      },
+      {
+        "token_of": "revocation_list",
+        "presented_as": "countersignature"
+      },
+      {
+        "token_of": "revocation_list",
+        "presented_as": "verified"
+      },
+      {
+        "token_of": "revocation_list",
+        "presented_as": "detection_rules"
+      },
+      {
+        "token_of": "detection_rules",
+        "presented_as": "countersignature"
+      },
+      {
+        "token_of": "detection_rules",
+        "presented_as": "verified"
+      },
+      {
+        "token_of": "detection_rules",
+        "presented_as": "revocation_list"
+      }
+    ],
+    "cases": [
+      {
+        "id": "countersignature_wrong_typ",
+        "kind": "countersignature",
+        "description": "a countersignature body under the typ of a verified statement",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stdmVyaWZpZWQrand0In0",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          "HE-rQ8ROgmtOKR_zu6FRkyC1IBtWjvEo3_lgYy38RLVR1h-_C0yC_tmYwWggHzKXwZTibUcf9Gf_v_W1lEUDCQ"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_wrong_audience",
+        "kind": "countersignature",
+        "description": "the right typ with the audience of a passport",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpwYXNzcG9ydCIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwOTAwLCJzdWIiOiJpbnNfdmVjdG9yMDAwMDAwMDAwMDAwMCIsImp0aSI6ImNzZ192ZWN0b3IwMDAwMDAwMDAwMDAifQ",
+          "R-M0HehPGcDmEVSfmUoCrvC5L8hq4Lm0iyI3M2deDdrriQ3kuDQahtthLmMAfljsMaPyIa3hOwLrzpt6zLHYDg"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_other_key",
+        "kind": "countersignature",
+        "description": "signed by a key that is not in the JWKS, under the kid that is",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          "baAk_bJO1w1FpVyBEuoJPilk9phSz4Ydw5sUulaFfW_5q2RzTe5ETEgmAfIM3ZPjySyq93zTp_IwOmGcypmhBw"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_tampered",
+        "kind": "countersignature",
+        "description": "the payload changed after signing (owner_verified false), the signature kept",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjpmYWxzZSwia2V5Ijp7ImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUiLCJqd2siOnsia3R5IjoiT0tQIiwiY3J2IjoiRWQyNTUxOSIsIngiOiJnVGwzRHFoOUYxOVdvMVJtdzB4LXpNdU5pcEcwN2plaVhmWVBXNF9KczVRIn19LCJwYXNzcG9ydCI6eyJhbGciOiJzaGEyNTYiLCJkaWdlc3QiOiJVTU9GQTgyeGU3dnN5WW1uaEdxUWFQeWVfSXRsRlZ2UW9rMG5VRm1ocFAwIiwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAwIiwiYWdlbnQiOiJzdXBwb3J0LWJvdCJ9fSwiaXNzIjoiZ2V0c3RhY2sucnVuIiwiYXVkIjoic3RhY2s6Y291bnRlcnNpZ25hdHVyZSIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwOTAwLCJzdWIiOiJpbnNfdmVjdG9yMDAwMDAwMDAwMDAwMCIsImp0aSI6ImNzZ192ZWN0b3IwMDAwMDAwMDAwMDAifQ",
+          "687p1g2GuJEpPZr-_IDdiGULOfX07OnJgTjdbdHOALDzXJN3bpdEZPZ-ymikA1fCCazi6uT2LKJkuoDUGmSVAg"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_alg_none",
+        "kind": "countersignature",
+        "description": "an unsigned token (alg none)",
+        "token": [
+          "eyJhbGciOiJub25lIiwia2lkIjoic3RhY2stcGFzc3BvcnQtdjEiLCJ0eXAiOiJzdGFjay1jb3VudGVyc2lnbmF0dXJlK2p3dCJ9",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          ""
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_expired",
+        "kind": "countersignature",
+        "description": "the countersignature of the vectors, checked after it expired",
+        "token_of": "countersignature",
+        "at": 1790004500,
+        "expect": "reject",
+        "reason": "expired"
+      },
+      {
+        "id": "countersignature_wrong_issuer",
+        "kind": "countersignature",
+        "description": "issuer other than getstack.run",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJhdHRhY2tlci5leGFtcGxlIiwiYXVkIjoic3RhY2s6Y291bnRlcnNpZ25hdHVyZSIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwOTAwLCJzdWIiOiJpbnNfdmVjdG9yMDAwMDAwMDAwMDAwMCIsImp0aSI6ImNzZ192ZWN0b3IwMDAwMDAwMDAwMDAifQ",
+          "zrxLz8OGznXfXGbGgTb4jGWfSmNG1A9L10auNTvs97jsBudYlPqxeNSeAAIs1TKYBCixZ09vTIfXprY4n4zpDA"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "countersignature_digest_mismatch",
+        "kind": "countersignature",
+        "description": "the countersignature of the vectors presented with a different passport",
+        "token_of": "countersignature",
+        "passport": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+          "eyJzdGsiOnsiYWdlbnRfaWQiOiJzdXBwb3J0LWJvdCIsInNlc3Npb25faWQiOiJzZXNfdmVjdG9yIn0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0Iiwic3ViIjoic3VwcG9ydC1ib3QiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDkwMCwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAyIn0",
+          "L6OWc0xVnqepz4C641Z00nBIseWJa3il7Wg5qhPLmuLlwRyp22VjLHxm8Xf12vP4oKsNe4UDUCKpqtPOLh1ADQ"
+        ],
+        "expect": "reject",
+        "reason": "digest_mismatch"
+      },
+      {
+        "id": "countersignature_passport_wrong_key",
+        "kind": "countersignature",
+        "description": "a countersignature over the digest of a passport that the install key did not sign",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6Imd5Zk5lYmxFcTdRME9RdnIydEo1ZHdrcGV5bVdJa1RsUURtdFJyaXRPLTQiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDEiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          "ayXRN5b7SHHpFGAQvYZyCgN7KqB1XnIhj6ODXhT-GNhbekqB-wEwhBbNU6EBLpAzekI7oglwIfsTJcDvQWssCA"
+        ],
+        "passport": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+          "eyJzdGsiOnsiYWdlbnRfaWQiOiJzdXBwb3J0LWJvdCIsInNlc3Npb25faWQiOiJzZXNfdmVjdG9yIn0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0Iiwic3ViIjoic3VwcG9ydC1ib3QiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDkwMCwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAxIn0",
+          "Qkgx7Ep_y4LFTymiAtqEY9NoSQ3c_BtVn7CSRE0mY0K7TElY_QEgma_sysWbLceJYHzdzHrATZSbhxOoY38fDA"
+        ],
+        "expect": "reject",
+        "reason": "passport_invalid"
+      },
+      {
+        "id": "countersignature_passport_expired",
+        "kind": "countersignature",
+        "description": "a passport that expired (after 100 seconds) while the countersignature over it (900 seconds) is still good",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IjA0ekhEUnJFbFdUSzJ4b0xCR0ExZzB0OXFMZWtmTVFpemhzQkt1WDFsaFEiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDMiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          "Mb3jxCLelI6Tf7hOEGue_P637t-f0yAMREpoPnNyO4vdKkJxbciJ7k6yn2YoDyCZtzj3Sc-k8Q3y29vj4_DaAg"
+        ],
+        "passport": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+          "eyJzdGsiOnsiYWdlbnRfaWQiOiJzdXBwb3J0LWJvdCIsInNlc3Npb25faWQiOiJzZXNfdmVjdG9yIn0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0Iiwic3ViIjoic3VwcG9ydC1ib3QiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDEwMCwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAzIn0",
+          "gJCnxzYHrb7g-SgUKl9Kk5IH6vVZyN6NQFa-1rMh4mCQyg-BvBw4jC4350Up_0RLVvN2G8cuVw_T9rC38WAWCw"
+        ],
+        "at": 1790000200,
+        "expect": "reject",
+        "reason": "passport_expired"
+      },
+      {
+        "id": "countersignature_key_id_not_key",
+        "kind": "countersignature",
+        "description": "cs.key.kid is not the thumbprint of cs.key.jwk",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stY291bnRlcnNpZ25hdHVyZStqd3QifQ",
+          "eyJjcyI6eyJ2IjoxLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJvd25lciI6Im9wX3ZlY3RvcjAwMDAwMDAwMDAwMCIsIm93bmVyX3ZlcmlmaWVkIjp0cnVlLCJrZXkiOnsia2lkIjoiQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQSIsImp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6ImdUbDNEcWg5RjE5V28xUm13MHgtek11TmlwRzA3amVpWGZZUFc0X0pzNVEifX0sInBhc3Nwb3J0Ijp7ImFsZyI6InNoYTI1NiIsImRpZ2VzdCI6IlVNT0ZBODJ4ZTd2c3lZbW5oR3FRYVB5ZV9JdGxGVnZRb2swblVGbWhwUDAiLCJqdGkiOiJwYXNfdmVjdG9yMDAwMDAwMDAwMDAwMDAiLCJhZ2VudCI6InN1cHBvcnQtYm90In19LCJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpjb3VudGVyc2lnbmF0dXJlIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDA5MDAsInN1YiI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwianRpIjoiY3NnX3ZlY3RvcjAwMDAwMDAwMDAwMCJ9",
+          "YQfUaaRQvRG20CVDMMdFCN9ZzBrG0U79qL4UzWf3Ep4qCgMFlZcyjh6krpD1fmGORkBRakPVOTTWGPjJ4njxAQ"
+        ],
+        "passport": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+          "eyJzdGsiOnsiYWdlbnRfaWQiOiJzdXBwb3J0LWJvdCIsInNlc3Npb25faWQiOiJzZXNfdmVjdG9yIn0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnBhc3Nwb3J0Iiwic3ViIjoic3VwcG9ydC1ib3QiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDkwMCwianRpIjoicGFzX3ZlY3RvcjAwMDAwMDAwMDAwMDAwIn0",
+          "rBFuHYqhUVf-LjSmQp0RNPq8dDUP0-6nAY8lDeh8ZJN0HepRCPBFKi4Zl3mZaUryjq061vhAohJNJ6QKyC32CQ"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "revocation_list_unknown_version",
+        "kind": "revocation_list",
+        "description": "a list whose rl.v is 2",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stcmV2b2NhdGlvbi1saXN0K2p3dCJ9",
+          "eyJybCI6eyJ2IjoyLCJhZnRlciI6MCwiaGVhZCI6MiwibmV4dCI6bnVsbCwiZW50cmllcyI6W3sic2VxIjoxLCJpZCI6InJldl92ZWN0b3IwMDAwMDAwMDAwMDAwMSIsImtpbmQiOiJhZ2VudCIsInN1YmplY3QiOiJzdXBwb3J0LWJvdCIsImluc3RhbGwiOiJpbnNfdmVjdG9yMDAwMDAwMDAwMDAwMCIsInJlYXNvbiI6ImFnZW50X2RlY29tbWlzc2lvbmVkIiwiYnkiOiJpbnN0YWxsIiwiYXQiOiIyMDI2LTA5LTIxVDE0OjEzOjIwLjAwMFoifSx7InNlcSI6MiwiaWQiOiJyZXZfdmVjdG9yMDAwMDAwMDAwMDAwMDIiLCJraW5kIjoia2V5Iiwic3ViamVjdCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUiLCJpbnN0YWxsIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJyZWFzb24iOiJrZXlfY29tcHJvbWlzZSIsImJ5Ijoib3duZXIiLCJhdCI6IjIwMjYtMDktMjFUMTQ6MTM6MjAuMDAwWiJ9XX0sImlzcyI6ImdldHN0YWNrLnJ1biIsImF1ZCI6InN0YWNrOnJldm9jYXRpb24tbGlzdCIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwfQ",
+          "uKHAsIom-Vij07yx7vm4-kk8JZO7ruew0uxg1UatOKpXOQ5o00PYESAgDbbffLoc9Ci1yBwBAlCC7rjbakaJBQ"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "verified_statement_expired",
+        "kind": "verified",
+        "description": "the statement of the vectors checked after its five minutes",
+        "token_of": "verified_statement",
+        "at": 1790000310,
+        "expect": "reject",
+        "reason": "expired"
+      },
+      {
+        "id": "detection_rules_older_than_held",
+        "kind": "detection_rules",
+        "description": "revision 1 presented to a verifier that already runs revision 2",
+        "token_of": "detection_rules",
+        "held_revision": 2,
+        "expect": "reject",
+        "reason": "revision_too_old"
+      },
+      {
+        "id": "install_proof_wrong_typ",
+        "kind": "install_proof",
+        "description": "an install proof under the typ of a key proof of possession",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwtcG9wK2p3dCIsImtpZCI6ImFWQnRhcExkMTFTVVZLSU1HSmZQek9FRHVOMHNYY216SlFOVlQtX3NLRVUifQ",
+          "eyJhY3QiOiJydWxlcyIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6Imp0aVZlY3Rvcldyb25nVHlwMDAifQ",
+          "aTDXZLytoV0O1peKwG89hVueOoovLXuQatEWawl_fb6PadurXJLSyL7tuJoZ9mRk9fVjZ_MZ-VHV77eywSUOBg"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "install_proof_wrong_audience",
+        "kind": "install_proof",
+        "description": "an install proof addressed to the passport audience",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+          "eyJhY3QiOiJydWxlcyIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpwYXNzcG9ydCIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMDYwLCJqdGkiOiJqdGlWZWN0b3JXcm9uZ0F1ZDAwIn0",
+          "_Ho3iP5NHV7lqpgX_bQHD32h1tFVxVYWT_idL1g-RVIYopaVRzFpb40isZ29zdklhjSHxJezK9JIazT7wVKLAw"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "install_proof_other_key",
+        "kind": "install_proof",
+        "description": "a proof naming the install key, signed by another key",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+          "eyJhY3QiOiJydWxlcyIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAwNjAsImp0aSI6Imp0aVZlY3Rvck90aGVyS2V5MDAifQ",
+          "eMiqH3l6d_9AvjKb-7zAhnbJvb1yWlG1KBUpIOUnKeG41wmv_kAQPV-wPup8pATjGYA4NlnzR4Ps0DFQ3uMhAQ"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "install_proof_too_long_lived",
+        "kind": "install_proof",
+        "description": "a proof valid for 121 seconds",
+        "token": [
+          "eyJhbGciOiJFZERTQSIsInR5cCI6InN0YWNrLWluc3RhbGwrand0Iiwia2lkIjoiYVZCdGFwTGQxMVNVVktJTUdKZlB6T0VEdU4wc1hjbXpKUU5WVC1fc0tFVSJ9",
+          "eyJhY3QiOiJydWxlcyIsImlzcyI6Imluc192ZWN0b3IwMDAwMDAwMDAwMDAwIiwic3ViIjoiaW5zX3ZlY3RvcjAwMDAwMDAwMDAwMDAiLCJhdWQiOiJzdGFjazpuZXR3b3JrIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAxMjEsImp0aSI6Imp0aVZlY3RvclRvb0xvbmcwMDAifQ",
+          "oTpvhI9XUeCuvZhHmHttYmjpO7KAo-jnvm-HyuY4rWSkXjbI_8vvycQzTSLpJTEPm6ragPk4lVJRTT1wMODJDQ"
+        ],
+        "expect": "reject"
+      },
+      {
+        "id": "install_proof_expired",
+        "kind": "install_proof",
+        "description": "the rules proof of the vectors checked two minutes after it was issued",
+        "token_of": "install_proofs.rules",
+        "at": 1790000121,
+        "expect": "reject",
+        "reason": "expired"
+      }
+    ]
+  }
+}

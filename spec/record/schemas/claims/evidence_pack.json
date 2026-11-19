@@ -1,0 +1,290 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "content_hash": "sha256:26f9fcce77f8ef0700f56f3bb46f396a2daaf0de3314bd7f3625feb8ce877a69",
+  "json_schema": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "const": "evidence_pack"
+      },
+      "pack_id": {
+        "type": "string",
+        "pattern": "^pck_[\\w-]+$"
+      },
+      "content_hash": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "scope": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "mission",
+              "session",
+              "incident",
+              "period"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "kind",
+          "ref"
+        ],
+        "additionalProperties": false
+      },
+      "time_bounds": {
+        "type": "object",
+        "properties": {
+          "t0_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "t1_ms": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "t0_ms",
+          "t1_ms"
+        ],
+        "additionalProperties": false
+      },
+      "claim_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "included_review_claim_ids": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^pc_[\\w-]+$"
+        },
+        "default": []
+      },
+      "merkle_root": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "audit_chain_anchor": {
+        "type": "object",
+        "properties": {
+          "head_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "head_signature": {
+            "type": "string",
+            "minLength": 1
+          },
+          "head_at_ms": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "head_hash",
+          "head_signature",
+          "head_at_ms"
+        ],
+        "additionalProperties": false
+      },
+      "revocation_snapshot_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "schema_versions": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "version",
+              "content_hash"
+            ],
+            "additionalProperties": false
+          },
+          "by_claim_type": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "content_hash": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "version",
+                "content_hash"
+              ],
+              "additionalProperties": false
+            },
+            "propertyNames": {
+              "enum": [
+                "svid_attestation",
+                "workload_attestation",
+                "rats_evidence",
+                "slsa_provenance",
+                "c2pa_assertion",
+                "ai_bom_ref",
+                "intent_claim",
+                "intent_outcome",
+                "intent_denial",
+                "intent_simulation",
+                "entity_observation",
+                "detector_signal",
+                "skill_invocation",
+                "sandbox_run",
+                "workspace_action",
+                "checkpoint_approval",
+                "identity_claim",
+                "mission",
+                "behavioral_genome",
+                "twin_divergence",
+                "evidence_pack",
+                "operator_decision",
+                "operator_review",
+                "external_proof_verification",
+                "authority_binding",
+                "authority_approval",
+                "authority_use",
+                "receiver_transaction_receipt",
+                "authority_erasure_tombstone",
+                "passport_color",
+                "dossier",
+                "chain_anchor"
+              ]
+            }
+          }
+        },
+        "required": [
+          "envelope",
+          "by_claim_type"
+        ],
+        "additionalProperties": false
+      },
+      "canonical_schema_base_url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "supersedes": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^pck_[\\w-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "cross_tenant_refs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "foreign_claim_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "foreign_issuer_op_id": {
+              "type": "string",
+              "pattern": "^op_[\\w-]+$"
+            },
+            "foreign_jwks_url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "delegation_parent",
+                "a2a_dispatch",
+                "skill_invocation"
+              ]
+            }
+          },
+          "required": [
+            "foreign_claim_hash",
+            "foreign_issuer_op_id",
+            "foreign_jwks_url",
+            "relation"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      },
+      "external_chain_anchors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "registry": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "permalink": {
+              "type": "string",
+              "format": "uri"
+            },
+            "anchored_at_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "anchored_chain_head_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "registry",
+            "permalink",
+            "anchored_at_ms",
+            "anchored_chain_head_hash"
+          ],
+          "additionalProperties": false
+        },
+        "default": []
+      }
+    },
+    "required": [
+      "type",
+      "pack_id",
+      "content_hash",
+      "scope",
+      "time_bounds",
+      "claim_count",
+      "merkle_root",
+      "audit_chain_anchor",
+      "revocation_snapshot_at_ms",
+      "schema_versions",
+      "canonical_schema_base_url",
+      "supersedes"
+    ],
+    "additionalProperties": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:NetworkInstallPopClaims",
+  "title": "NetworkInstallPopClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:network"
+    },
+    "install": {
+      "type": "string",
+      "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+    },
+    "nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{32,64}$"
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "install",
+    "nonce",
+    "iat",
+    "exp"
+  ],
+  "additionalProperties": false
+}

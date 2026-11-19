@@ -1,0 +1,357 @@
+{
+  "spec": "agent-identity",
+  "version": "1.0.0",
+  "note": "Built by scripts/build-agent-identity-vectors.mjs. The keys are TEST keys from fixed seeds: never use them for anything but these vectors.",
+  "issuer": "getstack.run",
+  "now": 1790000100,
+  "jwks": {
+    "keys": [
+      {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "-AzM3OSuHAeuIIoq35mjEK5CB-Awb6AjYRCwaCe7uNA",
+        "kid": "stack-passport-v1",
+        "alg": "EdDSA",
+        "use": "sig"
+      },
+      {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "n0lDnp2wlbxBEe0l01eV2DG8VaBH9LHX9q7jd3u0EiA",
+        "kid": "stack-passport-v0",
+        "alg": "EdDSA",
+        "use": "sig"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "valid-by-key",
+      "group": "valid",
+      "title": "a statement for a lookup by key id",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "accept",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "7K6Q2FHcPt49j6bwDL5IHxI9uuAWbzzmqbrzu_IfXK_sXVb0x2YFn4UnJxNMwm9OT6yB7tv8Znyi7ka3tuukDA"
+      ]
+    },
+    {
+      "id": "valid-by-site",
+      "group": "valid",
+      "title": "a statement for a lookup by site, with the agent's name shown",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "accept",
+      "expect": {
+        "site": "acme.sites.example"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIiwibmFtZSI6IkFjbWUgSGVscGVyIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7InNpdGUiOiJhY21lLnNpdGVzLmV4YW1wbGUifX19",
+        "cJRVEIuaWA1pIrFEP2KzsoVM6iQ7TCRouyYtgAFWAWtaXLkm47Bo-jFf6lEhMOGxZI-MFJwwFgWrpN6vOphSBA"
+      ]
+    },
+    {
+      "id": "valid-by-agent-id",
+      "group": "valid",
+      "title": "a statement for a closed agent, asked for by its id, with the owner not in good standing",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "accept",
+      "expect": {
+        "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiY2xvc2VkIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjpmYWxzZX0sImxvb2t1cCI6eyJhZ2VudF9pZCI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEifX19",
+        "EIRakivx4VpazEbqmJPn7J2RcrriFKf-ZSq5197d9XhMG5DKvJBiZvSxHNlg3f_YzA8MOCKJXEMKmV4VD_oyDg"
+      ]
+    },
+    {
+      "id": "valid-retired-key",
+      "group": "valid",
+      "title": "a statement signed by a retired key the key set still holds",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "accept",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYwIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "iEfzswCdijE1ZGUg1sMMh31nXxUkfI-tbcBKLAkIwr6Jwngu-rRvbxViKWXn0QmTvilRJJC1Wfd375rh8fXsDg"
+      ]
+    },
+    {
+      "id": "expired",
+      "group": "time",
+      "title": "a statement that expired a minute before the clock",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3ODk5OTk3NDAsImV4cCI6MTc5MDAwMDA0MCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "tjxLZMQSSo2QbTwdXnw9GcR0IFV3YPRzP4S_HQflafW7kuMnaa9Ihq_0cLgWQVvxRMi-_lbM6KWJ462rwrPhAw"
+      ]
+    },
+    {
+      "id": "made-in-the-future",
+      "group": "time",
+      "title": "a statement made ten minutes after the clock",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDA3MDAsImV4cCI6MTc5MDAwMTAwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "03sJ2cT4y2pKWoRZ6rA38OFFwPi6iAWCaPL_8aerhXjT3P1m2ywnfZx2bSyIKZgE7PZXA975LNKfvPbD42MrCw"
+      ]
+    },
+    {
+      "id": "good-for-an-hour",
+      "group": "lifetime",
+      "title": "a statement that is good for 3600 seconds",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMzYwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "2Q51LN-GZRQqyJMNDvPeyFKvaJIpRhc78qWncQ66GoNGKTwI2ZaXdFOe02gZbIRCydty9oSeH1r9ap7vrezvDQ"
+      ]
+    },
+    {
+      "id": "wrong-type",
+      "group": "header",
+      "title": "the protected type is JWT",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoiSldUIn0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "phzenWeVkz_oKsrLctyaz9zJRxgh0XUGqbjfcllcBczJ-MX5Wsa8lgIZ9ZBPQtIXOY3w3AwNhKuN2PaWYD0TCg"
+      ]
+    },
+    {
+      "id": "no-type",
+      "group": "header",
+      "title": "the protected header has no type, as a Passport has none",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIn0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "YRFwI_iJAMC2e6WdxMpsr6VQcmSeqKaL_IbDJ9vYSBvztYRDEch09DtFk0n76qhkQCYedJhVTKoufodq8i5HCQ"
+      ]
+    },
+    {
+      "id": "alg-none",
+      "group": "header",
+      "title": "the algorithm is none and the signature is empty",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJub25lIiwia2lkIjoic3RhY2stcGFzc3BvcnQtdjEiLCJ0eXAiOiJzdGFjay1hZ2VudC1pZGVudGl0eStqd3QifQ",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        ""
+      ]
+    },
+    {
+      "id": "alg-hs256",
+      "group": "header",
+      "title": "the algorithm is HS256 and the MAC is made with the public key",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJIUzI1NiIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "6N7LoF1wBJ0dyxHT5p2oL3bDDLykjhdj2qgcSQUU9MM"
+      ]
+    },
+    {
+      "id": "not-compact",
+      "group": "header",
+      "title": "a string that is not a compact JWS",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "not-a-statement"
+      ]
+    },
+    {
+      "id": "passport-audience",
+      "group": "claims",
+      "title": "correctly signed, with the audience of a Passport",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazpwYXNzcG9ydCIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "SfaEm4fptOjor1yIYNEHPI_UPftYbpIFQ5J--Ic_gY9NjdwQgTUiaDiA30DtdJsg2434ATZFoY9F8WJUdHEUAA"
+      ]
+    },
+    {
+      "id": "other-issuer",
+      "group": "claims",
+      "title": "correctly signed, with another issuer",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJpc3N1ZXIuZXhhbXBsZSIsImF1ZCI6InN0YWNrOmFnZW50LWlkZW50aXR5Iiwic3ViIjoiYWd0X1EyeDViM1ZrYzBGeVpVcDFjM1JsQSIsImlhdCI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAwMzAwLCJpZGVudGl0eSI6eyJ2IjoxLCJhZ2VudCI6eyJpZCI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJzdGF0dXMiOiJhY3RpdmUifSwib3duZXIiOnsiaWRlbnRpdHlfdmVyaWZpZWQiOnRydWUsImdvb2Rfc3RhbmRpbmciOnRydWV9LCJsb29rdXAiOnsia2V5X2lkIjoicG9xa0xHaXltaF9XMHVQNlBaRnctZHZlejNRSlQ1U29scVhCQ1czOHIwVSJ9fX0",
+        "HUPWOwuZd6FMiqehGPjQdZhVZIosyOVWHKXGEBLWMvFEdEgtE-Ii4fXUk0mc5mS5Rl2YDDr_wD_PerKi2ecWDA"
+      ]
+    },
+    {
+      "id": "subject-is-not-the-agent",
+      "group": "claims",
+      "title": "correctly signed, with a subject that is not the agent it is about",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9UM1JvWlhKQloyVnVkRWxrTVRJek5BIiwiaWF0IjoxNzkwMDAwMDAwLCJleHAiOjE3OTAwMDAzMDAsImlkZW50aXR5Ijp7InYiOjEsImFnZW50Ijp7ImlkIjoiYWd0X1EyeDViM1ZrYzBGeVpVcDFjM1JsQSIsInN0YXR1cyI6ImFjdGl2ZSJ9LCJvd25lciI6eyJpZGVudGl0eV92ZXJpZmllZCI6dHJ1ZSwiZ29vZF9zdGFuZGluZyI6dHJ1ZX0sImxvb2t1cCI6eyJrZXlfaWQiOiJwb3FrTEdpeW1oX1cwdVA2UFpGdy1kdmV6M1FKVDVTb2xxWEJDVzM4cjBVIn19fQ",
+        "VSBFosW40KOA5_i_tVUObds4Hbsmp97Rf88ZWl3Ncf4kvVy5tbjy3Kik6I4_zjHG4Jh93M8U3h-1ODAKxTK_Bw"
+      ]
+    },
+    {
+      "id": "another-version",
+      "group": "claims",
+      "title": "correctly signed, with identity.v 2",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MiwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "wpqPAIm1CLqXHiTGTXc0Y7g9tTD_6IhOcnrlEZjp_2eGjj6IUgbOVTDYtplfsIxMuwcmQoa40oMtE6yrRXs8Aw"
+      ]
+    },
+    {
+      "id": "no-identity",
+      "group": "claims",
+      "title": "correctly signed, with no identity claim",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMH0",
+        "36Ue-VV4iez0kjxpKYQA4gnP8lJwoHr8Zgd9ICczcFhI-sblT-h0dHg_d98-rxKm8h3VOtP18vraG1R5QFaVBw"
+      ]
+    },
+    {
+      "id": "altered-payload",
+      "group": "signature",
+      "title": "the owner's standing changed after signing: not in good standing made good",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "4RufAnkSRluau2Ep7GXeaKaotSqdJnQchPy5uYzpMxHBPrevKPK0rWcWKC-TobnrqGMuvSD7wh3uJ-k4Q4dkCg"
+      ]
+    },
+    {
+      "id": "unknown-key",
+      "group": "signature",
+      "title": "signed by a key under a key id the key set does not hold",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXY5IiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "ypPnUfedONcL3IDzj25M6eR2mPZnoe6Np6S-gGPUhtoOBVdawH8N6N9z3tEqY3UrljcwxtsF2NQgxFbIJg3QDQ"
+      ]
+    },
+    {
+      "id": "stranger-under-known-kid",
+      "group": "signature",
+      "title": "signed by another key under a key id the key set does hold",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "poqkLGiymh_W0uP6PZFw-dvez3QJT5SolqXBCW38r0U"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "I_78uucs-ZXRQP5KzrXE06_VR8SjIYpqUhla1e8SG1592dQ8H22YBqTNuY0D6PaHEpytdZFl8AQiImdz_XVmAA"
+      ]
+    },
+    {
+      "id": "about-another-key",
+      "group": "lookup",
+      "title": "valid, about one key id, offered as the answer for another",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "key_id": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7ImtleV9pZCI6InBvcWtMR2l5bWhfVzB1UDZQWkZ3LWR2ZXozUUpUNVNvbHFYQkNXMzhyMFUifX19",
+        "7K6Q2FHcPt49j6bwDL5IHxI9uuAWbzzmqbrzu_IfXK_sXVb0x2YFn4UnJxNMwm9OT6yB7tv8Znyi7ka3tuukDA"
+      ]
+    },
+    {
+      "id": "about-a-site-asked-by-id",
+      "group": "lookup",
+      "title": "valid, about a site, offered as the answer to a lookup by agent id",
+      "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA",
+      "verdict": "reject",
+      "expect": {
+        "agent_id": "agt_Q2x5b3Vkc0FyZUp1c3RlA"
+      },
+      "statement_parts": [
+        "eyJhbGciOiJFZERTQSIsImtpZCI6InN0YWNrLXBhc3Nwb3J0LXYxIiwidHlwIjoic3RhY2stYWdlbnQtaWRlbnRpdHkrand0In0",
+        "eyJpc3MiOiJnZXRzdGFjay5ydW4iLCJhdWQiOiJzdGFjazphZ2VudC1pZGVudGl0eSIsInN1YiI6ImFndF9RMng1YjNWa2MwRnlaVXAxYzNSbEEiLCJpYXQiOjE3OTAwMDAwMDAsImV4cCI6MTc5MDAwMDMwMCwiaWRlbnRpdHkiOnsidiI6MSwiYWdlbnQiOnsiaWQiOiJhZ3RfUTJ4NWIzVmtjMEZ5WlVwMWMzUmxBIiwic3RhdHVzIjoiYWN0aXZlIn0sIm93bmVyIjp7ImlkZW50aXR5X3ZlcmlmaWVkIjp0cnVlLCJnb29kX3N0YW5kaW5nIjp0cnVlfSwibG9va3VwIjp7InNpdGUiOiJhY21lLnNpdGVzLmV4YW1wbGUifX19",
+        "Px5qcuLG2ebrJaZeOOk_Li1J5x8JctA39jci4xMK061wPHSiXkbaVRtR-lwNxWqn87NySVYyu12NDaUIW4OnDQ"
+      ]
+    }
+  ]
+}

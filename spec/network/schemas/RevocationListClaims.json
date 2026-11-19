@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:RevocationListClaims",
+  "title": "RevocationListClaims",
+  "type": "object",
+  "properties": {
+    "iss": {
+      "type": "string"
+    },
+    "aud": {
+      "type": "string",
+      "const": "stack:revocation-list"
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "rl": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "after": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "head": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "next": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^rev_[A-Za-z0-9_-]{16,40}$"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "passport",
+                  "agent",
+                  "key",
+                  "install"
+                ]
+              },
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "install": {
+                "type": "string",
+                "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+              },
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "unspecified",
+                  "key_compromise",
+                  "agent_decommissioned",
+                  "superseded",
+                  "policy_violation",
+                  "owner_request"
+                ]
+              },
+              "by": {
+                "type": "string",
+                "enum": [
+                  "install",
+                  "owner",
+                  "stack"
+                ]
+              },
+              "at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "seq",
+              "id",
+              "kind",
+              "subject",
+              "install",
+              "reason",
+              "by",
+              "at"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "v",
+        "after",
+        "head",
+        "next",
+        "entries"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "iss",
+    "aud",
+    "iat",
+    "exp",
+    "rl"
+  ],
+  "additionalProperties": false
+}

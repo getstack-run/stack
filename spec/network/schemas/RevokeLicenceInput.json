@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:RevokeLicenceInput",
+  "title": "RevokeLicenceInput",
+  "type": "object",
+  "properties": {
+    "licence_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "key_compromise",
+        "agent_decommissioned",
+        "superseded",
+        "policy_violation",
+        "owner_request"
+      ]
+    }
+  },
+  "required": [
+    "licence_key"
+  ],
+  "additionalProperties": false
+}

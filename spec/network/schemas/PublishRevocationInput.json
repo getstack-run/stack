@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:network:1:PublishRevocationInput",
+  "title": "PublishRevocationInput",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": [
+        "passport",
+        "agent",
+        "key",
+        "install"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "install": {
+      "type": "string",
+      "pattern": "^ins_[A-Za-z0-9_-]{16,40}$"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "key_compromise",
+        "agent_decommissioned",
+        "superseded",
+        "policy_violation",
+        "owner_request"
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "subject",
+    "install"
+  ],
+  "additionalProperties": false
+}

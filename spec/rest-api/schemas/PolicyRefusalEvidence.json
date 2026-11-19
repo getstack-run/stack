@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:stack:spec:rest-api:1:PolicyRefusalEvidence",
+  "title": "PolicyRefusalEvidence",
+  "type": "object",
+  "properties": {
+    "policy_id": {
+      "type": "string"
+    },
+    "policy_revision": {
+      "type": "integer"
+    },
+    "section": {
+      "type": "string",
+      "enum": [
+        "connections",
+        "actions",
+        "recipients",
+        "spend",
+        "review",
+        "models",
+        "browser",
+        "card",
+        "wallet",
+        "workspace",
+        "tools"
+      ]
+    },
+    "rule": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string",
+      "enum": [
+        "connection_denied",
+        "connection_not_listed",
+        "call_outside_rules",
+        "action_denied",
+        "recipient_not_allowed",
+        "recipients_not_pinned",
+        "amount_over_limit",
+        "model_not_allowed",
+        "cost_over_limit",
+        "host_not_allowed",
+        "merchant_not_allowed",
+        "payee_not_allowed",
+        "timeout_over_limit",
+        "tool_not_allowed",
+        "limit_reached",
+        "concurrency_reached",
+        "review_required",
+        "review_pending",
+        "review_rejected",
+        "review_mismatch",
+        "policy_unevaluable"
+      ]
+    },
+    "detail": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      }
+    }
+  },
+  "required": [
+    "policy_id",
+    "policy_revision",
+    "section",
+    "rule",
+    "code"
+  ],
+  "additionalProperties": false
+}
