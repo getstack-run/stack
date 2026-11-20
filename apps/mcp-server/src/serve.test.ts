@@ -511,7 +511,7 @@ describe('STACK MCP HTTP authentication', () => {
 });
 
 describe('STACK MCP HTTP session capacity', () => {
-  it('keeps the default cap within what a 512 MB machine holds, from the measured cost of a session', () => {
+  it('keeps the default cap within what a 1 GB machine holds, from the measured cost of a session', () => {
     const usableForSessionsMb = PROCESS_HEAP_LIMIT_MB * (1 - REQUEST_HEADROOM_FRACTION) - PROCESS_BASE_HEAP_MB;
     assert.ok(DEFAULT_MAX_SESSIONS_PER_PROCESS * SESSION_HEAP_MB <= usableForSessionsMb, 'the cap must fit in the heap limit with 30% left for requests');
     assert.ok(DEFAULT_MAX_SESSIONS_PER_PROCESS > 0);

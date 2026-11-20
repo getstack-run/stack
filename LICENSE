@@ -18,7 +18,7 @@ Apache License, Version 2.0: LICENSES/Apache-2.0.txt
   scripts/generate-spec.mjs, scripts/generate-spec-identity.mjs, scripts/generate-spec-interfaces.mjs, scripts/generate-spec.test.mjs, scripts/lib/rest-api-spec.mjs, scripts/lib/route-scope-hook.mjs, scripts/rest-api-spec.test.mjs
     Tooling that needs the engine to run: the generator of the specification's schemas and tool catalog.
   The files at the root of the repository, and the pull request template and CLA form in .github, that are in no folder above:
-    .github/PULL_REQUEST_TEMPLATE.md, .github/cla-assistant/metadata.json, .gitignore, .gitleaks.toml, CLA.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, README.md, SECURITY.md, TRADEMARKS.md, eslint.config.mjs, package.json, pnpm-lock.yaml
+    .github/PULL_REQUEST_TEMPLATE.md, .github/cla-assistant/metadata.json, .gitignore, .gitleaks.toml, CLA.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, README.md, SECURITY.md, TRADEMARKS.md, eslint.config.mjs, llms-install.md, package.json, pnpm-lock.yaml
 
 MIT License: LICENSES/MIT.txt
   packages/sdk

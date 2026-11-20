@@ -311,7 +311,9 @@ export async function runSiemExporterSuite(options) {
   const offered = options.transports ?? ['udp', 'tcp', 'tls', 'https'];
   const syslogs = offered.filter((t) => t !== 'https');
   const https = offered.includes('https');
-  const settle = async (r, expected, extra) => until(() => expected(), 4000, extra ?? 150);
+  // Waits until what is expected has arrived, then a short quiet spell for anything extra. The deadline is long because it
+  // only matters when something never arrives: on a busy machine a TLS handshake and a 20 kB record can take seconds.
+  const settle = async (r, expected, extra) => until(() => expected(), 20_000, extra ?? 150);
   const noTransport = (name) => skip(`the harness does not offer ${name}`);
 
   /** Run a scenario and always clean up. */
@@ -417,7 +419,8 @@ export async function runSiemExporterSuite(options) {
         }
         if (https) {
           const { records } = await through('https', [big]);
-          assert(records.length === 1 && same(records[0], big), 'the HTTPS line is not the whole record');
+          assert(records.length === 1, `${records.length} records arrived over HTTPS, not 1`);
+          assert(same(records[0], big), 'the HTTPS line is not the whole record');
         }
       },
     },

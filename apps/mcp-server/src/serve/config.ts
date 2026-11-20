@@ -2,25 +2,26 @@ export const DEFAULT_SESSION_IDLE_TTL_MS = 2 * 60 * 60 * 1000;
 export const DEFAULT_SESSION_SWEEP_INTERVAL_MS = 5 * 60 * 1000;
 export const DEFAULT_AUTH_VALIDATION_TIMEOUT_MS = 5_000;
 /**
- * What the process may hold in sessions, from what a session costs. The production machine has 512 MB and the process runs
+ * What the process may hold in sessions, from what a session costs. The production machine has 1 GB and the process runs
  * with a V8 heap limit of `PROCESS_HEAP_LIMIT_MB` (set on the command line in the Dockerfile, the same number): a process
  * that reaches that limit aborts and every session on the machine ends with it. A session is capped well below that.
  *
- *   heap limit                              256 MB
- *   kept free for requests (30%)           -77 MB   (a tool answer is built in memory, up to 4 MiB, several at once)
+ *   heap limit                              512 MB   (the rest of the 1 GB holds Node itself, buffers and large request
+ *                                                     bodies, which are counted apart and capped at 150 MiB)
+ *   kept free for requests (30%)          -154 MB   (a tool answer is built in memory, up to 4 MiB, several at once)
  *   the server with no session              -75 MB   (measured: 74.3 MB heap in use after loading every tool module)
- *   left for sessions                        104 MB
+ *   left for sessions                        283 MB
  *   one session                              0.75 MB  (measured: 0.6 to 0.7 MB after initialize, a tool list and a call)
- *   sessions that fit                        138, and the cap is 128
+ *   sessions that fit                        377, and the cap is 352
  *
  * A bearer may hold as many as the process does: one login is never refused a slot for another's sake, and at the cap the
  * oldest idle session is evicted (see `sessions.ts`).
  */
-export const PROCESS_HEAP_LIMIT_MB = 256;
+export const PROCESS_HEAP_LIMIT_MB = 512;
 export const PROCESS_BASE_HEAP_MB = 75;
 export const SESSION_HEAP_MB = 0.75;
 export const REQUEST_HEADROOM_FRACTION = 0.3;
-export const DEFAULT_MAX_SESSIONS_PER_PROCESS = 128;
+export const DEFAULT_MAX_SESSIONS_PER_PROCESS = 352;
 export const DEFAULT_MAX_SESSIONS_PER_BEARER = DEFAULT_MAX_SESSIONS_PER_PROCESS;
 /**
  * What a request may carry on a session whose bearer is the one the session was opened with: the largest input that
