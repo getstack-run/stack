@@ -6,11 +6,12 @@ import { OAUTH_DIRECTORY_DEFAULT_SCOPES, OAUTH_MCP_DEFAULT_SCOPES } from '@stack
 //
 // /mcp requests every scope its tools need except the explicit incremental
 // grants (team mutation, raw credentials, payout mutation, OAuth-app/CMEK
-// administration, authority/identity configuration, agent-account consent and
-// erasure controls, marketplace publishing, partner administration and
-// platform admin). The owner's own scopes (account:write, billing:write,
-// governance:write, security-events:write) are in the default, so an owner's
-// sign-in from a chat needs no second consent. The write scopes it does request authorize routine operations only:
+// administration, authority/identity configuration, marketplace publishing,
+// partner administration and platform admin). The account's own scopes
+// (accounts:manage, account:write, billing:write, governance:write,
+// security-events:write) are in the default, so a person's sign-in from a chat
+// needs no second consent; each route's own gates decide who may act. The
+// write scopes it does request authorize routine operations only:
 // direction-aware API gates still require payload-bound browser approval before
 // any agent/grant expansion or security-control weakening.
 export const MCP_OAUTH_SCOPES = OAUTH_MCP_DEFAULT_SCOPES;

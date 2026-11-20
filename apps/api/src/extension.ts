@@ -246,11 +246,11 @@ export interface ApiExtension<H extends object = object> {
   /** A line the platform A2A card opens its description with, before the engine's own sentence. Absent: the card says only the engine's sentence. */
   readonly agentCardTagline?: string;
   /**
-   * The secret the deployment's Console server signs the client address of the calls it forwards with
-   * (`x-stack-forwarded-client`), read only by the global rate limit's key. Absent: an install without a Console, where every
-   * call is keyed by its source address as before.
+   * The secrets the deployment's own servers (its Console, its MCP server) sign the client address of the calls they forward
+   * with (`x-stack-forwarded-client`): a header that verifies under any one of them is trusted, read only by the global rate
+   * limit's key. Absent or empty: an install without such a server, where every call is keyed by its source address as before.
    */
-  readonly forwardedClientSecret?: string;
+  readonly forwardedClientSecrets?: readonly string[];
   /** Holds the system operator's own OAuth apps to a list of scopes per service. Absent: no app is narrowed (an install has no such app). */
   readonly systemAppScopes?: SystemAppScopes;
   /** Ends a grant of one of the system operator's own OAuth apps at the provider, given the app's provider and the refresh token. Absent: nothing is ended there. */

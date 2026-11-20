@@ -117,7 +117,7 @@ describe('OAuth route scope ceiling', () => {
   it('gives the owner\'s sign-in from a chat the owner\'s scopes, never to the directory, and keeps erasing the account closed to OAuth', () => {
     const mcp = new Set<string>(OAUTH_MCP_DEFAULT_SCOPES);
     const directory = new Set<string>(OAUTH_DIRECTORY_DEFAULT_SCOPES);
-    for (const scope of ['account:write', 'billing:write', 'governance:write', 'security-events:write']) {
+    for (const scope of ['accounts:manage', 'account:write', 'billing:write', 'governance:write', 'security-events:write']) {
       expect(mcp.has(scope), `${scope} in /mcp`).toBe(true);
       expect(directory.has(scope), `${scope} in /directory`).toBe(false);
     }

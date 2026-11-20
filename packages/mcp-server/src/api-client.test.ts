@@ -115,6 +115,41 @@ describe('api() response handling', () => {
   });
 });
 
+describe('the forwarded-client header', () => {
+  const sentHeaders = (fetchMock: ReturnType<typeof vi.fn>, call: number) =>
+    (fetchMock.mock.calls[call]![1] as { headers: Record<string, string> }).headers;
+
+  it('is asked for on every call, so each one is signed anew, and the bearer is not touched', async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    let issued = 0;
+    const { api } = createApiClient(BASE, 'sk_test_key', { forwardedClient: () => `value-${++issued}` });
+    await api('GET', '/v1/a');
+    await api('GET', '/v1/b');
+    expect(sentHeaders(fetchMock, 0)['x-stack-forwarded-client']).toBe('value-1');
+    expect(sentHeaders(fetchMock, 1)['x-stack-forwarded-client']).toBe('value-2');
+    expect(sentHeaders(fetchMock, 0)['Authorization']).toBe('Bearer sk_test_key');
+  });
+
+  it('is left out when the hook has no value, and when there is no hook', async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    await createApiClient(BASE, 'sk_test_key', { forwardedClient: () => undefined }).api('GET', '/v1/a');
+    await createApiClient(BASE, 'sk_test_key').api('GET', '/v1/b');
+    expect(sentHeaders(fetchMock, 0)).not.toHaveProperty('x-stack-forwarded-client');
+    expect(sentHeaders(fetchMock, 1)).not.toHaveProperty('x-stack-forwarded-client');
+  });
+
+  it('leaves a call-made-as-an-agent bearer override as it is', async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const { api } = createApiClient(BASE, 'sk_test_key', { forwardedClient: () => 'value' });
+    await api('GET', '/v1/a', undefined, { Authorization: 'Bearer agent-passport' });
+    expect(sentHeaders(fetchMock, 0)['Authorization']).toBe('Bearer agent-passport');
+    expect(sentHeaders(fetchMock, 0)['x-stack-forwarded-client']).toBe('value');
+  });
+});
+
 describe('tools over an empty or non-JSON API response', () => {
   it('returns the success result for a tool whose call answers 204', async () => {
     respond(null, { status: 204 });

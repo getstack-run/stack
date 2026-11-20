@@ -55,6 +55,7 @@ export {
   sanitizeSentryEvent,
   type SafeErrorSummary,
 } from './safe-telemetry.js';
+export { deriveMcpForwardedClientKey, MCP_FORWARDED_CLIENT_KEY_PURPOSE, signForwardedClient } from './forwarded-client-key.js';
 export {
   hashMcpSessionId,
   isUsableMcpElicitationAttestationKey,

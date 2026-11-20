@@ -67,7 +67,9 @@ describe('stack pay', () => {
       `GET /v1/accounts/${ACCOUNT}`,
       `POST /v1/accounts/${ACCOUNT}/wallet/payments`,
     ]);
+    // Both calls are made as the agent: the Passport is the header and the bearer credential.
     expect(vi.mocked(api).mock.calls.every(([, , options]) => JSON.stringify((options as { headers: unknown }).headers) === JSON.stringify(PASSPORT))).toBe(true);
+    expect(vi.mocked(api).mock.calls.every(([, , options]) => (options as { bearer?: string }).bearer === 'passport-from-stdin')).toBe(true);
   });
 
   it('reads the key from --wallet-key-file and writes what was bought to --out', async () => {

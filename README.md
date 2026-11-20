@@ -1,6 +1,6 @@
 # STACK
 
-STACK is one runtime boundary between an AI agent and the systems it uses: a signed Passport that says who the agent is and what it may do, credentials injected so the agent does not hold them, detectors on what flows through, a record of everything it does that anyone can verify offline, and revocation.
+STACK is one account that lets your AI agents email, call, pay, send post, hire people and get things made, with one bill and one off switch.
 
 This repository holds the parts of STACK you can read, build on and run, in layers under different licences:
 

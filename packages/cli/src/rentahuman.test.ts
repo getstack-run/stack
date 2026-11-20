@@ -27,9 +27,9 @@ describe('rentahuman CLI wire contract', () => {
     await expect(cmdRentAHuman(['join-complete', ACCOUNT, 'rahj_1', '--passport', 'secret'])).rejects.toThrow(/must not be placed in argv/);
     expect(api).not.toHaveBeenCalled();
     await cmdRentAHuman(['join-complete', ACCOUNT, 'rahj_1', '--signed', SIGNED, '--passport-stdin']);
-    expect(api).toHaveBeenLastCalledWith('POST', `${BASE}/join/complete`, { body: { join_id: 'rahj_1', signed: SIGNED }, headers: PASSPORT });
+    expect(api).toHaveBeenLastCalledWith('POST', `${BASE}/join/complete`, { body: { join_id: 'rahj_1', signed: SIGNED }, headers: PASSPORT, bearer: 'passport-from-stdin' });
     await cmdRentAHuman(['fund-complete', ACCOUNT, 'rahj_2', '--signed', SIGNED, '--passport-stdin']);
-    expect(api).toHaveBeenLastCalledWith('POST', `${BASE}/fund/complete`, { body: { fund_id: 'rahj_2', signed: SIGNED }, headers: PASSPORT });
+    expect(api).toHaveBeenLastCalledWith('POST', `${BASE}/fund/complete`, { body: { fund_id: 'rahj_2', signed: SIGNED }, headers: PASSPORT, bearer: 'passport-from-stdin' });
   });
 
   it('asks for a top-up in whole cents and reads the connection', async () => {

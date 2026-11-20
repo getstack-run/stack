@@ -1,3 +1,4 @@
+import type { IncomingMessage } from 'node:http';
 import type { ConfirmerFactory, McpToolModule, ResultHandoff } from '@stack/mcp-server';
 import type { SessionEntry } from './serve/types.js';
 
@@ -7,7 +8,7 @@ export interface ToolSetSource {
    * Which pieces are on for the session behind a bearer, and whose it is. Null when it cannot be read: the
    * session then lists the core only, and reads again on its next `tools/list`.
    */
-  read(request: { apiUrl: string; bearer: string; fetchImpl: typeof fetch; timeoutMs: number }): Promise<{
+  read(request: { apiUrl: string; bearer: string; fetchImpl: typeof fetch; timeoutMs: number; logger?: Pick<Console, 'error'>; forwardedClient?: string }): Promise<{
     audience: 'agent' | 'owner';
     operatorId: string;
     pieces: readonly string[];
@@ -42,6 +43,17 @@ export interface McpServeExtension {
   wakeNotifications?: boolean;
   /** What the server tells a client at initialize, on the standard profile only (the directory profile's text is reviewed). Absent: nothing. */
   instructions?: string;
+  /**
+   * Derives, from the attestation key the server shares with the API, the key that signs the `x-stack-forwarded-client` header
+   * on a session's API calls; null for no header. Absent: no call carries one.
+   */
+  forwardedClientKey?: (attestationKey: string) => string | null;
+  /**
+   * The address of the end client a request came from, as the deployment's own infrastructure states it, or null when the
+   * request has none or it is not an IP address. The engine has no default reader: without this, no request has an address
+   * and no call carries the forwarded-client header.
+   */
+  clientAddress?: (request: IncomingMessage) => string | null;
   /** Start work that needs the open sessions; resolves to the function that stops it. */
   onStart?(context: McpServeContext): Promise<() => Promise<void>>;
 }

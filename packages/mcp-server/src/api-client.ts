@@ -200,18 +200,31 @@ export type ConfirmApproval = (
   api: ApiFn,
 ) => Promise<'approved' | 'rejected' | 'unavailable'>;
 
+/**
+ * The value of the `x-stack-forwarded-client` header for the call being made now, or undefined to send none. It is asked
+ * for on every call, so each one is signed with the current time.
+ */
+export type ForwardedClientHeader = () => string | undefined;
+
+/** The header that tells the API which end client a call is made for, so its request allowance counts that client alone. */
+export const FORWARDED_CLIENT_HEADER = 'x-stack-forwarded-client';
+
 export function createApiClient(
   apiBaseUrl: string,
   apiKey: string,
-  hooks: { confirmApproval?: ConfirmApproval } = {},
+  hooks: { confirmApproval?: ConfirmApproval; forwardedClient?: ForwardedClientHeader } = {},
 ): { api: ApiFn; apiRaw: ApiRawFn } {
   const apiRaw: ApiRawFn = async (method, path, body, extraHeaders) => {
     // Inside a tool call the request stops when the call's deadline passes, and one that may run past what `fetch` waits
     // for a response (a long workspace command) goes by a request that has no wait of its own.
     const scope = currentCallScope();
+    // An `Authorization` in extraHeaders replaces the session credential for this one call: a call that must be made as
+    // an agent (`agentCallHeaders` in control-ref.ts) sends the agent's Passport as the bearer.
+    const forwardedClient = hooks.forwardedClient?.();
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
+      ...(forwardedClient ? { [FORWARDED_CLIENT_HEADER]: forwardedClient } : {}),
       ...extraHeaders,
     };
     const payload = body ? JSON.stringify(body) : undefined;

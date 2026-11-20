@@ -19,6 +19,8 @@ export interface SessionState {
   lastElicitationEndedAt: number;
   /** Notification streams (GET) open on the session right now: where a wake-up can be sent. */
   notificationStreams: number;
+  /** The end client's address from the latest request on the session as the deployment's `clientAddress` reads it, when there was one. */
+  clientAddress?: string | undefined;
 }
 
 export interface SessionEntry {

@@ -75,6 +75,29 @@ describe('verifyForwardedClient', () => {
     expect(verifyForwardedClient(header('203.0.113.7:8080', VECTOR_TIME), SECRET, NOW_MS)).toBeUndefined();
   });
 
+  describe('with more than one secret', () => {
+    const SECOND = 'second-forwarder-test-secret-abcdefghijklmnopqrstuvwx';
+
+    it('accepts a header made under either secret, the first one still working', () => {
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME), [SECRET, SECOND], NOW_MS)).toBe(VECTOR_IP);
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME, SECOND), [SECRET, SECOND], NOW_MS)).toBe(VECTOR_IP);
+    });
+
+    it('refuses a header made under neither, a stale one and a malformed one', () => {
+      const other = 'a-third-forwarder-secret-0123456789abcdefghijklmnop';
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME, other), [SECRET, SECOND], NOW_MS)).toBeUndefined();
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME - 61, SECOND), [SECRET, SECOND], NOW_MS)).toBeUndefined();
+      expect(verifyForwardedClient('203.0.113.7.1700000000.abcd', [SECRET, SECOND], NOW_MS)).toBeUndefined();
+      expect(verifyForwardedClient(undefined, [SECRET, SECOND], NOW_MS)).toBeUndefined();
+    });
+
+    it('ignores empty and absent secrets, and trusts nothing when none is left', () => {
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME, SECOND), [undefined, '', SECOND], NOW_MS)).toBe(VECTOR_IP);
+      expect(verifyForwardedClient(header(VECTOR_IP, VECTOR_TIME, ''), [undefined, ''], NOW_MS)).toBeUndefined();
+      expect(verifyForwardedClient(VECTOR_HEADER, [], NOW_MS)).toBeUndefined();
+    });
+  });
+
   it('ignores the header when no secret is configured', () => {
     expect(verifyForwardedClient(VECTOR_HEADER, undefined, NOW_MS)).toBeUndefined();
     expect(verifyForwardedClient(VECTOR_HEADER, '', NOW_MS)).toBeUndefined();

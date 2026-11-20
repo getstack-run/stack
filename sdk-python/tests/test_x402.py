@@ -235,6 +235,33 @@ def test_stack_accounts_wallet_pay_url() -> None:
         ("POST", f"/v1/accounts/{ACCOUNT}/wallet/payments"),
     ]
     assert all(r.headers.get("x-passport-token") == "passport-token" for r in seen)
+    # The wallet payment route accepts only an agent: the Passport is the bearer credential of both calls.
+    assert all(r.headers.get("authorization") == "Bearer passport-token" for r in seen)
+
+
+class _NotSignedIn:
+    def get_headers(self) -> dict[str, str]:
+        raise RuntimeError("not signed in")
+
+
+def test_pay_url_with_a_passport_needs_no_sign_in() -> None:
+    transport, seen = _stack_api()
+    stack = Stack(api_key="sk_live_wallet_test", base_url="http://api.fixture")
+    stack._client.auth = _NotSignedIn()  # type: ignore[assignment]
+    stack._client._client = httpx.Client(transport=transport)
+    with httpx.Client(transport=httpx.MockTransport(Seller(2))) as http:
+        stack.accounts.wallet.pay_url(ACCOUNT, SELLER, key=KEY, passport_token="passport-token", http=http)
+    assert all(r.headers.get("authorization") == "Bearer passport-token" for r in seen)
+
+
+def test_pay_url_without_a_passport_keeps_the_client_credential() -> None:
+    transport, seen = _stack_api()
+    stack = Stack(api_key="sk_live_wallet_test", base_url="http://api.fixture")
+    stack._client._client = httpx.Client(transport=transport)
+    with httpx.Client(transport=httpx.MockTransport(Seller(2))) as http:
+        stack.accounts.wallet.pay_url(ACCOUNT, SELLER, key=KEY, http=http)
+    assert all(r.headers.get("authorization") == "Bearer sk_live_wallet_test" for r in seen)
+    assert all("x-passport-token" not in r.headers for r in seen)
 
 
 def test_pay_url_refuses_a_wallet_that_is_not_ready() -> None:
@@ -279,3 +306,4 @@ def test_async_stack_accounts_wallet_pay_url() -> None:
 
     result = asyncio.run(run())
     assert result.response.text == "the report" and [r.method for r in seen] == ["GET", "POST"]
+    assert all(r.headers.get("authorization") == "Bearer p" for r in seen)

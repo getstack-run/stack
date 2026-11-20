@@ -79,6 +79,11 @@ function passport(options?: AccountAgentCallOptions): { headers: Record<string, 
   return options?.passportToken ? { headers: { 'X-Passport-Token': options.passportToken } } : undefined;
 }
 
+/** The two calls that pay from the wallet are made as the agent: the Passport is the bearer credential as well as `X-Passport-Token`. */
+function asAgent(options?: AccountAgentCallOptions): { headers: Record<string, string>; bearer?: string } | undefined {
+  return options?.passportToken ? { headers: { 'X-Passport-Token': options.passportToken }, bearer: options.passportToken } : undefined;
+}
+
 /** What the agent signs for a payment `join` or `fund` returned: Privy's authorization payload for the wallet's signing request. */
 export function signRentAHumanPayment(key: AgentWalletKey, start: PaymentToSign): string {
   return key.sign(
@@ -103,7 +108,7 @@ export class RentAHumanService {
    * into the vault. Called again with the same `join_id` it answers the same and, when the account's events were not registered, tries again.
    */
   async completeJoin(accountId: string, input: { join_id: string; signed: string }, options: AccountAgentCallOptions): Promise<RentAHumanJoinResult> {
-    return this.client.post<RentAHumanJoinResult>(`/v1/accounts/${seg(accountId)}/rentahuman/join/complete`, input, passport(options));
+    return this.client.post<RentAHumanJoinResult>(`/v1/accounts/${seg(accountId)}/rentahuman/join/complete`, input, asAgent(options));
   }
 
   /** Both steps: ask, sign with the agent's wallet key, and send the signature. */
@@ -119,7 +124,7 @@ export class RentAHumanService {
 
   /** Step two of a top-up: the agent's signature of the payment `fund` returned. */
   async completeFund(accountId: string, input: { fund_id: string; signed: string }, options: AccountAgentCallOptions): Promise<RentAHumanFundResult> {
-    return this.client.post<RentAHumanFundResult>(`/v1/accounts/${seg(accountId)}/rentahuman/fund/complete`, input, passport(options));
+    return this.client.post<RentAHumanFundResult>(`/v1/accounts/${seg(accountId)}/rentahuman/fund/complete`, input, asAgent(options));
   }
 
   /** Both steps of a top-up. */

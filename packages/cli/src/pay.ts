@@ -65,14 +65,17 @@ export async function cmdPay(argv: string[], deps: { fetch?: typeof fetch } = {}
   noExtra(args);
 
   const key = readKey(keyFile);
-  const passport = { 'X-Passport-Token': await readPassport() };
+  // The Passport is the credential of every call here: the wallet payment route accepts only an agent, so it is the bearer
+  // as well as the header the server reads first, and no sign-in is needed.
+  const passportToken = await readPassport();
+  const passport = { headers: { 'X-Passport-Token': passportToken }, bearer: passportToken };
   const accountPath = `/v1/accounts/${encodeURIComponent(account)}`;
-  const read = (await api('GET', accountPath, { headers: passport })) as { pieces?: Array<{ kind: string; state: string; details: Record<string, unknown> }> };
+  const read = (await api('GET', accountPath, passport)) as { pieces?: Array<{ kind: string; state: string; details: Record<string, unknown> }> };
 
   const result = await payX402(url, {
     key,
     wallet: x402WalletOf(read.pieces ?? []),
-    pay: async (input) => (await api('POST', `${accountPath}/wallet/payments`, { body: input, headers: passport })) as X402StackPayment,
+    pay: async (input) => (await api('POST', `${accountPath}/wallet/payments`, { body: input, ...passport })) as X402StackPayment,
     method,
     headers,
     ...(body === undefined ? {} : { body }),

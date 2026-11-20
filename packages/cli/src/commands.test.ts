@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { CLI_COMMAND, invokeHint } from './auth.js';
+import { CLI_COMMAND, CLI_DEFAULT_OAUTH_SCOPES, invokeHint } from './auth.js';
 import {
   COMMAND_ALIASES,
   COMMAND_GROUPS,
@@ -34,6 +34,18 @@ function codeLines(lines: string[]): string[] {
 }
 
 describe('command registry', () => {
+  it('never says the default login leaves out a scope it asks for', () => {
+    const defaults = new Set<string>(CLI_DEFAULT_OAUTH_SCOPES);
+    for (const group of COMMAND_GROUPS) {
+      for (const entry of group.entries) {
+        for (const note of entry.notes ?? []) {
+          const claimed = /([a-z-]+:[a-z]+) scope, which the default login leaves? out/.exec(note)?.[1];
+          if (claimed) expect(defaults.has(claimed), `${entry.usage}: the default login includes ${claimed}`).toBe(false);
+        }
+      }
+    }
+  });
+
   it('has a unique usage and a non-empty summary for every entry', () => {
     const usages = new Set<string>();
     for (const group of COMMAND_GROUPS) {

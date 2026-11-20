@@ -34,6 +34,12 @@ def _passport(passport_token: str | None) -> dict[str, str] | None:
     return {"X-Passport-Token": passport_token} if passport_token else None
 
 
+def _as_agent(passport_token: str | None) -> dict[str, str] | None:
+    """The two calls that pay from the wallet are made as the agent: the Passport is the bearer credential as well as
+    ``X-Passport-Token``."""
+    return {"X-Passport-Token": passport_token, "Authorization": f"Bearer {passport_token}"} if passport_token else None
+
+
 def _base(account_id: str) -> str:
     return f"/v1/accounts/{_seg(account_id)}/rentahuman"
 
@@ -106,7 +112,7 @@ class RentAHumanService:
                 "POST",
                 f"{_base(account_id)}/join/complete",
                 json={"join_id": join_id, "signed": signed},
-                extra_headers=_passport(passport_token),
+                extra_headers=_as_agent(passport_token),
             ),
         )
 
@@ -156,7 +162,7 @@ class RentAHumanService:
                 "POST",
                 f"{_base(account_id)}/fund/complete",
                 json={"fund_id": fund_id, "signed": signed},
-                extra_headers=_passport(passport_token),
+                extra_headers=_as_agent(passport_token),
             ),
         )
 

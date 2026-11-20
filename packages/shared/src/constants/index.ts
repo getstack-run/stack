@@ -111,9 +111,11 @@ export const OAUTH_SCOPES = [
   // Agent accounts. read: accounts, their messages, sandbox runs and
   // purchases. write: open (human approval), close, end a browser session.
   // act: what the account does in the world (mail, texts, sandbox runs,
-  // browser, card checkout). manage: operator controls that widen or erase
-  // without approval (the do-not-contact list, lift an automatic pause, delete
-  // a received message).
+  // browser, card checkout). manage: account settings and the controls that
+  // widen or erase without approval (trust, wake-ups, budgets, who reads
+  // messages, the do-not-contact list, lift an automatic pause, delete a
+  // received message). A person's sign-in gets it by default; the routes
+  // behind it refuse an agent context and apply their own role gates.
   'accounts:read', 'accounts:write', 'accounts:act', 'accounts:manage',
   'services:read', 'services:write', 'services:connect',
   'inbound-webhooks:read', 'inbound-webhooks:write',
@@ -197,15 +199,18 @@ export const OAUTH_DIRECTORY_SCOPES = [
  * metadata scopes_supported and the scope in the 401 challenge. It covers
  * every /mcp tool except those whose scope also authorizes a write no human
  * approval gates (team:write, identity:write, authority:write, skills:publish,
- * partner:write, accounts:manage); those stay explicit incremental grants.
+ * partner:write); those stay explicit incremental grants.
  * reviews:write, detectors:write, pii:write, notifications:write,
  * inbound-webhooks:write and accounts:write are included because their
  * writes are additive, revocations, or need a human browser approval
  * (governance step-up) for every Bearer caller.
  *
- * An owner signing in from a chat also gets the owner's own scopes by default,
- * so running the account from the chat needs no second consent:
- * account:write (end a chat session, change identity settings; deleting the
+ * A person signing in from a chat also gets the account's own scopes by default,
+ * so running the account from the chat needs no second consent. Every signed-in
+ * person gets the same scopes; each route's own gates (agent contexts refused,
+ * operator admin, member role, governance step-up) decide who may act.
+ * accounts:manage (account settings, trust, wake-ups, budgets, who reads
+ * messages), account:write (end a chat session, change identity settings; deleting the
  * account and changing its e-mail are closed to every OAuth token),
  * billing:write (every route behind it is a browser-only approval),
  * governance:write (approve or reject an intent an agent submitted) and
@@ -221,7 +226,7 @@ export const OAUTH_MCP_DEFAULT_SCOPES = [
   'team:read',
   'passports:read', 'passports:write',
   'agents:read', 'agents:write',
-  'accounts:read', 'accounts:write', 'accounts:act',
+  'accounts:read', 'accounts:write', 'accounts:act', 'accounts:manage',
   'services:read', 'services:write', 'services:connect',
   'inbound-webhooks:read', 'inbound-webhooks:write',
   'proxy:read', 'proxy:write',

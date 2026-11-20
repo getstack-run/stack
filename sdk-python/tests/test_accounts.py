@@ -284,6 +284,8 @@ async def _drive_async(accounts: AsyncAccountsService) -> None:
 
 
 PPT = {"X-Passport-Token": "ppt"}
+# A payment from the wallet is made as the agent: its Passport is the bearer credential as well.
+PPT_AS_AGENT = {"X-Passport-Token": "ppt", "Authorization": "Bearer ppt"}
 
 EXPECTED_CALLS: list[tuple[str, str, dict[str, Any]]] = [
     (
@@ -422,7 +424,7 @@ EXPECTED_CALLS: list[tuple[str, str, dict[str, Any]]] = [
     (
         "POST",
         f"/v1/accounts/{Q}/wallet/payments",
-        {"json": {"typed_data": {"a": 1}, "agent_signature": "sig"}, "extra_headers": PPT},
+        {"json": {"typed_data": {"a": 1}, "agent_signature": "sig"}, "extra_headers": PPT_AS_AGENT},
     ),
     ("GET", "/v1/accounts/wallet-owner", {}),
     ("GET", "/v1/accounts/mail-domains", {}),

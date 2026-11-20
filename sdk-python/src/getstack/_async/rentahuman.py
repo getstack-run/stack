@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, cast
 
 from ..client import AsyncHttpClient
-from ..rentahuman import _base, _join_body, _passport, sign_rentahuman_payment
+from ..rentahuman import _as_agent, _base, _join_body, _passport, sign_rentahuman_payment
 from ..wallet_key import AgentWalletKey
 
 
@@ -44,7 +44,7 @@ class AsyncRentAHumanService:
                 "POST",
                 f"{_base(account_id)}/join/complete",
                 json={"join_id": join_id, "signed": signed},
-                extra_headers=_passport(passport_token),
+                extra_headers=_as_agent(passport_token),
             ),
         )
 
@@ -94,7 +94,7 @@ class AsyncRentAHumanService:
                 "POST",
                 f"{_base(account_id)}/fund/complete",
                 json={"fund_id": fund_id, "signed": signed},
-                extra_headers=_passport(passport_token),
+                extra_headers=_as_agent(passport_token),
             ),
         )
 

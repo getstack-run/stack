@@ -1,6 +1,6 @@
 import { McpServer, type ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { createApiClient } from './api-client.js';
+import { createApiClient, type ForwardedClientHeader } from './api-client.js';
 import { CHAT_CONFIRMATION_TIMEOUT_MS, Elicitor, type ChatConfirmationOptions, type ToolCallExtra } from './elicitation.js';
 import { createToolCallRunner, type ResultHandoff, type ToolProgressExtra } from './tool-call.js';
 import { confirmGovernance, ElicitationConfirmer, type ConfirmerFactory } from './governance-confirm.js';
@@ -19,6 +19,45 @@ import {
   orderedToolModules,
   type McpToolModule,
 } from './modules.js';
+
+/**
+ * The argument schema each tool registers with, built once per process and shared by every session's server. A tool's
+ * schema is the same for every session of a profile: what is the session's own (the bearer, the operator, the state) lives
+ * in the handler, never in the schema. A Zod object carries dozens of bound methods and a schema per argument, so a copy
+ * per session cost megabytes of heap for the whole catalogue; one shared copy costs it once. Keyed by the module that
+ * registers the tool, then by the profile and the tool's name.
+ */
+const SHARED_INPUT_SCHEMAS = new WeakMap<McpToolModule, Map<string, z.ZodTypeAny>>();
+
+/**
+ * A plain function on purpose, called with the raw shape as an argument: were the shape a variable that a closure of the
+ * registrar captures, the tool's handler would share that closure's scope and keep every session's copy of the shape alive.
+ */
+function sharedInputSchema(
+  owner: McpToolModule | undefined,
+  profile: McpProfile,
+  name: string,
+  shape: z.ZodRawShape,
+  refuseUnknownArguments: string | undefined,
+): z.ZodTypeAny | z.ZodRawShape {
+  // A tool with no arguments keeps its empty shape, which the SDK lists as a plain empty object. It costs nothing per
+  // session, and a Zod object here would add `additionalProperties: false` to the published tool list.
+  if (!refuseUnknownArguments && Object.keys(shape).length === 0) return shape;
+  const build = () => (refuseUnknownArguments ? z.object(shape).strict(refuseUnknownArguments) : z.object(shape));
+  if (!owner) return build();
+  let byName = SHARED_INPUT_SCHEMAS.get(owner);
+  if (!byName) {
+    byName = new Map();
+    SHARED_INPUT_SCHEMAS.set(owner, byName);
+  }
+  const key = `${profile}:${name}`;
+  let schema = byName.get(key);
+  if (!schema) {
+    schema = build();
+    byName.set(key, schema);
+  }
+  return schema;
+}
 
 /**
  * Create the STACK MCP server instance with all tools registered.
@@ -64,6 +103,8 @@ import {
  *   reaches an agent's open session (a `notifications/message` from logger
  *   `stack.wake`). Only the transport asks for it, and only for an agent's own session.
  *   `instructions` is the text the server gives a client at initialize. Absent: none, as for the engine.
+ *   `forwardedClient` returns the `x-stack-forwarded-client` header value for the call being made, or undefined for none; the
+ *   hosted transport signs the end client's address with it. Absent: no call carries the header.
  */
 export function createStackMcpServer(
   apiBaseUrl: string,
@@ -78,6 +119,7 @@ export function createStackMcpServer(
     toolSet?: ToolSetController;
     resultHandoff?: ResultHandoff;
     instructions?: string;
+    forwardedClient?: ForwardedClientHeader;
   } = {},
 ) {
   const profile: McpProfile = opts.profile ?? 'standard';
@@ -120,6 +162,7 @@ export function createStackMcpServer(
   // annotations, applies the directory profile, and fails closed on a tool
   // with no annotation entry. The `server.tool(` call form is kept because
   // a repository check counts registrations by that text.
+  let registering: McpToolModule | undefined;
   const server: ToolRegistrar = {
     tool<Args extends z.ZodRawShape>(
       name: string,
@@ -159,9 +202,8 @@ export function createStackMcpServer(
           // undeclared key, so a secret passed to a tool that takes none is
           // refused before the handler runs and is never echoed. The SDK takes
           // a Zod object here; the cast only satisfies the shape-typed callback.
-          inputSchema: options?.refuseUnknownArguments
-            ? (z.object(inputSchema).strict(options.refuseUnknownArguments) as unknown as z.ZodRawShape)
-            : inputSchema,
+          // The object is built once per process and shared by every session.
+          inputSchema: sharedInputSchema(registering, profile, name, inputSchema, options?.refuseUnknownArguments) as unknown as z.ZodRawShape,
           annotations: {
             title: annotation.title,
             readOnlyHint: annotation.readOnlyHint,
@@ -183,6 +225,7 @@ export function createStackMcpServer(
   };
 
   const ctx = createApiClient(apiBaseUrl, apiKey, {
+    ...(opts.forwardedClient ? { forwardedClient: opts.forwardedClient } : {}),
     confirmApproval: (approvalId, approvalUrl, plainApi) => {
       const engine = new ElicitationConfirmer(elicitor, plainApi);
       const confirmer = opts.confirmer
@@ -206,7 +249,9 @@ export function createStackMcpServer(
     // Platform-staff-only: a non-staff session never registers these, so its
     // `tools/list` does not advertise them and `tools/call` returns tool-not-found.
     if (module.staffOnly && opts.isPlatformStaff !== true) continue;
+    registering = module;
     module.register(server, ctx);
+    registering = undefined;
   }
   // Resources are added after every tool: a resource is read with the caller's
   // own bearer, in both profiles, so it needs only what its route needs.
@@ -242,7 +287,7 @@ export {
   type ToolExposure,
   type ToolExposureRule,
 } from './exposure.js';
-export { retryAfterSeconds, temporarilyUnavailableMessage } from './api-client.js';
+export { FORWARDED_CLIENT_HEADER, retryAfterSeconds, temporarilyUnavailableMessage } from './api-client.js';
 export {
   LONGEST_TOOL_DEADLINE_SECONDS,
   TOOL_DEADLINE_MARGIN_SECONDS,

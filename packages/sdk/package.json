@@ -1,6 +1,6 @@
 {
   "name": "@getstackrun/sdk",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "Official JavaScript/TypeScript SDK for STACK - the runtime control plane for AI agents",
   "type": "module",
   "exports": {

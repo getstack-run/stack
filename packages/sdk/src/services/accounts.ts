@@ -987,6 +987,14 @@ function passport(options?: AccountAgentCallOptions): { headers: Record<string, 
   return options?.passportToken ? { headers: { 'X-Passport-Token': options.passportToken } } : undefined;
 }
 
+/**
+ * A call the account's agent must make as the agent (a payment from its wallet): the Passport is the bearer credential
+ * as well as the `X-Passport-Token` header, because the route accepts only an agent and never a person's token.
+ */
+function asAgent(options?: AccountAgentCallOptions): { headers: Record<string, string>; bearer?: string } | undefined {
+  return options?.passportToken ? { headers: { 'X-Passport-Token': options.passportToken }, bearer: options.passportToken } : undefined;
+}
+
 function governed(options?: AccountGovernedOptions): { headers: Record<string, string> } | undefined {
   return options?.governanceApprovalId ? { headers: { 'X-Governance-Approval': options.governanceApprovalId } } : undefined;
 }
@@ -1538,10 +1546,10 @@ export class AccountWalletService {
    * wallet key (`signWalletPayment`). STACK checks the budget, the caps and the
    * customer's controls, then passes the request to the wallet provider
    * unchanged, or refuses it (and a refused payment is never sent). STACK holds
-   * no key to the wallet. The agent's Passport is required.
+   * no key to the wallet. The agent's Passport is required, and it is the credential of the call.
    */
   async pay(accountId: string, input: WalletPaymentInput, options?: AccountAgentCallOptions): Promise<WalletPayment> {
-    return this.client.post<WalletPayment>(`/v1/accounts/${seg(accountId)}/wallet/payments`, input, passport(options));
+    return this.client.post<WalletPayment>(`/v1/accounts/${seg(accountId)}/wallet/payments`, input, asAgent(options));
   }
 
   /**
@@ -1554,7 +1562,7 @@ export class AccountWalletService {
    */
   async payUrl(accountId: string, url: string, options: PayX402Options & AccountAgentCallOptions & { fetch?: typeof fetch }): Promise<X402Result> {
     assertPayableUrl(url);
-    const account = await this.client.get<AgentAccount>(`/v1/accounts/${seg(accountId)}`, undefined, passport(options));
+    const account = await this.client.get<AgentAccount>(`/v1/accounts/${seg(accountId)}`, undefined, asAgent(options));
     return payX402(url, {
       ...options,
       wallet: x402WalletOf(account.pieces),

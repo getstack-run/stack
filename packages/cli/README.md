@@ -43,15 +43,16 @@ STACK has three client surfaces. Pick by who is driving.
 | --- | --- | --- | --- |
 | **MCP** (`mcp.getstack.run`) | an LLM assistant (Claude Code, Cursor) | dev and setup, in natural language | auto-discovered `stack_*` tools over OAuth |
 | **SDK** (`@getstackrun/sdk`, `getstack`) | the agent's own code | the runtime hot path | offline passport verification, in-process |
-| **CLI** (`npx @getstackrun/cli`) | a human operator in a terminal | ops, scripts, CI | routine operator actions + live audit tail; sensitive management commands require explicit OAuth scopes |
+| **CLI** (`npx @getstackrun/cli`) | a human operator in a terminal | ops, scripts, CI | routine operator actions + live audit tail; team, credential and administration commands require explicit OAuth scopes |
 
 The three share one credential: `auth login` writes `~/.stack/credentials.json`,
 and both SDKs read it. Sign in once, all three work.
 
-The default CLI login does not grant account/team administration, raw
-credential retrieval, billing writes, OAuth-app/CMEK changes, authority or
-security-policy mutation, partner administration, or platform admin. For a
-deliberate management session, set `STACK_OAUTH_SCOPE` to the exact scopes you
+The default CLI login is the same set a person gets signing in from an MCP
+client. It does not grant team administration, raw credential retrieval,
+payout writes, OAuth-app/CMEK changes, authority or identity mutation, skill
+publishing, partner administration, or platform admin. For a deliberate
+management session, set `STACK_OAUTH_SCOPE` to the exact scopes you
 need and sign in again; refresh tokens preserve or narrow scope and cannot add
 it later.
 
@@ -89,7 +90,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | `usage --period <p>` | Scope to a window: today \| yesterday \| 7d \| 30d \| month \| last-month \| billing (default) |
 | `usage --since <iso> --until <iso>` | Arbitrary range (ISO-8601 or unix-ms)<br>``scan usage` and `llm usage` drill into those meters` |
 | `billing subscriptions` | Read the platform and controls subscription state and this month's account actions and control checks |
-| `billing subscribe platform\|controls` | Start the platform or hosted controls subscription; prints the Stripe Checkout URL and whether a free trial applies<br>`(controls need the platform subscription first; a 409 SUBSCRIPTION_CONFLICT means it is already on, or the account does not need one)`<br>`(needs the billing:write scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `billing subscribe platform\|controls` | Start the platform or hosted controls subscription; prints the Stripe Checkout URL and whether a free trial applies<br>`(controls need the platform subscription first; a 409 SUBSCRIPTION_CONFLICT means it is already on, or the account does not need one)` |
 
 #### Agents
 
@@ -189,7 +190,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | `account telegram-chats <id>` | List the chats that have written to the bot (a bot cannot message a chat first) |
 | `account telegram-disconnect <id>` | Take the agent's Telegram bot away and stop receiving |
 | `account send-telegram <id> --chat-id <chat> --body "..."` | Answer a chat on the agent's own Telegram bot (only that account's own agent, or the owner, sends from it)<br>`[--body-file <path>] [--passport-stdin] (send it as the account's agent)` |
-| `account message-delete <id> <message-id>` | Delete one message the account received (owner or admin)<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account message-delete <id> <message-id>` | Delete one message the account received (owner or admin) |
 | `account call <id> --to <+E.164>` | Place a phone call from the account's number to any country Twilio can reach<br>`(you hold the call: STACK says nothing; it opens with --greeting or with silence, and you speak with account call-say; the command returns once the call is answered, with what the other side first says)`<br>`[--greeting "..."] [--wait-seconds <number>] (0 to 60, default 30: how long to wait for the first sentence)`<br>`[--on-behalf-of <name> --brief "..." \| --brief-file <path>] (STACK holds the call with its own model instead, opening with its line that the other side is speaking with an AI on behalf of that name)`<br>`[--max-seconds <number>] (30 to 14400, the default; the call is paid 10 minutes at a time) [--tts-provider Google\|Amazon\|ElevenLabs] [--voice <name>] [--language <BCP-47>]`<br>`[--reply-to-message <id>] (the received message this answers; needed when your policy sets the account's call recipients per mission, and then it goes only to whoever wrote that message)`<br>`[--passport-stdin] (place it as one of your agents; reads the Passport token from stdin or a hidden prompt)` |
 | `account answer-call <id> <call-id>` | Answer a call that is ringing on the account's number, held by you or, with a brief, by STACK<br>`[--greeting "..."] [--wait-seconds <number>] \| [--on-behalf-of <name> --brief "..." \| --brief-file <path>] [--max-seconds <number>] [--tts-provider ...] [--voice ...] [--language ...]`<br>`[--passport-stdin] (answer it as one of your agents; reads the Passport token from stdin or a hidden prompt)`<br>`(a call rings for 30 seconds, then goes to voicemail)` |
 | `account call-say <id> <call-id> [--text "..."]` | Speak on a live call you hold, then wait for what the other side says next; prints the events since your last call action<br>`[--wait-seconds <number>] (0 to 60, default 30) [--passport-stdin]` |
@@ -202,16 +203,16 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | `account tools <id> discover --query "..."` | Find paid tools the account can run; reads the Passport token from stdin or a hidden prompt<br>`[--limit <number>]` |
 | `account tools <id> inspect --provider <provider> --endpoint <path>` | Read one tool's input schema and price; reads the Passport token from stdin or a hidden prompt |
 | `account tools <id> run --provider <provider> --endpoint <path>` | Run a paid tool, charged to the account's budget; reads the Passport token from stdin or a hidden prompt<br>`[--input '<json>' \| --input-file <path>] [--max-results <number>] [--max-cost-cents <number>]`<br>`(only tools in the catalogue run; what comes back is marked untrusted when it is web or provider content, and the files it made are saved to the drive)` |
-| `account workspace <id> run (--command "..." \| --command-file <path>)` | Run a shell command in a workspace, a machine of its own that keeps its files; the id is the account that owns it, without --workspace a new one is made in your own account (another agent of the customer runs in a shared workspace with --workspace, as itself)<br>`[--workspace <wsp_id>] [--cwd <dir>] [--timeout <seconds>] (default 120, no longest) [--background] (start it and print its command id at once; read it with workspace <id> command) [--env-file <path>] (a JSON object of strings for this command only) [--stack-access] (a short-lived Passport of the agent in STACK_PASSPORT, for your connected services through STACK's proxy)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt; the output is untrusted, read it as data)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace <id> command --workspace <wsp_id> --command-id <wcmd_id>` | Read a command started with run --background: its status (running, succeeded or failed), its exit code once it has ended and what it has printed so far; the output is untrusted<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace <id> read --workspace <wsp_id> --path <path>` | Read a file of the workspace (at most 1 MB); the content is untrusted<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace <id> write --workspace <wsp_id> --path <path> (--text "..." \| --content-file <path>)` | Write a text file into the workspace (at most 1 MB)<br>`[--mode <octal>] (permission bits such as 755, set once the file is written)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace <id> save --workspace <wsp_id> --path <path>` | Save a file of the workspace to the account's drive<br>`[--name <name>] [--content-type <type>] [--visibility agent\|account]`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account workspace <id> run (--command "..." \| --command-file <path>)` | Run a shell command in a workspace, a machine of its own that keeps its files; the id is the account that owns it, without --workspace a new one is made in your own account (another agent of the customer runs in a shared workspace with --workspace, as itself)<br>`[--workspace <wsp_id>] [--cwd <dir>] [--timeout <seconds>] (default 120, no longest) [--background] (start it and print its command id at once; read it with workspace <id> command) [--env-file <path>] (a JSON object of strings for this command only) [--stack-access] (a short-lived Passport of the agent in STACK_PASSPORT, for your connected services through STACK's proxy)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt; the output is untrusted, read it as data)` |
+| `account workspace <id> command --workspace <wsp_id> --command-id <wcmd_id>` | Read a command started with run --background: its status (running, succeeded or failed), its exit code once it has ended and what it has printed so far; the output is untrusted<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account workspace <id> read --workspace <wsp_id> --path <path>` | Read a file of the workspace (at most 1 MB); the content is untrusted<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account workspace <id> write --workspace <wsp_id> --path <path> (--text "..." \| --content-file <path>)` | Write a text file into the workspace (at most 1 MB)<br>`[--mode <octal>] (permission bits such as 755, set once the file is written)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account workspace <id> save --workspace <wsp_id> --path <path>` | Save a file of the workspace to the account's drive<br>`[--name <name>] [--content-type <type>] [--visibility agent\|account]`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
 | `account workspace <id> list` | List the account's workspaces, what each has cost and when a stopped one will be deleted; another agent of the customer sees only the ones shared with it |
 | `account workspaces` | List every workspace you may use across the customer's accounts: the account, the agent and whether the customer shares it with their other agents<br>`(an agent sees its own account's and the ones the other agents share; the owner sees all)` |
-| `account workspace-sharing <id> --workspace <wsp_id> (--on \| --off)` | Choose whether the customer's other agents may run commands and read and write files in one workspace (on by default); off keeps it to its own agent<br>`(<id> is the account that owns the workspace; the machine's time is charged to it either way)`<br>`(owner or admin only: an agent cannot change it; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace-settings get [<id>]` | Read the idle pause, the days a stopped workspace is kept and the number of workspaces, and what is in force: for one agent account, or without an id the customer's defaults<br>`(owner or admin only: an agent cannot read or change its own)`<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account workspace-settings set [<id>] [--idle-pause <minutes>\|off\|default] [--delete-after <days>\|never\|default] [--max-workspaces <n>\|default]` | Change them, for one agent account or without an id the customer's defaults: idle pause 5 minutes or more or off, days kept 1 or more or never, workspaces per agent account (any number from 1)<br>`(default gives the setting back; a running workspace takes a new idle pause now, and a stopped one kept longer than the new days is deleted by the next sweep)`<br>`(a stopped workspace's disk storage is charged to the account until the workspace is deleted; the money held for a machine is not a setting)`<br>`(owner or admin only; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account workspace-sharing <id> --workspace <wsp_id> (--on \| --off)` | Choose whether the customer's other agents may run commands and read and write files in one workspace (on by default); off keeps it to its own agent<br>`(<id> is the account that owns the workspace; the machine's time is charged to it either way)`<br>`(owner or admin only: an agent cannot change it)` |
+| `account workspace-settings get [<id>]` | Read the idle pause, the days a stopped workspace is kept and the number of workspaces, and what is in force: for one agent account, or without an id the customer's defaults<br>`(owner or admin only: an agent cannot read or change its own)` |
+| `account workspace-settings set [<id>] [--idle-pause <minutes>\|off\|default] [--delete-after <days>\|never\|default] [--max-workspaces <n>\|default]` | Change them, for one agent account or without an id the customer's defaults: idle pause 5 minutes or more or off, days kept 1 or more or never, workspaces per agent account (any number from 1)<br>`(default gives the setting back; a running workspace takes a new idle pause now, and a stopped one kept longer than the new days is deleted by the next sweep)`<br>`(a stopped workspace's disk storage is charged to the account until the workspace is deleted; the money held for a machine is not a setting)`<br>`(owner or admin only)` |
 | `account workspace <id> stop --workspace <wsp_id> [--delete]` | Pause a workspace (its files stay), or with --delete delete it and its files<br>`(needs the accounts:write scope)` |
 | `account signing-keys <id> [list \| rotate]` | Read or rotate the keys the account signs its outbound requests with (Web Bot Auth); rotate is for an owner or admin |
 | `account identity <id> [get \| show-name \| hide-name \| on \| off]` | Read or change what STACK's public answer to "who is this agent" shows: the agent's name (hidden by default) and whether it answers at all (on by default)<br>`Owner or admin only. The answer never carries the owner's name, email, address or card, only whether STACK verified them and whether they are in good standing.` |
@@ -223,53 +224,53 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | `account making <id> order <quote-id>` | Order a quote: a fabrication order ends in a checkout page to pay with the account's card, a print-on-demand order waits for your approval; reads the Passport token from stdin or a hidden prompt |
 | `account making <id> orders [<order-id>]` | List the orders of an account, or read one (a read refreshes it from the supplier)<br>`[--limit <number>] [--passport-stdin]` |
 | `account making <id> cancel <order-id>` | Stop an order while the supplier still can<br>`[--passport-stdin] (cancel it as the account's agent)` |
-| `account making <id> approve <order-id>` | Place a held print-on-demand order on your own supplier account; waits for human approval when the API asks for it<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account making <id> reject <order-id>` | Decline a held order<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account making-suppliers` | List the making suppliers, and whether your own account at each print-on-demand supplier is connected<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account making-connect-supplier gelato\|prodigi\|printful\|lulu` | Connect your own account at a print-on-demand supplier; the key is read from MAKING_SUPPLIER_KEY, stdin or a hidden prompt, never from an argument<br>`(Lulu also needs MAKING_SUPPLIER_SECRET, or JSON with api_key and api_secret on stdin; the supplier charges its own account, STACK never pays one)`<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account making-connect-printful` | Connect your own Printful account by signing in at Printful: prints the address to open, sign in or up there and approve; STACK stores and renews the tokens<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account making-disconnect-supplier <supplier>` | Remove your account at a print-on-demand supplier<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account making <id> approve <order-id>` | Place a held print-on-demand order on your own supplier account; waits for human approval when the API asks for it |
+| `account making <id> reject <order-id>` | Decline a held order |
+| `account making-suppliers` | List the making suppliers, and whether your own account at each print-on-demand supplier is connected |
+| `account making-connect-supplier gelato\|prodigi\|printful\|lulu` | Connect your own account at a print-on-demand supplier; the key is read from MAKING_SUPPLIER_KEY, stdin or a hidden prompt, never from an argument<br>`(Lulu also needs MAKING_SUPPLIER_SECRET, or JSON with api_key and api_secret on stdin; the supplier charges its own account, STACK never pays one)`<br>`(owner or admin)` |
+| `account making-connect-printful` | Connect your own Printful account by signing in at Printful: prints the address to open, sign in or up there and approve; STACK stores and renews the tokens<br>`(owner or admin)` |
+| `account making-disconnect-supplier <supplier>` | Remove your account at a print-on-demand supplier<br>`(owner or admin)` |
 | `account toll-free <id>` | Read the toll-free text verification status of the account's number |
-| `account toll-free <id> submit --file <path>` | Submit the business details for toll-free text verification; waits for human approval when the API asks for it<br>`(the file holds the details as one JSON object: business, address, contact, use case and opt-in)`<br>`(needs the accounts:manage scope and an admin role; the default login leaves the scope out: add it to STACK_OAUTH_SCOPE)` |
+| `account toll-free <id> submit --file <path>` | Submit the business details for toll-free text verification; waits for human approval when the API asks for it<br>`(the file holds the details as one JSON object: business, address, contact, use case and opt-in)`<br>`(needs an admin role)` |
 | `account mail-domains` | List your own mail domains for agent inboxes, each with the DNS records to publish and its status |
-| `account mail-domain-connect --domain <name>` | Connect your own mail domain and print the DNS records to publish; needs the platform subscription<br>`(owner or admin; there is no remove command, an unverified claim on a name lapses on its own)`<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account mail-domain-verify <mail-domain-id>` | Ask the mail provider to check a domain's DNS records now<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account mail-domain-connect --domain <name>` | Connect your own mail domain and print the DNS records to publish; needs the platform subscription<br>`(owner or admin; there is no remove command, an unverified claim on a name lapses on its own)` |
+| `account mail-domain-verify <mail-domain-id>` | Ask the mail provider to check a domain's DNS records now |
 | `account opt-outs` | List the numbers on your do-not-contact list: people who texted STOP and numbers added to it<br>`(an owner or admin, or the account agent, which reads it only; texts and calls to a listed number are refused)` |
 | `account opt-out-add <+E.164>` | Add a number to the do-not-contact list, so texts and calls to it are refused<br>`(an owner or admin, or an account agent; a number already listed is returned as it is)` |
-| `account opt-out-remove <opt-out-id>` | Take a number off the do-not-contact list, so texts and calls to it go through again<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account opt-out-remove <opt-out-id>` | Take a number off the do-not-contact list, so texts and calls to it go through again<br>`(owner or admin)` |
 | `account blocked-callers` | List the numbers on your blocked-callers list: an incoming call from one is turned away before it rings<br>`(an owner or admin, or the account agent, which reads it only)` |
 | `account blocked-caller-add <+E.164>` | Add a number to the blocked-callers list, so its incoming calls are turned away before they ring<br>`(an owner or admin, or an account agent; a number already listed is returned as it is)` |
-| `account blocked-caller-remove <blocked-caller-id>` | Take a number off the blocked-callers list, so its calls ring again<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account blocked-caller-remove <blocked-caller-id>` | Take a number off the blocked-callers list, so its calls ring again<br>`(owner or admin)` |
 | `account website <id> [get]` | Read the account's website: addresses, the live deploy, prices and limits<br>`[--passport-stdin] (read as the agent)` |
-| `account website <id> publish --dir <folder>` | Publish a folder as the account's website; the scan runs first and a refusal names each finding<br>`[--server-file <path>] (one JavaScript module with small server code)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account website <id> publish --dir <folder>` | Publish a folder as the account's website; the scan runs first and a refusal names each finding<br>`[--server-file <path>] (one JavaScript module with small server code)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
 | `account website <id> deploys [<deploy-id>]` | List the website's recent deploys, or read one with its file hashes<br>`[--limit <number>] [--passport-stdin] (read as the agent)` |
 | `account website <id> hostnames` | List the website's addresses and the DNS records to set for your own domain<br>`[--passport-stdin] (read as the agent)` |
-| `account website <id> hostname-add --hostname <name>` | Serve the website on your own domain and print the DNS records to set<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account website <id> hostname-check <hostname-id>` | Check a domain's DNS and certificate now<br>`[--passport-stdin] (check as the agent)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account website <id> hostname-remove <hostname-id>` | Stop serving the website on a domain and release the name<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account website <id> hostname-add --hostname <name>` | Serve the website on your own domain and print the DNS records to set<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account website <id> hostname-check <hostname-id>` | Check a domain's DNS and certificate now<br>`[--passport-stdin] (check as the agent)` |
+| `account website <id> hostname-remove <hostname-id>` | Stop serving the website on a domain and release the name<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
 | `account website <id> prices` | List the website paths that cost USDC to read<br>`[--passport-stdin] (read as the agent)` |
-| `account website <id> prices-set --file <path>` | Replace the priced paths; the file holds a list of path, price_usdc and an optional description<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account website <id> suspend --reason "..."` | Take the website offline now (owner or admin; the agent cannot lift it)<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account website <id> resume` | Bring the website back after your own suspension; a suspension by STACK is not lifted this way<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account websites-suspend-all --reason "..."` | Take every website of your account offline at once<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account website <id> prices-set --file <path>` | Replace the priced paths; the file holds a list of path, price_usdc and an optional description<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account website <id> suspend --reason "..."` | Take the website offline now (owner or admin; the agent cannot lift it) |
+| `account website <id> resume` | Bring the website back after your own suspension; a suspension by STACK is not lifted this way |
+| `account websites-suspend-all --reason "..."` | Take every website of your account offline at once |
 | `account website-report --url <address> --category <category> --description "..."` | Report a page on a STACK-hosted website; needs no sign-in and sends no credential<br>`[--email <address>] (category: phishing, impersonation, malware, illegal_content, copyright, spam or other)` |
-| `account payments <id> stripe` | Start connecting your own Stripe and print the address of the page where the restricted key is pasted<br>`(the key is never a command argument; an agent gets the connection without the address)`<br>`[--passport-stdin] (start as the agent)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account payments <id> stripe` | Start connecting your own Stripe and print the address of the page where the restricted key is pasted<br>`(the key is never a command argument; an agent gets the connection without the address)`<br>`[--passport-stdin] (start as the agent)` |
 | `account payments <id> stripe-get` | Read the Stripe connection and the webhook address to add in Stripe<br>`[--passport-stdin] (read as the agent)` |
-| `account payments <id> stripe-disconnect` | Erase the Stripe key and signing secret and turn off the active payment links (owner or admin)<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account payments <id> link-create --name "..." --amount-minor <number>` | Create a reusable payment link for one fixed price on your own Stripe<br>`[--currency <code>] [--item "..."] [--after-payment-url <address>] (usd when no currency is given; the address must be on the agent's own site)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account payments <id> checkout-create --name "..." --amount-minor <number> --success-url <address>` | Create a one-off checkout session for one fixed price on your own Stripe<br>`[--cancel-url <address>] [--currency <code>] [--item "..."] (both addresses must be on the agent's own site)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account payments <id> stripe-disconnect` | Erase the Stripe key and signing secret and turn off the active payment links (owner or admin) |
+| `account payments <id> link-create --name "..." --amount-minor <number>` | Create a reusable payment link for one fixed price on your own Stripe<br>`[--currency <code>] [--item "..."] [--after-payment-url <address>] (usd when no currency is given; the address must be on the agent's own site)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
+| `account payments <id> checkout-create --name "..." --amount-minor <number> --success-url <address>` | Create a one-off checkout session for one fixed price on your own Stripe<br>`[--cancel-url <address>] [--currency <code>] [--item "..."] (both addresses must be on the agent's own site)`<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
 | `account payments <id> links` | List the payment links and checkout sessions<br>`[--limit <number>] [--passport-stdin] (read as the agent)` |
-| `account payments <id> link-deactivate <link-id>` | Turn a payment link off so it can no longer be paid<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)`<br>`(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account payments <id> link-deactivate <link-id>` | Turn a payment link off so it can no longer be paid<br>`(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)` |
 | `account payments <id> [list]` | List the payments received, on card and in USDC<br>`[--rail stripe\|x402] [--limit <number>] [--cursor <cursor>] [--passport-stdin] (read as the agent)` |
 | `account payments <id> get <payment-id>` | Read one payment<br>`[--passport-stdin] (read as the agent)` |
-| `account budget <id> <dollars\|none>` | Set or remove the account's monthly spend budget, in dollars (25 or 25.50); raising or removing waits for human approval<br>`(owner or admin; setting needs controls; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
-| `account resume <id> --piece inbox\|phone` | Resume an automatically paused piece; waits for human approval when the API asks for it<br>`(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `account budget <id> <dollars\|none>` | Set or remove the account's monthly spend budget, in dollars (25 or 25.50); raising or removing waits for human approval<br>`(owner or admin; setting needs controls)` |
+| `account resume <id> --piece inbox\|phone` | Resume an automatically paused piece; waits for human approval when the API asks for it |
 
 #### Post
 
 | Command | What it does |
 | --- | --- |
-| `post address [start\|connect\|refresh\|pause\|resume\|close]` | The customer's one US street address: read it, start it, hand over the supplier key (stdin), look again, pause, resume, disconnect<br>`(the owner signs up at the supplier, completes USPS Form 1583 there and creates an agent key there; STACK never sees the documents; every address command needs the accounts:manage scope: add it to STACK_OAUTH_SCOPE)`<br>`connect reads the key from stdin or a hidden prompt, optionally followed by the webhook secret` |
+| `post address [start\|connect\|refresh\|pause\|resume\|close]` | The customer's one US street address: read it, start it, hand over the supplier key (stdin), look again, pause, resume, disconnect<br>`(the owner signs up at the supplier, completes USPS Form 1583 there and creates an agent key there; STACK never sees the documents)`<br>`connect reads the key from stdin or a hidden prompt, optionally followed by the webhook secret` |
 | `post items [--routing routed\|pending\|unassigned] [--limit <number>]` | Every item at the address, including those no agent has |
 | `post items assign <item-id> --account <id>` | Give an item that no agent has taken to an account |
 | `post <account-id> address` | The agent's own line on the shared address, to print on a form |
@@ -284,7 +285,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 
 | Command | What it does |
 | --- | --- |
-| `control-socket get` | Read the control socket: who decides now, both addresses and their state, and the action kinds checked<br>`(every control-socket command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `control-socket get` | Read the control socket: who decides now, both addresses and their state, and the action kinds checked |
 | `control-socket set-decision <url>` | Set the address of your own decision server and print its signing secret once; it decides nothing until verified; waits for human approval when the API asks for it<br>`[--timeout-ms <number>] (how long STACK waits for an answer, 300 to 2000; default 1500)`<br>`(store the secret when it is printed: it is not shown again)` |
 | `control-socket set-events <url>` | Set the address that receives your agents' record and print its signing secret once; waits for human approval when the API asks for it<br>`(store the secret when it is printed: it is not shown again)` |
 | `control-socket clear decision\|events` | Remove the decision or events address; waits for human approval when the API asks for it |
@@ -301,7 +302,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 
 | Command | What it does |
 | --- | --- |
-| `network install register <name>` | Register a self-hosted install, which can sign nothing until it has a key<br>`(the owner commands need the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `network install register <name>` | Register a self-hosted install, which can sign nothing until it has a key |
 | `network install list` | List your installs with their keys |
 | `network install show <install-id>` | Read one install and its keys |
 | `network install key add <install-id> --key-file <path>` | Register a key for an install: writes a new private key to the file (readable by you only, never printed) or reuses the one there, and waits for a person to approve it in a browser<br>`[--rollover-seconds <number>] (how long the install's other keys keep working, up to a week; default one day)` |
@@ -335,7 +336,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 
 | Command | What it does |
 | --- | --- |
-| `policies list` | List your policies and whether hosted controls are on; a policy only narrows what a connection grant allows, it never opens anything<br>`(every policies and reviews command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `policies list` | List your policies and whether hosted controls are on; a policy only narrows what a connection grant allows, it never opens anything |
 | `policies get default\|<agent>` | Read the default policy, or an agent's own policy and the one in force for it |
 | `policies set default\|<agent> --file <definition.json>` | Create or revise the default or an agent policy; tightening applies at once, loosening waits for human approval<br>`[--stdin] (read the definition from stdin instead of a file; the output of policies get works too)`<br>`[--expected-revision <number>] (omit to create; pass the revision you read to revise)`<br>`(Recipients set per job: put "recipients": "per_mission" on an allow rule, and each Mission names who it may send to when it opens)` |
 | `policies delete default\|<agent>` | Delete the default or an agent policy; always waits for human approval<br>`[--expected-revision <number>] (the delete is refused if the policy moved on)` |
@@ -350,7 +351,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | `wake list <agent> [--status open\|pending\|delivered\|acknowledged\|refused\|expired]` | List an agent's wakes (any agent, with or without an account), newest first; --status open is the agent's queue, oldest first<br>`[--limit <number>] [--cursor <cursor>] [--passport-stdin] (run as the agent, with its Passport on stdin)` |
 | `wake get <agent> <wake-id>` | Read one wake<br>`[--passport-stdin]` |
 | `wake ack <agent> <wake-id>` | The agent has picked a delivered wake up<br>`[--passport-stdin]` |
-| `wake settings get [<agent>]` | Read one agent's wake settings and what is in force, or (without an agent) your defaults<br>`(every wake settings, rules and schedules command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `wake settings get [<agent>]` | Read one agent's wake settings and what is in force, or (without an agent) your defaults |
 | `wake settings set [<agent>]` | Change wake settings for one agent or, without an agent, for all of them; a first webhook address prints its signing secret once<br>`[--file <settings.json>] [--time-zone <zone\|none>] [--quiet <HH:MM-HH:MM\|none>] [--quiet-mode hold\|drop]`<br>`[--rate-limit <number>] [--rate-window <seconds>] [--delivery <mcp,webhook,mission\|default>] [--invite-lead <minutes>]`<br>`[--webhook-url <https url\|none>] [--enable \| --disable] [--ring-incoming-calls \| --no-ring-incoming-calls]`<br>`(store the secret when it is printed: it is not shown again)` |
 | `wake rules [<agent>]` | List one agent's wake rules or, without an agent, your default rules |
 | `wake rule-add [<agent>] --name <name> --source <source>` | Add a rule: which event wakes the agent and with what task (mail, texts, Telegram messages, voicemail, calls and payments wake nobody without one)<br>`sources: email, sms, voicemail, call, incoming_call, payment, post, invite, schedule, handoff, decision, meeting, service_event, telegram`<br>`[--task <text>] [--from <a@b.example,@domain.example,+15550100,telegram:name>] [--min-amount-cents <number>] [--disabled] [--file <rule.json>]` |
@@ -409,7 +410,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 
 | Command | What it does |
 | --- | --- |
-| `chat list` | Which chat channels are on and the identities bound; a held payment can be approved from a bound chat only within the limits in the policy<br>`(every chat command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `chat list` | Which chat channels are on and the identities bound; a held payment can be approved from a bound chat only within the limits in the policy |
 | `chat link telegram\|slack\|sms` | Start binding a chat identity; prints the link or slash command to carry into the chat<br>`[--phone <+E.164>] (sms only; starting a text binding needs the console, signed in)`<br>`(finish in the console: confirm the identity, or type a text's code)` |
 | `chat remove <identity-id>` | End a bound chat identity at once |
 | `chat slack-install-url --redirect-uri <url> --state <value>` | Where the workspace's admin installs STACK's Slack app |
@@ -633,7 +634,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | Command | What it does |
 | --- | --- |
 | `trust get [<agent>]` | Whether the account's agents ask first or are trusted to act: the account's value, or one agent's over it |
-| `trust set <ask_first\|trust_agents> [<agent>]` | Ask first, or trust the agents (nothing waits for a person on card purchases, orders on your own supplier account and governance changes made with your own key); for the account or one agent<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `trust set <ask_first\|trust_agents> [<agent>]` | Ask first, or trust the agents (nothing waits for a person on card purchases, orders on your own supplier account and governance changes made with your own key); for the account or one agent<br>`(owner or admin)` |
 | `trust clear <agent>` | Remove an agent's own value so it follows the account again |
 
 #### Message access
@@ -641,7 +642,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | Command | What it does |
 | --- | --- |
 | `message-access get [<agent>]` | What the account's agents may do with the customer's messages: the account's values, or one agent's over them |
-| `message-access set [--read-teammates true\|false] [--read-only true\|false] [<agent>]` | Whether agents read the messages of every message account of the customer (read-teammates, default true) or only their own, and whether they may only read (read-only, default false: true means no sending, replying, forwarding, texting or posting from any account); for the account or one agent<br>`(owner or admin, an agent is refused; applies at once with no approval; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `message-access set [--read-teammates true\|false] [--read-only true\|false] [<agent>]` | Whether agents read the messages of every message account of the customer (read-teammates, default true) or only their own, and whether they may only read (read-only, default false: true means no sending, replying, forwarding, texting or posting from any account); for the account or one agent<br>`(owner or admin, an agent is refused; applies at once with no approval)` |
 | `message-access clear <agent> <read-teammates\|read-only>...` | Remove the values an agent set for itself so it follows the account again |
 
 #### Messages
@@ -656,7 +657,7 @@ cannot drift. Prefix each command with `npx @getstackrun/cli`.
 | Command | What it does |
 | --- | --- |
 | `flagged-content get` | What controls do with flagged content, per severity, and whether controls are on |
-| `flagged-content set [--warning withhold\|deliver] [--critical withhold\|deliver]` | Withhold flagged content from the agent or deliver it with its flag; applies while controls are on<br>`(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)` |
+| `flagged-content set [--warning withhold\|deliver] [--critical withhold\|deliver]` | Withhold flagged content from the agent or deliver it with its flag; applies while controls are on<br>`(owner or admin)` |
 
 #### Security events
 
@@ -789,8 +790,7 @@ npx @getstackrun/cli control-socket decisions --verdict deny --limit 20
 ```
 
 The secret is printed to the terminal only. The CLI never writes it to a file
-or a log, so pipe the output into your secret store if you need it kept. These
-commands need the `accounts:manage` scope, which the default login leaves out.
+or a log, so pipe the output into your secret store if you need it kept.
 
 ### Policy examples
 

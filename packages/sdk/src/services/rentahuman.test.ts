@@ -58,6 +58,10 @@ describe('RentAHuman: opening an account and topping up', () => {
     expect(calls[2]!.body).toEqual({ amount_cents: 2500 });
     expect(calls[0]!.headers['X-Passport-Token']).toBe('ppt');
     expect(calls[4]!.headers['X-Passport-Token']).toBeUndefined();
+    // The two calls that pay from the wallet are made as the agent: the Passport is their bearer credential.
+    expect(calls.map((c) => c.headers['Authorization'])).toEqual([
+      'Bearer sk_live_rah_test', 'Bearer ppt', 'Bearer sk_live_rah_test', 'Bearer ppt', 'Bearer sk_live_rah_test',
+    ]);
   });
 
   it('signs what the wallet asked to be signed with the agent\'s own key, and sends only the signature', async () => {

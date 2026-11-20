@@ -11,6 +11,7 @@ from ..accounts import (
     _account,
     _agent_passport,
     _approval,
+    _as_agent,
     _budget_body,
     _message_params,
     _open_headers,
@@ -748,7 +749,7 @@ class AsyncAccountWalletService(_AsyncBase):
         return cast(
             "dict[str, Any]",
             await self._call(
-                "POST", f"{_account(account_id)}/wallet/payments", json=payment, headers=_passport(passport_token)
+                "POST", f"{_account(account_id)}/wallet/payments", json=payment, headers=_as_agent(passport_token)
             ),
         )
 
@@ -768,7 +769,7 @@ class AsyncAccountWalletService(_AsyncBase):
         """The asynchronous ``Stack.accounts.wallet.pay_url``. ``http`` is an optional ``httpx.AsyncClient``."""
         assert_payable_url(url)
         account = cast(
-            "dict[str, Any]", await self._call("GET", _account(account_id), headers=_passport(passport_token))
+            "dict[str, Any]", await self._call("GET", _account(account_id), headers=_as_agent(passport_token))
         )
 
         async def pay(payment: dict[str, Any]) -> dict[str, Any]:

@@ -201,6 +201,8 @@ describe('stack.accounts.wallet.payUrl', () => {
     expect(await result.response.text()).toBe('the report');
     expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([`GET /v1/accounts/${ACCOUNT}`, `POST /v1/accounts/${ACCOUNT}/wallet/payments`]);
     expect(calls.every((c) => c.headers['X-Passport-Token'] === 'passport-token')).toBe(true);
+    // The route accepts only an agent, so the Passport is the bearer credential of both calls, not the client's own key.
+    expect(calls.every((c) => c.headers['Authorization'] === 'Bearer passport-token')).toBe(true);
     expect(JSON.stringify(calls)).not.toContain(key.exportPrivateKey().slice(14, 60));
   });
 

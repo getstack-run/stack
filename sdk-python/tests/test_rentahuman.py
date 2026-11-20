@@ -22,6 +22,8 @@ from getstack.service_mcp import SERVICE_MCP_ENDPOINTS
 from getstack.wallet_key import WalletPaymentTarget, generate_agent_wallet_key, wallet_payment_authorization_payload
 
 PASSPORT = {"X-Passport-Token": "ppt_1"}
+# The two calls that pay from the wallet are made as the agent: its Passport is the bearer credential as well.
+PASSPORT_AS_AGENT = {"X-Passport-Token": "ppt_1", "Authorization": "Bearer ppt_1"}
 BASE = "/v1/accounts/acct_1/rentahuman"
 START = {
     "join_id": "rahj_1",
@@ -75,9 +77,17 @@ async def _drive_async(service: AsyncRentAHumanService) -> None:
 
 EXPECTED: list[tuple[str, str, dict[str, Any]]] = [
     ("POST", f"{BASE}/join", {"json": {"country": "US", "accept_terms": True}, "extra_headers": PASSPORT}),
-    ("POST", f"{BASE}/join/complete", {"json": {"join_id": "rahj_1", "signed": "c2ln"}, "extra_headers": PASSPORT}),
+    (
+        "POST",
+        f"{BASE}/join/complete",
+        {"json": {"join_id": "rahj_1", "signed": "c2ln"}, "extra_headers": PASSPORT_AS_AGENT},
+    ),
     ("POST", f"{BASE}/fund", {"json": {"amount_cents": 2500}, "extra_headers": PASSPORT}),
-    ("POST", f"{BASE}/fund/complete", {"json": {"fund_id": "rahj_2", "signed": "c2ln"}, "extra_headers": PASSPORT}),
+    (
+        "POST",
+        f"{BASE}/fund/complete",
+        {"json": {"fund_id": "rahj_2", "signed": "c2ln"}, "extra_headers": PASSPORT_AS_AGENT},
+    ),
     ("GET", BASE, {"extra_headers": None}),
 ]
 

@@ -66,6 +66,12 @@ def _passport(passport_token: str | None) -> dict[str, str] | None:
     return {"X-Passport-Token": passport_token} if passport_token else None
 
 
+def _as_agent(passport_token: str | None) -> dict[str, str] | None:
+    """The headers of a call the account's agent must make as the agent: the Passport is the bearer credential as well
+    as ``X-Passport-Token``, because the wallet payment route accepts only an agent and never a person's token."""
+    return {"X-Passport-Token": passport_token, "Authorization": f"Bearer {passport_token}"} if passport_token else None
+
+
 def _agent_passport(passport_token: str) -> dict[str, str]:
     if not isinstance(passport_token, str) or not passport_token:
         raise ValueError("passport_token is required: the account's agent calls this under its Passport")
@@ -1013,7 +1019,7 @@ class AccountWalletService(_Base):
         return cast(
             "dict[str, Any]",
             self._call(
-                "POST", f"{_account(account_id)}/wallet/payments", json=payment, headers=_passport(passport_token)
+                "POST", f"{_account(account_id)}/wallet/payments", json=payment, headers=_as_agent(passport_token)
             ),
         )
 
@@ -1037,7 +1043,7 @@ class AccountWalletService(_Base):
         and 2); any other ask, a price over ``max_cents`` or a URL that is not https raises ``X402PaymentError`` before
         STACK is asked. ``http`` is an optional ``httpx.Client`` for the seller."""
         assert_payable_url(url)
-        account = cast("dict[str, Any]", self._call("GET", _account(account_id), headers=_passport(passport_token)))
+        account = cast("dict[str, Any]", self._call("GET", _account(account_id), headers=_as_agent(passport_token)))
         return pay_x402(
             url,
             key=key,

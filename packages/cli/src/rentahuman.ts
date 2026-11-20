@@ -80,7 +80,7 @@ export async function cmdRentAHuman(argv: string[]): Promise<void> {
     if (signed === undefined) throw new Error("Invalid input: rentahuman join-complete needs --signed (the agent's signature of the payment)");
     const headers = await passportHeaders(args, true);
     noExtra(args);
-    return printJson(await api('POST', `${accountBase(account)}/join/complete`, { body: { join_id: joinId, signed }, headers }));
+    return printJson(await api('POST', `${accountBase(account)}/join/complete`, { body: { join_id: joinId, signed }, headers, bearer: headers['X-Passport-Token'] }));
   }
 
   if (sub === 'fund') {
@@ -99,7 +99,7 @@ export async function cmdRentAHuman(argv: string[]): Promise<void> {
     if (signed === undefined) throw new Error("Invalid input: rentahuman fund-complete needs --signed (the agent's signature of the payment)");
     const headers = await passportHeaders(args, true);
     noExtra(args);
-    return printJson(await api('POST', `${accountBase(account)}/fund/complete`, { body: { fund_id: fundId, signed }, headers }));
+    return printJson(await api('POST', `${accountBase(account)}/fund/complete`, { body: { fund_id: fundId, signed }, headers, bearer: headers['X-Passport-Token'] }));
   }
 
   if (sub === 'get') {

@@ -26,6 +26,17 @@ export const controlRefHeader = (ref: string | undefined): Record<string, string
   ref ? { [CONTROL_REF_REQUEST_HEADER]: ref } : undefined;
 
 /**
+ * The extra headers of a call that must be made as the account's agent (a payment from its wallet): `checkedHeaders`
+ * plus, when a Passport is given, `Authorization: Bearer <Passport>`. The route accepts only an agent principal, so
+ * the Passport is the credential of this one call and replaces the session's own (a person's token from a chat). The
+ * API client lets an `Authorization` in the extra headers replace the session credential; no other tool sets one.
+ */
+export function agentCallHeaders(passportToken: string | undefined, ref: string | undefined): Record<string, string> | undefined {
+  const headers = checkedHeaders(passportToken, ref);
+  return passportToken ? { ...headers, Authorization: `Bearer ${passportToken}` } : headers;
+}
+
+/**
  * The extra headers of a call that can be held: the Passport when there is one
  * and the control ref when there is one, nothing at all (undefined) when neither.
  */

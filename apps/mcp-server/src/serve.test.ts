@@ -7,6 +7,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { createSessionRegistry } from './serve/sessions.js';
 import type { SessionEntry } from './serve/types.js';
 import { createStackMcpHttpServer, MCP_DIRECTORY_OAUTH_SCOPES, MCP_OAUTH_SCOPES } from './serve.js';
+import { DEFAULT_MAX_SESSIONS_PER_BEARER, DEFAULT_MAX_SESSIONS_PER_PROCESS, PROCESS_BASE_HEAP_MB, PROCESS_HEAP_LIMIT_MB, REQUEST_HEADROOM_FRACTION, SESSION_HEAP_MB } from './serve/config.js';
 import { authContextResponse, closeServers, initialize, initializeBody, initializeSession, openChunkedPost, requestExistingSession, startServer, DIRECTORY_RESOURCE, DIRECTORY_METADATA, boundAuthContextResponse, resourceAwareFetch } from './serve.test-support.js';
 
 it('applies security headers to discovery and unauthenticated errors', async () => {
@@ -94,7 +95,8 @@ describe('STACK MCP HTTP authentication', () => {
       'governance:decide',
       // The one tool that calls any OpenRouter endpoint (stack_call_openrouter): model calls are what /mcp serves.
       'llm:invoke',
-      // The owner's own scopes, so running the account from a chat needs no second consent.
+      // The account's own scopes, so running the account from a chat needs no second consent.
+      'accounts:manage',
       'account:write',
       'billing:write',
       'governance:write',
@@ -110,7 +112,6 @@ describe('STACK MCP HTTP authentication', () => {
       'authority:write',
       'identity:write',
       'skills:publish',
-      'accounts:manage',
       'partner:write',
       'admin',
     ]) {
@@ -510,7 +511,14 @@ describe('STACK MCP HTTP authentication', () => {
 });
 
 describe('STACK MCP HTTP session capacity', () => {
-  it('defaults to 256 sessions per bearer, and the 257th evicts the oldest instead of being refused', async () => {
+  it('keeps the default cap within what a 512 MB machine holds, from the measured cost of a session', () => {
+    const usableForSessionsMb = PROCESS_HEAP_LIMIT_MB * (1 - REQUEST_HEADROOM_FRACTION) - PROCESS_BASE_HEAP_MB;
+    assert.ok(DEFAULT_MAX_SESSIONS_PER_PROCESS * SESSION_HEAP_MB <= usableForSessionsMb, 'the cap must fit in the heap limit with 30% left for requests');
+    assert.ok(DEFAULT_MAX_SESSIONS_PER_PROCESS > 0);
+    assert.equal(DEFAULT_MAX_SESSIONS_PER_BEARER <= DEFAULT_MAX_SESSIONS_PER_PROCESS, true, 'a bearer is never allowed more than the process holds');
+  });
+
+  it('holds the default number of sessions, and the next one from the same bearer evicts the oldest instead of being refused', async () => {
     const close = mock.method(StreamableHTTPServerTransport.prototype, 'close', async () => {});
     const { server, baseUrl } = await startServer({
       apiUrl: 'https://api.test',
@@ -519,14 +527,21 @@ describe('STACK MCP HTTP session capacity', () => {
       fetchImpl: async () => authContextResponse(),
     });
 
-    for (let index = 0; index < 256; index += 1) {
+    const first = await initializeSession(baseUrl, 'access-token-a');
+    for (let index = 1; index < DEFAULT_MAX_SESSIONS_PER_PROCESS; index += 1) {
       await initializeSession(baseUrl, 'access-token-a');
     }
-    assert.equal(server.sessionCount(), 256);
-    await initializeSession(baseUrl, 'access-token-a');
+    assert.equal(server.sessionCount(), DEFAULT_MAX_SESSIONS_PER_PROCESS);
+    const newest = await initializeSession(baseUrl, 'access-token-a');
 
-    assert.equal(server.sessionCount(), 256);
+    assert.equal(server.sessionCount(), DEFAULT_MAX_SESSIONS_PER_PROCESS);
     assert.equal(close.mock.callCount(), 1);
+    const evicted = await requestExistingSession(baseUrl, 'access-token-a', first, { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} });
+    assert.equal(evicted.status, 404, 'the oldest session is the one that went');
+    await evicted.text();
+    const kept = await requestExistingSession(baseUrl, 'access-token-a', newest, { jsonrpc: '2.0', id: 3, method: 'tools/list', params: {} });
+    assert.equal(kept.status, 200);
+    await kept.text();
   });
 
   it('admits a new bearer at the process cap by evicting a session of the largest holder', async () => {

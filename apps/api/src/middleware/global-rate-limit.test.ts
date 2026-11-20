@@ -14,10 +14,12 @@ afterEach(async () => {
   await Promise.all(apps.splice(0).map((app) => app.close()));
 });
 
-async function build(secret: string | null = SECRET): Promise<FastifyInstance> {
+const SECOND_SECRET = 'second-forwarder-rate-limit-secret-0123456789abcdef';
+
+async function build(secret: string | null | readonly string[] = SECRET): Promise<FastifyInstance> {
   const app = Fastify();
   apps.push(app);
-  // The options start.ts registers: the real key and caps.
+  // The options start.ts registers: the real keys and caps.
   await app.register(rateLimit, globalRateLimitOptions(secret ?? undefined, () => NOW));
   app.get('/probe', async () => ({ ok: true }));
   await app.ready();
@@ -77,6 +79,33 @@ describe('the global rate limit behind the Console server', () => {
     for (let i = 0; i < 501; i += 1) last = await call(app, forged(`198.51.100.${(i % 200) + 10}`));
     expect(last).toBe(429);
     expect(await call(app, { authorization: BEARER })).toBe(429);
+  });
+
+  it('counts the calls of a second trusted server per client too, the first still working', async () => {
+    const app = await build([SECRET, SECOND_SECRET]);
+    const viaSecond = (ip: string) => ({ authorization: BEARER, [FORWARDED_CLIENT_HEADER]: signed(ip, SECOND_SECRET) });
+    const burstA = await burst(app, 501, viaSecond('198.51.100.1'));
+    expect(burstA.slice(0, 500).every((code) => code === 200)).toBe(true);
+    expect(burstA[500]).toBe(429);
+    expect(await call(app, viaSecond('198.51.100.2'))).toBe(200);
+    expect(await call(app, { authorization: BEARER, [FORWARDED_CLIENT_HEADER]: signed('198.51.100.3') })).toBe(200);
+  });
+
+  it('gives a header made under a key that is not handed in, a stale one and a malformed one no bucket of their own', async () => {
+    const app = await build([SECRET]);
+    // The second server's key is not handed in here: its headers are forged.
+    let last = 0;
+    for (let i = 0; i < 501; i += 1) {
+      last = await call(app, { authorization: BEARER, [FORWARDED_CLIENT_HEADER]: signed(`198.51.100.${(i % 200) + 10}`, SECOND_SECRET) });
+    }
+    expect(last).toBe(429);
+    const stale = `198.51.100.9.${NOW / 1000 - 3600}.${forwardedClientMac('198.51.100.9', String(NOW / 1000 - 3600), SECOND_SECRET)}`;
+    for (const value of [stale, 'not a header', '']) {
+      const both = await build([SECRET, SECOND_SECRET]);
+      let code = 0;
+      for (let i = 0; i < 501; i += 1) code = await call(both, { authorization: BEARER, [FORWARDED_CLIENT_HEADER]: value });
+      expect(code, value).toBe(429);
+    }
   });
 
   it('ignores the header on a deployment with no Console secret', async () => {

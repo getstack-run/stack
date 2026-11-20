@@ -39,6 +39,26 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+describe('requestApi() bearer option', () => {
+  it('sends the given bearer instead of the stored sign-in', async () => {
+    const fetchMock = vi.fn(async () => new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    vi.stubGlobal('fetch', fetchMock);
+    const { requestApi } = await import('./api.js');
+    await requestApi('POST', '/v1/accounts/acct_x/wallet/payments', { body: {}, bearer: 'agent-passport' });
+    const init = fetchMock.mock.calls[0]?.[1] as RequestInit;
+    expect((init.headers as Record<string, string>)['Authorization']).toBe('Bearer agent-passport');
+  });
+
+  it('needs no stored sign-in when a bearer is given', async () => {
+    delete process.env['STACK_API_KEY'];
+    const fetchMock = vi.fn(async () => new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    vi.stubGlobal('fetch', fetchMock);
+    const { requestApi } = await import('./api.js');
+    await expect(requestApi('GET', '/v1/accounts/acct_x', { bearer: 'agent-passport' })).resolves.toEqual({});
+    expect(stderrChunks.join('')).toBe('');
+  });
+});
+
 describe('api() 403 handling', () => {
   it('prints a read-only-token hint on 403 and exits 1', async () => {
     vi.stubGlobal(

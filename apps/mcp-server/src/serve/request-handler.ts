@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createStackMcpServer, ENGINE_TOOL_MODULES } from '@stack/mcp-server';
+import { signForwardedClient } from '@stack/shared';
 import type { McpServeExtension } from '../extension.js';
 import { apiKeyMatches, hashApiKey } from './bearer-binding.js';
 import {
@@ -35,7 +36,8 @@ import {
   sendTooManyRequests,
 } from './responses.js';
 import type { SessionRegistry } from './sessions.js';
-import { asksForToolList, createSessionToolSet, TOOL_SET_STALE_MS } from './tool-sets.js';
+import { releaseAnsweredJsonStreams } from './transport-cleanup.js';
+import { asksForToolList, createSessionToolSet, TOOL_SET_STALE_MS, toolCallNeedsReread } from './tool-sets.js';
 import type { ServerSettings } from './settings.js';
 import type { SessionState } from './types.js';
 
@@ -58,6 +60,17 @@ export function createHttpRequestHandler(
   const {
     transports, closeTransports, closeEntries, pruneIdleSessions, reserveInitialization, reserveRequest,
   } = registry;
+
+  // The key that signs the forwarded-client header, derived once: null when the deployment sends none or the shared key is
+  // unset or too short. It is never logged.
+  const forwardedClientKey = extension?.forwardedClientKey?.(elicitationAttestationKey) ?? null;
+
+  // The end client's address of a request as the deployment states it; with no hook, none.
+  const clientAddressOf = (req: IncomingMessage): string | undefined => extension?.clientAddress?.(req) ?? undefined;
+
+  // The signed header for an end client's address, or undefined with no key or no address.
+  const forwardedClientFor = (address: string | undefined): string | undefined =>
+    forwardedClientKey && address ? signForwardedClient(address, forwardedClientKey, now()) : undefined;
 
   // The memory the bodies over the size of a message that opens a session take now, across requests, counted as they arrive.
   let largeBodyBytesInFlight = 0;
@@ -347,6 +360,7 @@ export function createHttpRequestHandler(
         apiKey,
         fetchImpl,
         authValidationTimeoutMs,
+        forwardedClientFor(clientAddressOf(req)),
       );
       if (deadline.signal.aborted) return;
       if (authContext.status !== 'valid') {
@@ -390,8 +404,16 @@ export function createHttpRequestHandler(
         await entry.toolSet.refresh();
         if (deadline.signal.aborted) return;
       }
+      // A tool call reads them again first when they were never read (the read at connect failed) or when the tool
+      // it names is not listed and the last read is a few seconds old, so a failed first read is never what refuses a
+      // tool the account has. One read at most; a tool still not listed after it is refused as before.
+      if (entry.toolSet && req.method === 'POST' && toolCallNeedsReread(entry.toolSet, parsedBody, now())) {
+        await entry.toolSet.refresh();
+        if (deadline.signal.aborted) return;
+      }
 
       entry.lastSeenAt = now();
+      entry.state.clientAddress = clientAddressOf(req);
       if (req.method === 'GET') {
         // The notification stream: where a wake-up for an agent's session is sent. Counted while it is open.
         entry.state.notificationStreams += 1;
@@ -402,7 +424,11 @@ export function createHttpRequestHandler(
           entry.state.notificationStreams = Math.max(0, entry.state.notificationStreams - 1);
         });
       }
-      await entry.transport.handleRequest(req, res, parsedBody);
+      try {
+        await entry.transport.handleRequest(req, res, parsedBody);
+      } finally {
+        releaseAnsweredJsonStreams(entry.transport);
+      }
       return;
     }
 
@@ -436,6 +462,7 @@ export function createHttpRequestHandler(
         apiKey,
         fetchImpl,
         authValidationTimeoutMs,
+        forwardedClientFor(clientAddressOf(req)),
       );
       if (deadline.signal.aborted) return;
       if (authContext.status !== 'valid') {
@@ -466,7 +493,12 @@ export function createHttpRequestHandler(
         sessionIdGenerator: () => (machineId ? `${machineId}.${randomUUID()}` : randomUUID()),
         enableJsonResponse: !sse,
       });
-      const state: SessionState = { pendingElicitations: 0, lastElicitationEndedAt: 0, notificationStreams: 0 };
+      const state: SessionState = {
+        pendingElicitations: 0,
+        lastElicitationEndedAt: 0,
+        notificationStreams: 0,
+        clientAddress: clientAddressOf(req),
+      };
       partialTransport = transport;
       teardownRequest = async () => {
         partialClosed = true;
@@ -495,7 +527,9 @@ export function createHttpRequestHandler(
           fetchImpl,
           timeoutMs: authValidationTimeoutMs,
           audience: authContext.principalFingerprint.startsWith('agent:') ? 'agent' : 'owner',
+          forwardedClient: () => forwardedClientFor(state.clientAddress),
           now,
+          logger: settings.logger,
         })
         : undefined;
       if (deadline.signal.aborted) return;
@@ -512,6 +546,11 @@ export function createHttpRequestHandler(
         ...(extension?.wakeNotifications && authContext.principalFingerprint.startsWith('agent:') ? { wakeNotifications: true } : {}),
         // Where the guides are, told at initialize; never on the directory profile, whose text was reviewed.
         ...(extension?.instructions && endpoint.profile === 'standard' ? { instructions: extension.instructions } : {}),
+        // Each API call of the session says which end client it is made for, signed fresh, so the API's request allowance
+        // counts that client alone. Without a key, or without a valid address on the request, no header is sent.
+        ...(forwardedClientKey
+          ? { forwardedClient: () => forwardedClientFor(state.clientAddress) }
+          : {}),
         chat: {
           // Without a key of at least 32 characters, chat approval is
           // unavailable and every approval falls back to its link.
@@ -531,7 +570,11 @@ export function createHttpRequestHandler(
       await server.connect(transport);
 
       // handleRequest processes initialize and assigns transport.sessionId.
-      await transport.handleRequest(req, res, parsedBody);
+      try {
+        await transport.handleRequest(req, res, parsedBody);
+      } finally {
+        releaseAnsweredJsonStreams(transport);
+      }
 
       if (deadline.signal.aborted) return;
 

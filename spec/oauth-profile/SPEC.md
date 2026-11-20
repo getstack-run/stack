@@ -131,7 +131,7 @@ A scope is one of the values below. A request lists scopes separated by spaces, 
 | `accounts:read` | yes | yes |
 | `accounts:write` | yes | yes |
 | `accounts:act` | - | yes |
-| `accounts:manage` | - | - |
+| `accounts:manage` | - | yes |
 | `services:read` | yes | yes |
 | `services:write` | yes | yes |
 | `services:connect` | - | yes |

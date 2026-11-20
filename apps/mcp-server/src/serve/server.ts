@@ -8,6 +8,11 @@ import { resolveServerSettings } from './settings.js';
 import type { McpServeExtension } from '../extension.js';
 import type { StackMcpHttpServer, StackMcpHttpServerOptions } from './types.js';
 
+/** How long a reverse proxy in front of the server keeps an idle connection to it, in milliseconds. */
+const PROXY_IDLE_MS = 60_000;
+/** The server keeps an idle connection open for longer than the proxy does. */
+const KEEP_ALIVE_TIMEOUT_MS = PROXY_IDLE_MS + 5_000;
+
 /**
  * Wire the settings, the session registry and the request handler into one
  * `http.Server`: security headers on every response, the request and header
@@ -18,7 +23,7 @@ export function createStackMcpHttpServer(
   extension: McpServeExtension | null = null,
 ): StackMcpHttpServer {
   const settings = resolveServerSettings(options);
-  const { logger, requestTimeoutMs, sessionSweepIntervalMs } = settings;
+  const { logger, sessionSweepIntervalMs } = settings;
   const registry = createSessionRegistry(settings);
   const { transports, closeEntries, pruneIdleSessions } = registry;
   const handleHttpRequest = createHttpRequestHandler(settings, registry, extension);
@@ -43,7 +48,11 @@ export function createStackMcpHttpServer(
   // itself, `requestTimeoutMs` for any request and `bodyReceiveTimeoutMs` for a large body once its sender is checked, and
   // closes the connection of a request it answers before the body was read.
   httpServer.requestTimeout = 0;
-  httpServer.headersTimeout = Math.min(requestTimeoutMs, 10_000);
+  // A reverse proxy in front of the server keeps an idle connection for up to 60 seconds and reuses it. Node closes an idle
+  // connection after 5 seconds by default, so a request the proxy sends on a connection Node has just closed fails with a
+  // reset. The server keeps an idle connection open longer than the proxy does, and Node wants the headers timeout above that.
+  httpServer.keepAliveTimeout = KEEP_ALIVE_TIMEOUT_MS;
+  httpServer.headersTimeout = KEEP_ALIVE_TIMEOUT_MS + 1_000;
 
   // What a deployment pushes to an agent's open sessions arrives over Redis when it is configured; the server never needs it.
   const redisUrl = options.redisUrl ?? process.env['REDIS_URL'];

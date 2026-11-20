@@ -1,4 +1,4 @@
-import { retryAfterSeconds } from '@stack/mcp-server';
+import { FORWARDED_CLIENT_HEADER, retryAfterSeconds } from '@stack/mcp-server';
 import type { AuthContext } from './types.js';
 
 /**
@@ -10,17 +10,21 @@ import type { AuthContext } from './types.js';
  * new login ceremony or gets mislabeled as a bad user credential. It carries
  * the wait the API named (its Retry-After header or retry_after_seconds, else
  * 5 seconds, clamped to 1 through 300) so the 503 can say when to retry.
+ *
+ * `forwardedClient` is the signed `x-stack-forwarded-client` value naming the end client this call is made for, when
+ * there is one, so the API's request allowance counts that client and not this server's address.
  */
 export async function resolveAuthContext(
   apiUrl: string,
   apiKey: string,
   fetchImpl: typeof fetch,
   timeoutMs: number,
+  forwardedClient?: string,
 ): Promise<AuthContext> {
   let response: Response;
   try {
     response = await fetchImpl(`${apiUrl}/v1/auth/context`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
+      headers: { Authorization: `Bearer ${apiKey}`, ...(forwardedClient ? { [FORWARDED_CLIENT_HEADER]: forwardedClient } : {}) },
       signal: AbortSignal.timeout(timeoutMs),
     });
   } catch {

@@ -18,6 +18,17 @@ CONTROL_REF_HEADER = "X-Control-Ref"
 _C = TypeVar("_C", "HttpClient", "AsyncHttpClient")
 
 
+def _credential_headers(auth: AuthStrategy, extra_headers: dict[str, str] | None) -> dict[str, str]:
+    """The client's own credential, unless the call brings its own ``Authorization``.
+
+    A call that must be made as an agent (a payment from its wallet) sends the agent's Passport as the bearer: that
+    replaces the client's credential for the one call, and no sign-in is needed for it.
+    """
+    if extra_headers and any(name.lower() == "authorization" for name in extra_headers):
+        return {}
+    return auth.get_headers()
+
+
 def _scoped_to_ref(client: _C, ref: str) -> _C:
     """A copy of the client that sends `X-Control-Ref: <ref>` on every request it makes.
 
@@ -70,7 +81,7 @@ class HttpClient:
     ) -> Any:
         headers = {
             "Content-Type": "application/json",
-            **self.auth.get_headers(),
+            **_credential_headers(self.auth, extra_headers),
             **self._ref_headers(),
             **(extra_headers or {}),
         }
@@ -311,7 +322,7 @@ class AsyncHttpClient:
     ) -> Any:
         headers = {
             "Content-Type": "application/json",
-            **self.auth.get_headers(),
+            **_credential_headers(self.auth, extra_headers),
             **self._ref_headers(),
             **(extra_headers or {}),
         }

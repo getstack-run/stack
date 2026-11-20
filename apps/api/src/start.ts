@@ -229,13 +229,13 @@ export async function startApi<H extends object = object>(ext: ApiExtension<H> |
   // every customer's calls from its own address, so it signs the end-user address it saw into
   // `x-stack-forwarded-client` with its proxy secret, and a header that verifies (fresh, with a
   // valid MAC) puts the call in that address's bucket instead of the Console server's. Any other
-  // header is ignored. A deployment without a Console (`ext.forwardedClientSecret` absent) keys
+  // header is ignored. A deployment without one (`ext.forwardedClientSecrets` absent) keys
   // every call by its source address.
   //
   // Per-route stricter caps (/v1/passports/issue 20/min etc) inherit the key. The store is
   // in-memory and per machine, so two API machines allow about twice the cap across one
   // address's load-balanced traffic: headroom, not a bug.
-  await app.register(rateLimit, globalRateLimitOptions(ext?.forwardedClientSecret));
+  await app.register(rateLimit, globalRateLimitOptions(ext?.forwardedClientSecrets));
 
   // The hosted call relay's WebSocket plugin goes in before any route.
   if (ext) await ext.plugins(app);

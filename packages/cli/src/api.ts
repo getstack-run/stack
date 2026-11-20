@@ -22,6 +22,12 @@ export interface ApiOptions {
   query?: Record<string, string | number | undefined>;
   expectEmpty?: boolean;
   headers?: Record<string, string>;
+  /**
+   * The bearer credential for this call, used instead of the stored sign-in and without requiring one. A call that
+   * must be made as an agent passes the agent's Passport here: a route that accepts only an agent principal reads the
+   * Passport as the bearer, never a person's token.
+   */
+  bearer?: string;
 }
 
 /** The header an approved action's retry carries the ref of its approval in. */
@@ -103,7 +109,7 @@ export async function requestApi<T = unknown>(
   path: string,
   opts?: ApiOptions,
 ): Promise<T> {
-  const token = await requireToken();
+  const token = opts?.bearer ?? (await requireToken());
   const url = new URL(`${API_URL}${path}`);
   if (opts?.query) {
     for (const [k, v] of Object.entries(opts.query)) {

@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { OAUTH_SCOPES } from '@stack/shared';
+import { OAUTH_MCP_DEFAULT_SCOPES, OAUTH_SCOPES } from '@stack/shared';
 import { CLI_DEFAULT_OAUTH_SCOPES, DEFAULT_SCOPE, requestedScope } from './auth.js';
 
-// The CLI retains routine operator workflows without turning every login into
-// an account-management or secret-retrieval credential.
+// The CLI's default sign-in is the same set as a person's sign-in from an MCP
+// client. Team, credential, payout and administration scopes stay opt-in.
 
 const CANONICAL = new Set<string>(OAUTH_SCOPES as readonly string[]);
 const tokens = [...CLI_DEFAULT_OAUTH_SCOPES];
@@ -12,6 +12,10 @@ describe('DEFAULT_SCOPE', () => {
   it('is a subset of the API OAUTH_SCOPES catalog (no typos, no wildcards)', () => {
     const unknown = tokens.filter((t) => !CANONICAL.has(t));
     expect(unknown, `unknown scopes: ${unknown.join(', ')}`).toEqual([]);
+  });
+
+  it('equals the default an MCP client requests for /mcp, in the same order', () => {
+    expect(tokens).toEqual([...OAUTH_MCP_DEFAULT_SCOPES]);
   });
 
   it('serializes the reviewed least-privilege set exactly', () => {
@@ -33,14 +37,18 @@ describe('DEFAULT_SCOPE', () => {
       'accounts:read',
       'accounts:write',
       'accounts:act',
+      'accounts:manage',
+      'account:write',
+      'billing:write',
+      'governance:write',
+      'security-events:write',
     ]) {
       expect(tokens, `missing ${scope}`).toContain(scope);
     }
   });
 
-  it('keeps sensitive management and secret-bearing scopes opt-in', () => {
+  it('keeps team, credential, payout and administration scopes opt-in', () => {
     for (const scope of [
-      'account:write',
       'team:write',
       'oauth-apps:read',
       'oauth-apps:write',
@@ -48,20 +56,12 @@ describe('DEFAULT_SCOPE', () => {
       'cmek:write',
       'credentials:read',
       'credentials:write',
-      'billing:write',
       'payouts:read',
       'payouts:write',
       'identity:write',
       'authority:write',
-      'governance:write',
-      'reviews:write',
       'skills:publish',
-      'notifications:write',
-      'security-events:write',
-      'detectors:write',
-      'pii:write',
       'partner:write',
-      'accounts:manage',
       'admin',
     ]) {
       expect(tokens, `unsafe default scope: ${scope}`).not.toContain(scope);

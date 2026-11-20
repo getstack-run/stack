@@ -5,19 +5,20 @@ import { preAuthRateLimitKey } from './rate-limit-key.js';
 /**
  * The options of the API's global rate limit: the bucket key (`preAuthRateLimitKey`, with the
  * Console's verified client address in place of the source address when it vouches for one) and the
- * caps, 500 a minute for a bearer and 100 a minute otherwise. `forwardedClientSecret` is the
- * dashboard proxy secret of a deployment that has a Console; without it every call is keyed by its
+ * caps, 500 a minute for a bearer and 100 a minute otherwise. `forwardedClientSecrets` are the
+ * secrets the deployment's own trusted servers sign the client address with (the Console's proxy
+ * secret, and the hosted MCP server's derived key); without any, every call is keyed by its
  * source address.
  */
 export function globalRateLimitOptions(
-  forwardedClientSecret: string | undefined,
+  forwardedClientSecrets: string | undefined | readonly (string | undefined)[],
   now: () => number = Date.now,
 ) {
   return {
     keyGenerator: (req: FastifyRequest) => {
       const client = verifyForwardedClient(
         req.headers[FORWARDED_CLIENT_HEADER],
-        forwardedClientSecret,
+        forwardedClientSecrets,
         now(),
       );
       return preAuthRateLimitKey(req.headers.authorization, req.ip, client);

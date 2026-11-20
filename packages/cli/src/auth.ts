@@ -23,40 +23,43 @@ import { createHash, randomBytes } from 'node:crypto';
 const API_URL = env['STACK_API_URL'] ?? 'https://api.getstack.run';
 const RESOURCE = env['STACK_OAUTH_RESOURCE'] ?? `${API_URL}`;
 
-// Default login scope covers the CLI's routine runtime and inspection flows.
-// High-impact management surfaces stay opt-in even when the CLI has a command
-// for them: account/team mutations, raw credential retrieval, billing and
-// payout writes, OAuth-app/CMEK administration, authority and identity
-// mutation, notification/security-policy changes, partner administration,
-// and platform admin. An operator can request an exact broader set for a
-// deliberate session with STACK_OAUTH_SCOPE. Kept as a literal because the
-// published CLI intentionally has no @stack/shared runtime dependency.
+// Default login scope: the same scopes, in the same order, as the default an
+// MCP client requests for /mcp (OAUTH_MCP_DEFAULT_SCOPES in @stack/shared), so
+// a person signed in from the CLI can do what a person signed in from a chat
+// can. The scopes that stay explicit grants even when the CLI has a command for
+// them are team mutation, raw credential retrieval, payout writes,
+// OAuth-app/CMEK administration, authority and identity mutation, skill
+// publishing, partner administration and platform admin. An operator can
+// request an exact broader or narrower set for a deliberate session with
+// STACK_OAUTH_SCOPE. Kept as a literal because the published CLI intentionally
+// has no @stack/shared runtime dependency; auth.test.ts fails when this list
+// and the shared one differ.
 export const CLI_DEFAULT_OAUTH_SCOPES = [
-  'account:read',
+  'account:read', 'account:write',
   'team:read',
   'passports:read', 'passports:write',
   'agents:read', 'agents:write',
-  'accounts:read', 'accounts:write', 'accounts:act',
+  'accounts:read', 'accounts:write', 'accounts:act', 'accounts:manage',
   'services:read', 'services:write', 'services:connect',
-  'inbound-webhooks:read',
+  'inbound-webhooks:read', 'inbound-webhooks:write',
   'proxy:read', 'proxy:write',
   'audit:read',
-  'billing:read',
+  'billing:read', 'billing:write',
   'identity:read',
   'authority:read',
-  'governance:read',
+  'governance:read', 'governance:write', 'governance:decide',
   'intents:read', 'intents:write',
   'missions:read', 'missions:write',
-  'reviews:read',
+  'reviews:read', 'reviews:write',
   'evidence:read', 'evidence:write',
   'dropoffs:read', 'dropoffs:write',
   'skills:read', 'skills:write', 'skills:invoke',
-  'notifications:read',
-  'security-events:read',
+  'notifications:read', 'notifications:write',
+  'security-events:read', 'security-events:write',
   'llm:read', 'llm:invoke',
   'scan:read', 'scan:write',
-  'detectors:read',
-  'pii:read',
+  'detectors:read', 'detectors:write',
+  'pii:read', 'pii:write',
   'partner:read',
 ] as const;
 export const DEFAULT_SCOPE = CLI_DEFAULT_OAUTH_SCOPES.join(' ');

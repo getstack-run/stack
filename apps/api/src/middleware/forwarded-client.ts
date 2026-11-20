@@ -12,8 +12,10 @@ import { isIP } from 'node:net';
  * travels and only a holder of it can produce a header. The Console's server has its
  * own copy of this format, pinned against this one by a shared test vector.
  *
- * The one reader of the verified address is the rate-limit key. An invalid
- * header is ignored (never trusted, never an error).
+ * A deployment may hand in more than one verifying secret (the Console's, and the
+ * one a second trusted server of its own signs with); a header counts when it verifies
+ * under any of them. The one reader of the verified address is the rate-limit key. An
+ * invalid header is ignored (never trusted, never an error).
  */
 export const FORWARDED_CLIENT_HEADER = 'x-stack-forwarded-client';
 /** How far the header's time may be from ours, in either direction. */
@@ -29,14 +31,17 @@ export function forwardedClientMac(clientIp: string, unixSeconds: string, secret
 /**
  * The client address a valid header asserts, or undefined for anything else:
  * no header, no secret, malformed, an address that is not an IP, a time
- * outside the tolerance, or a MAC that does not verify.
+ * outside the tolerance, or a MAC that does not verify under any of the secrets.
  */
 export function verifyForwardedClient(
   header: string | string[] | undefined,
-  secret: string | undefined,
+  secrets: string | undefined | readonly (string | undefined)[],
   nowMs: number,
 ): string | undefined {
-  if (!secret || typeof header !== 'string' || header.length === 0 || header.length > MAX_HEADER_CHARS) {
+  const keys = (typeof secrets === 'string' || secrets === undefined ? [secrets] : secrets).filter(
+    (key): key is string => typeof key === 'string' && key.length > 0,
+  );
+  if (keys.length === 0 || typeof header !== 'string' || header.length === 0 || header.length > MAX_HEADER_CHARS) {
     return undefined;
   }
   // An IPv4 address holds dots itself, so the MAC and the time are cut from the right.
@@ -51,8 +56,12 @@ export function verifyForwardedClient(
   if (!/^\d{1,12}$/.test(unixSeconds)) return undefined;
   if (!/^[0-9a-f]{64}$/.test(mac)) return undefined;
   if (Math.abs(Number(unixSeconds) - nowMs / 1000) > FORWARDED_CLIENT_TOLERANCE_SECONDS) return undefined;
-  const expected = Buffer.from(forwardedClientMac(clientIp, unixSeconds, secret), 'hex');
   const supplied = Buffer.from(mac, 'hex');
-  if (expected.length !== supplied.length || !timingSafeEqual(expected, supplied)) return undefined;
-  return clientIp;
+  // Every key is tried, with no early exit, so the time taken does not say which one a header was made with.
+  let verified = false;
+  for (const secret of keys) {
+    const expected = Buffer.from(forwardedClientMac(clientIp, unixSeconds, secret), 'hex');
+    if (expected.length === supplied.length && timingSafeEqual(expected, supplied)) verified = true;
+  }
+  return verified ? clientIp : undefined;
 }

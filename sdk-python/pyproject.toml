@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "getstack"
-version = "4.4.0"
+version = "4.4.1"
 description = "Python SDK for STACK — trust infrastructure for AI agents"
 readme = "README.md"
 license = "MIT"

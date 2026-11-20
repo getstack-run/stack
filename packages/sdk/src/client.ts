@@ -83,10 +83,10 @@ export class HttpClient {
   async get<T>(
     path: string,
     query?: Record<string, string | undefined>,
-    options?: { headers?: Record<string, string> },
+    options?: { headers?: Record<string, string>; bearer?: string },
   ): Promise<T> {
     const url = this.buildUrl(path, query);
-    return this.request<T>('GET', url, undefined, options?.headers);
+    return this.request<T>('GET', url, undefined, options?.headers, true, undefined, options?.bearer);
   }
 
   /**
@@ -213,10 +213,14 @@ export class HttpClient {
     return { status: res.status, contentType: res.headers.get('content-type'), bytes: new Uint8Array(await res.arrayBuffer()) };
   }
 
-  /** `timeoutMs` aborts the call after that long; without it the call has no client-side limit. */
-  async post<T>(path: string, body?: unknown, options?: { headers?: Record<string, string>; timeoutMs?: number }): Promise<T> {
+  /**
+   * `timeoutMs` aborts the call after that long; without it the call has no client-side limit. `bearer` is the credential
+   * of this one call, used instead of the client's own (and with no client credential configured): a call that must be
+   * made as an agent passes the agent's Passport.
+   */
+  async post<T>(path: string, body?: unknown, options?: { headers?: Record<string, string>; timeoutMs?: number; bearer?: string }): Promise<T> {
     const url = this.buildUrl(path);
-    return this.request<T>('POST', url, body, options?.headers, true, options?.timeoutMs);
+    return this.request<T>('POST', url, body, options?.headers, true, options?.timeoutMs, options?.bearer);
   }
 
   /**
@@ -391,9 +395,10 @@ export class HttpClient {
     extraHeaders?: Record<string, string>,
     authenticated = true,
     timeoutMs?: number,
+    bearer?: string,
   ): Promise<T> {
     const headers: Record<string, string> = {
-      ...(authenticated ? { 'Authorization': `Bearer ${await this.resolveBearer()}` } : {}),
+      ...(authenticated ? { 'Authorization': `Bearer ${bearer ?? await this.resolveBearer()}` } : {}),
       'Accept': 'application/json',
       ...(authenticated ? this.controlRefHeaders() : {}),
       ...(extraHeaders ?? {}),

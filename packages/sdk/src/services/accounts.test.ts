@@ -307,6 +307,17 @@ describe('AccountsService', () => {
     ]);
   });
 
+  it("sends the agent's Passport as the bearer credential of a wallet payment, and the client's own key without one", async () => {
+    const calls = stubFetch();
+    const accounts = stack().accounts;
+    await accounts.wallet.pay(ACCOUNT, { typed_data: {}, agent_signature: 'sig' }, { passportToken: 'pas.jwt.token' });
+    await accounts.wallet.pay(ACCOUNT, { typed_data: {}, agent_signature: 'sig' });
+    await accounts.sendSms(ACCOUNT, { to: '+14155550123', body: 'Hi' }, { passportToken: 'pas.jwt.token' });
+    expect(calls.map((c) => c.headers['Authorization'])).toEqual([
+      'Bearer pas.jwt.token', 'Bearer sk_live_accounts_test', 'Bearer sk_live_accounts_test',
+    ]);
+  });
+
   it('encodes path segments', async () => {
     const calls = stubFetch();
     await stack().accounts.messages.get('acct_x/../y', 'm?1');

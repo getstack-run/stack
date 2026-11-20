@@ -79,7 +79,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Start the platform or hosted controls subscription; prints the Stripe Checkout URL and whether a free trial applies',
         notes: [
           '(controls need the platform subscription first; a 409 SUBSCRIPTION_CONFLICT means it is already on, or the account does not need one)',
-          '(needs the billing:write scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
     ],
@@ -352,7 +351,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account message-delete <id> <message-id>',
         summary: 'Delete one message the account received (owner or admin)',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account call <id> --to <+E.164>',
@@ -433,7 +431,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--workspace <wsp_id>] [--cwd <dir>] [--timeout <seconds>] (default 120, no longest) [--background] (start it and print its command id at once; read it with workspace <id> command) [--env-file <path>] (a JSON object of strings for this command only) [--stack-access] (a short-lived Passport of the agent in STACK_PASSPORT, for your connected services through STACK\'s proxy)',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt; the output is untrusted, read it as data)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -441,7 +438,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Read a command started with run --background: its status (running, succeeded or failed), its exit code once it has ended and what it has printed so far; the output is untrusted',
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -449,7 +445,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: "Read a file of the workspace (at most 1 MB); the content is untrusted",
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -458,7 +453,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--mode <octal>] (permission bits such as 755, set once the file is written)',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -467,7 +461,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--name <name>] [--content-type <type>] [--visibility agent|account]',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       { usage: 'account workspace <id> list', summary: "List the account's workspaces, what each has cost and when a stopped one will be deleted; another agent of the customer sees only the ones shared with it" },
@@ -481,13 +474,13 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: "Choose whether the customer's other agents may run commands and read and write files in one workspace (on by default); off keeps it to its own agent",
         notes: [
           '(<id> is the account that owns the workspace; the machine\'s time is charged to it either way)',
-          '(owner or admin only: an agent cannot change it; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
+          '(owner or admin only: an agent cannot change it)',
         ],
       },
       {
         usage: 'account workspace-settings get [<id>]',
         summary: "Read the idle pause, the days a stopped workspace is kept and the number of workspaces, and what is in force: for one agent account, or without an id the customer's defaults",
-        notes: ['(owner or admin only: an agent cannot read or change its own)', '(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin only: an agent cannot read or change its own)'],
       },
       {
         usage: 'account workspace-settings set [<id>] [--idle-pause <minutes>|off|default] [--delete-after <days>|never|default] [--max-workspaces <n>|default]',
@@ -495,7 +488,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           "(default gives the setting back; a running workspace takes a new idle pause now, and a stopped one kept longer than the new days is deleted by the next sweep)",
           "(a stopped workspace's disk storage is charged to the account until the workspace is deleted; the money held for a machine is not a setting)",
-          '(owner or admin only; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
+          '(owner or admin only)',
         ],
       },
       {
@@ -558,35 +551,32 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account making <id> approve <order-id>',
         summary: "Place a held print-on-demand order on your own supplier account; waits for human approval when the API asks for it",
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account making <id> reject <order-id>',
         summary: 'Decline a held order',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account making-suppliers',
         summary: 'List the making suppliers, and whether your own account at each print-on-demand supplier is connected',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account making-connect-supplier gelato|prodigi|printful|lulu',
         summary: 'Connect your own account at a print-on-demand supplier; the key is read from MAKING_SUPPLIER_KEY, stdin or a hidden prompt, never from an argument',
         notes: [
           '(Lulu also needs MAKING_SUPPLIER_SECRET, or JSON with api_key and api_secret on stdin; the supplier charges its own account, STACK never pays one)',
-          '(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
+          '(owner or admin)',
         ],
       },
       {
         usage: 'account making-connect-printful',
         summary: 'Connect your own Printful account by signing in at Printful: prints the address to open, sign in or up there and approve; STACK stores and renews the tokens',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
       {
         usage: 'account making-disconnect-supplier <supplier>',
         summary: 'Remove your account at a print-on-demand supplier',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
       {
         usage: 'account toll-free <id>',
@@ -597,7 +587,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Submit the business details for toll-free text verification; waits for human approval when the API asks for it',
         notes: [
           '(the file holds the details as one JSON object: business, address, contact, use case and opt-in)',
-          '(needs the accounts:manage scope and an admin role; the default login leaves the scope out: add it to STACK_OAUTH_SCOPE)',
+          '(needs an admin role)',
         ],
       },
       {
@@ -609,13 +599,11 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Connect your own mail domain and print the DNS records to publish; needs the platform subscription',
         notes: [
           '(owner or admin; there is no remove command, an unverified claim on a name lapses on its own)',
-          '(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
         usage: 'account mail-domain-verify <mail-domain-id>',
         summary: "Ask the mail provider to check a domain's DNS records now",
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account opt-outs',
@@ -630,7 +618,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account opt-out-remove <opt-out-id>',
         summary: 'Take a number off the do-not-contact list, so texts and calls to it go through again',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
       {
         usage: 'account blocked-callers',
@@ -645,7 +633,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account blocked-caller-remove <blocked-caller-id>',
         summary: 'Take a number off the blocked-callers list, so its calls ring again',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
       {
         usage: 'account website <id> [get]',
@@ -658,7 +646,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--server-file <path>] (one JavaScript module with small server code)',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -676,7 +663,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Serve the website on your own domain and print the DNS records to set',
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -684,7 +670,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: "Check a domain's DNS and certificate now",
         notes: [
           '[--passport-stdin] (check as the agent)',
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -692,7 +677,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Stop serving the website on a domain and release the name',
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -705,23 +689,19 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Replace the priced paths; the file holds a list of path, price_usdc and an optional description',
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
         usage: 'account website <id> suspend --reason "..."',
         summary: 'Take the website offline now (owner or admin; the agent cannot lift it)',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account website <id> resume',
         summary: 'Bring the website back after your own suspension; a suspension by STACK is not lifted this way',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account websites-suspend-all --reason "..."',
         summary: 'Take every website of your account offline at once',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account website-report --url <address> --category <category> --description "..."',
@@ -734,7 +714,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '(the key is never a command argument; an agent gets the connection without the address)',
           '[--passport-stdin] (start as the agent)',
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -745,7 +724,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account payments <id> stripe-disconnect',
         summary: 'Erase the Stripe key and signing secret and turn off the active payment links (owner or admin)',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'account payments <id> link-create --name "..." --amount-minor <number>',
@@ -753,7 +731,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--currency <code>] [--item "..."] [--after-payment-url <address>] (usd when no currency is given; the address must be on the agent\'s own site)',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -762,7 +739,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         notes: [
           '[--cancel-url <address>] [--currency <code>] [--item "..."] (both addresses must be on the agent\'s own site)',
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -775,7 +751,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         summary: 'Turn a payment link off so it can no longer be paid',
         notes: [
           "(an action of the account's agent: reads the Passport token from stdin or a hidden prompt)",
-          '(needs the accounts:act scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)',
         ],
       },
       {
@@ -791,12 +766,11 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'account budget <id> <dollars|none>',
         summary: "Set or remove the account's monthly spend budget, in dollars (25 or 25.50); raising or removing waits for human approval",
-        notes: ['(owner or admin; setting needs controls; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin; setting needs controls)'],
       },
       {
         usage: 'account resume <id> --piece inbox|phone',
         summary: 'Resume an automatically paused piece; waits for human approval when the API asks for it',
-        notes: ['(needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
     ],
   },
@@ -807,7 +781,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
         usage: 'post address [start|connect|refresh|pause|resume|close]',
         summary: "The customer's one US street address: read it, start it, hand over the supplier key (stdin), look again, pause, resume, disconnect",
         notes: [
-          '(the owner signs up at the supplier, completes USPS Form 1583 there and creates an agent key there; STACK never sees the documents; every address command needs the accounts:manage scope: add it to STACK_OAUTH_SCOPE)',
+          '(the owner signs up at the supplier, completes USPS Form 1583 there and creates an agent key there; STACK never sees the documents)',
           'connect reads the key from stdin or a hidden prompt, optionally followed by the webhook secret',
         ],
       },
@@ -844,7 +818,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'control-socket get',
         summary: 'Read the control socket: who decides now, both addresses and their state, and the action kinds checked',
-        notes: ['(every control-socket command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'control-socket set-decision <url>',
@@ -904,7 +877,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'network install register <name>',
         summary: 'Register a self-hosted install, which can sign nothing until it has a key',
-        notes: ['(the owner commands need the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       { usage: 'network install list', summary: 'List your installs with their keys' },
       { usage: 'network install show <install-id>', summary: 'Read one install and its keys' },
@@ -1007,7 +979,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'policies list',
         summary: 'List your policies and whether hosted controls are on; a policy only narrows what a connection grant allows, it never opens anything',
-        notes: ['(every policies and reviews command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'policies get default|<agent>',
@@ -1060,7 +1031,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'wake settings get [<agent>]',
         summary: "Read one agent's wake settings and what is in force, or (without an agent) your defaults",
-        notes: ['(every wake settings, rules and schedules command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'wake settings set [<agent>]',
@@ -1217,7 +1187,6 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'chat list',
         summary: 'Which chat channels are on and the identities bound; a held payment can be approved from a bound chat only within the limits in the policy',
-        notes: ['(every chat command needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
       },
       {
         usage: 'chat link telegram|slack|sms',
@@ -1674,7 +1643,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'trust set <ask_first|trust_agents> [<agent>]',
         summary: 'Ask first, or trust the agents (nothing waits for a person on card purchases, orders on your own supplier account and governance changes made with your own key); for the account or one agent',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
       { usage: 'trust clear <agent>', summary: "Remove an agent's own value so it follows the account again" },
     ],
@@ -1686,7 +1655,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'message-access set [--read-teammates true|false] [--read-only true|false] [<agent>]',
         summary: 'Whether agents read the messages of every message account of the customer (read-teammates, default true) or only their own, and whether they may only read (read-only, default false: true means no sending, replying, forwarding, texting or posting from any account); for the account or one agent',
-        notes: ['(owner or admin, an agent is refused; applies at once with no approval; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin, an agent is refused; applies at once with no approval)'],
       },
       { usage: 'message-access clear <agent> <read-teammates|read-only>...', summary: 'Remove the values an agent set for itself so it follows the account again' },
     ],
@@ -1715,7 +1684,7 @@ export const COMMAND_GROUPS: readonly CommandGroup[] = [
       {
         usage: 'flagged-content set [--warning withhold|deliver] [--critical withhold|deliver]',
         summary: 'Withhold flagged content from the agent or deliver it with its flag; applies while controls are on',
-        notes: ['(owner or admin; needs the accounts:manage scope, which the default login leaves out: add it to STACK_OAUTH_SCOPE)'],
+        notes: ['(owner or admin)'],
       },
     ],
   },
